@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Meu Site - Teste Inicial</title>
+</head>
+<body>
+    <h1>Teste de Conexão com Supabase</h1>
+    <div id="resultado">Carregando...</div>
+
+    <!-- CDN do Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        // SUAS CREDENCIAIS - COLE AQUI
+        const SUPABASE_URL = 'https://vjfzziprefikhidimxsi.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVqZnp6aXJwZWZsa2hpaWRtc3hqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4NDU3NTcsImV4cCI6MjA4ODQyMTc1N30.bg11NhiB3al-t0lTc80sX9jKRqUKzw8cowjKPiHZk_8'; // <-- COLE A CHAVE COMPLETA
+
+        // Inicializa o cliente (nome diferente para evitar conflitos)
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        async function testar() {
+            try {
+                const { data, error } = await supabase
+                    .from('publicacoes')
+                    .select('*')
+                    .limit(1);
+
+                if (error) throw error;
+
+                document.getElementById('resultado').innerHTML = 
+                    '<p style="color:green">✅ Conectado! Dados recebidos.</p>';
+                console.log('Dados:', data);
+            } catch (err) {
+                document.getElementById('resultado').innerHTML = 
+                    '<p style="color:red">❌ Erro: ' + err.message + '</p>';
+                console.error(err);
+            }
+        }
+
+        testar();
+    </script>
+</body>
+</html>
