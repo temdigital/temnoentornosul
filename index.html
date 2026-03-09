@@ -1,40 +1,512 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
+
 <head>
 
 <meta charset="UTF-8">
-<title>TESTE DO SUPABASE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="css/style.css">
+<title>Tem no Entorno Sul</title>
+
+<meta name="description" content="Notícias, eventos e comércios do Entorno Sul. Informação local, economia regional e oportunidades para sua comunidade.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+:root{
+--verde:#216c39;
+--amarelo:#f9d22d;
+--laranja:#fba309;
+--branco:#fffcf7;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Inter',sans-serif;
+background:var(--branco);
+color:#333;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+padding:20px;
+}
+
+/* NAVBAR */
+
+.navbar{
+background:white;
+position:sticky;
+top:0;
+z-index:999;
+box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+.nav-flex{
+display:flex;
+align-items:center;
+justify-content:space-between;
+}
+
+.logo{
+height:60px;
+}
+
+.nav-btn{
+background:var(--verde);
+color:white;
+padding:10px 18px;
+border-radius:8px;
+cursor:pointer;
+border:none;
+}
+
+/* HERO */
+
+.hero{
+padding:100px 20px;
+text-align:center;
+background:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),
+url("https://images.unsplash.com/photo-1467269204594-9661b134dd2b");
+background-size:cover;
+color:white;
+}
+
+.hero img{
+height:120px;
+margin-bottom:20px;
+}
+
+.hero h1{
+font-size:38px;
+margin-bottom:15px;
+}
+
+.hero p{
+font-size:18px;
+}
+
+/* SEÇÕES */
+
+.section{
+padding:80px 0;
+}
+
+.section-title{
+font-size:30px;
+color:var(--verde);
+text-align:center;
+margin-bottom:40px;
+}
+
+/* GRID */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:25px;
+}
+
+/* CARD */
+
+.card{
+background:white;
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 6px 20px rgba(0,0,0,0.08);
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-6px);
+}
+
+.card img{
+width:100%;
+height:180px;
+object-fit:cover;
+}
+
+.card-body{
+padding:18px;
+}
+
+.card-body h3{
+color:var(--verde);
+margin-bottom:10px;
+}
+
+.card-body p{
+font-size:14px;
+color:#555;
+}
+
+/* PARCEIROS */
+
+.partner-logo{
+height:80px;
+object-fit:contain;
+padding:20px;
+}
+
+/* ASSINATURA */
+
+.assinatura{
+background:linear-gradient(135deg,var(--verde),#1a4f2c);
+color:white;
+border-radius:14px;
+padding:60px;
+text-align:center;
+}
+
+.assinatura h2{
+font-size:34px;
+margin-bottom:10px;
+}
+
+.price{
+font-size:42px;
+color:var(--amarelo);
+margin:20px 0;
+}
+
+.btn-assinar{
+background:var(--laranja);
+padding:14px 30px;
+border-radius:8px;
+color:white;
+font-weight:600;
+border:none;
+cursor:pointer;
+}
+
+/* LOGIN MODAL */
+
+.modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+display:none;
+align-items:center;
+justify-content:center;
+}
+
+.modal-content{
+background:white;
+padding:40px;
+border-radius:10px;
+width:350px;
+}
+
+.modal input{
+width:100%;
+padding:10px;
+margin-bottom:10px;
+}
+
+@media(max-width:768px){
+
+.hero h1{
+font-size:28px;
+}
+
+.assinatura{
+padding:40px 20px;
+}
+
+}
+
+</style>
 
 </head>
 
 <body>
 
-<h1 class="titulo">
-TESTE DO SUPABASE
-</h1>
+<!-- NAVBAR -->
 
-<section id="cards"></section>
+<div class="navbar">
+<div class="container nav-flex">
 
+<img src="https://i.imgur.com/9eZarki.png" class="logo">
 
-<h2>Adicionar Empresa</h2>
+<button class="nav-btn" onclick="abrirLogin()">Entrar</button>
 
-<form id="formEmpresa">
+</div>
+</div>
 
-<input type="text" id="nome" placeholder="Nome da empresa" required>
+<!-- HERO -->
 
-<input type="text" id="cidade" placeholder="Cidade">
+<section class="hero">
 
-<input type="text" id="categoria" placeholder="Categoria">
+<img src="https://i.imgur.com/9eZarki.png">
 
-<button type="submit">
-Salvar Empresa
+<h1>O que acontece no Entorno Sul</h1>
+
+<p>Notícias, eventos e negócios da nossa região.</p>
+
+</section>
+
+<!-- ÚLTIMAS PUBLICAÇÕES -->
+
+<section class="section">
+
+<div class="container">
+
+<h2 class="section-title">Últimas Publicações</h2>
+
+<div id="posts" class="grid"></div>
+
+</div>
+
+</section>
+
+<!-- PRÓXIMOS EVENTOS -->
+
+<section class="section" style="background:#f8f8f8">
+
+<div class="container">
+
+<h2 class="section-title">Próximos Eventos</h2>
+
+<div id="events" class="grid"></div>
+
+</div>
+
+</section>
+
+<!-- PARCEIROS -->
+
+<section class="section">
+
+<div class="container">
+
+<h2 class="section-title">Parceiros em Destaque</h2>
+
+<div id="partners" class="grid"></div>
+
+</div>
+
+</section>
+
+<!-- ASSINATURA -->
+
+<section class="section">
+
+<div class="container">
+
+<div class="assinatura">
+
+<h2>Divulgue seu negócio</h2>
+
+<p>Apareça para milhares de pessoas do Entorno Sul.</p>
+
+<div class="price">
+
+R$ 29,90 / mês
+
+</div>
+
+<button class="btn-assinar">
+
+Quero anunciar
+
 </button>
 
-</form>
+</div>
 
-<script type="module" src="js/main.js"></script>
+</div>
+
+</section>
+
+<!-- LOGIN MODAL -->
+
+<div class="modal" id="loginModal">
+
+<div class="modal-content">
+
+<h3>Entrar</h3>
+
+<input id="email" placeholder="Email">
+
+<input id="senha" type="password" placeholder="Senha">
+
+<button onclick="login()">Entrar</button>
+
+<button onclick="signup()">Cadastrar</button>
+
+</div>
+
+</div>
+
+<script>
+
+/* SUPABASE */
+
+const supabase = window.supabase.createClient(
+"SEU_SUPABASE_URL",
+"SEU_SUPABASE_ANON_KEY"
+)
+
+/* LOGIN */
+
+function abrirLogin(){
+document.getElementById("loginModal").style.display="flex"
+}
+
+async function login(){
+
+const email=document.getElementById("email").value
+const senha=document.getElementById("senha").value
+
+const {data,error}=await supabase.auth.signInWithPassword({
+email:email,
+password:senha
+})
+
+if(error) alert(error.message)
+else alert("Login realizado!")
+
+}
+
+async function signup(){
+
+const email=document.getElementById("email").value
+const senha=document.getElementById("senha").value
+
+const {data,error}=await supabase.auth.signUp({
+email:email,
+password:senha
+})
+
+if(error) alert(error.message)
+else alert("Conta criada!")
+
+}
+
+/* PUBLICAÇÕES */
+
+async function carregarPosts(){
+
+const {data}=await supabase
+.from("posts")
+.select("*")
+.order("created_at",{ascending:false})
+.limit(6)
+
+const container=document.getElementById("posts")
+
+data.forEach(post=>{
+
+container.innerHTML+=`
+
+<div class="card">
+
+<img src="${post.imagem}">
+
+<div class="card-body">
+
+<h3>${post.titulo}</h3>
+
+<p>${post.resumo}</p>
+
+</div>
+
+</div>
+
+`
+
+})
+
+}
+
+/* EVENTOS */
+
+async function carregarEventos(){
+
+const {data}=await supabase
+.from("eventos")
+.select("*")
+.limit(6)
+
+const container=document.getElementById("events")
+
+data.forEach(evento=>{
+
+container.innerHTML+=`
+
+<div class="card">
+
+<img src="${evento.imagem}">
+
+<div class="card-body">
+
+<h3>${evento.nome}</h3>
+
+<p>${evento.data}</p>
+
+</div>
+
+</div>
+
+`
+
+})
+
+}
+
+/* PARCEIROS */
+
+async function carregarParceiros(){
+
+const {data}=await supabase
+.from("parceiros")
+.select("*")
+.limit(6)
+
+const container=document.getElementById("partners")
+
+data.forEach(parceiro=>{
+
+container.innerHTML+=`
+
+<div class="card">
+
+<img class="partner-logo" src="${parceiro.logo}">
+
+<div class="card-body">
+
+<h3>${parceiro.nome}</h3>
+
+</div>
+
+</div>
+
+`
+
+})
+
+}
+
+/* INIT */
+
+carregarPosts()
+carregarEventos()
+carregarParceiros()
+
+</script>
 
 </body>
 </html>
