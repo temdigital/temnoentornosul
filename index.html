@@ -1,104 +1,40 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <title>Tem no Entorno Sul!</title>
-    <style>
-        /* Seus estilos existentes (pode copiar do seu CSS ou manter inline) */
-        body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 20px; }
-        h1 { text-align: center; }
-        .container { max-width: 1200px; margin: auto; }
-        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 20px; }
-        .card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .card h3 { margin-top: 0; color: #0077ff; }
-        .loading { text-align: center; padding: 40px; }
-        .erro { color: red; text-align: center; }
-    </style>
+
+<meta charset="UTF-8">
+<title>TESTE DO SUPABASE</title>
+
+<link rel="stylesheet" href="css/style.css">
+
 </head>
+
 <body>
-    <div class="container">
-        <h1>Tem no Entorno Sul!</h1>
-        
-        <h2>Últimas Publicações</h2>
-        <div id="publicacoes" class="cards">Carregando...</div>
 
-        <h2>Próximos Eventos</h2>
-        <div id="eventos" class="cards">Carregando...</div>
+<h1 class="titulo">
+TESTE DO SUPABASE
+</h1>
 
-        <h2>Parceiros em Destaque</h2>
-        <div id="parceiros" class="cards">Carregando...</div>
-    </div>
+<section id="cards"></section>
 
-    <!-- Script tipo módulo -->
-    <script type="module">
-        // Importa a biblioteca do Supabase (igual ao exemplo)
-        import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-        // SUAS CREDENCIAIS - COLE AQUI (substitua pelos seus valores)
-        const SUPABASE_URL = "https://flidbkfrfosuahgphiza.supabase.co";
-        const SUPABASE_ANON_KEY = "sb_publishable_mCBYSpZc45Pw345wZ1coEA_rYL61Ea8"; // COLE A CHAVE COMPLETA
+<h2>Adicionar Empresa</h2>
 
-        // Cria o cliente
-        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+<form id="formEmpresa">
 
-        // Função genérica para carregar dados e renderizar
-        async function carregarDados(tabela, elementoId, limite = 3, ordem = { coluna: 'id', direcao: 'asc' }) {
-            const elemento = document.getElementById(elementoId);
-            try {
-                const { data, error } = await supabase
-                    .from(tabela)
-                    .select('*')
-                    .order(ordem.coluna, { ascending: ordem.direcao === 'asc' })
-                    .limit(limite);
+<input type="text" id="nome" placeholder="Nome da empresa" required>
 
-                if (error) throw error;
+<input type="text" id="cidade" placeholder="Cidade">
 
-                if (!data || data.length === 0) {
-                    elemento.innerHTML = '<p>Nenhum registro encontrado.</p>';
-                    return;
-                }
+<input type="text" id="categoria" placeholder="Categoria">
 
-                // Renderiza os cards de acordo com a tabela
-                elemento.innerHTML = data.map(item => {
-                    // Personalize conforme as colunas de cada tabela
-                    if (tabela === 'publicacoes') {
-                        return `
-                            <div class="card">
-                                <h3>${item.titulo || ''}</h3>
-                                <p>${item.resumo || ''}</p>
-                                <small>${new Date(item.data_publicacao).toLocaleDateString('pt-BR')}</small>
-                            </div>
-                        `;
-                    } else if (tabela === 'eventos') {
-                        return `
-                            <div class="card">
-                                <h3>${item.titulo || ''}</h3>
-                                <p>${item.descricao || ''}</p>
-                                <p><strong>Data:</strong> ${new Date(item.data_evento).toLocaleDateString('pt-BR')}</p>
-                                <p><strong>Local:</strong> ${item.local || '-'}</p>
-                            </div>
-                        `;
-                    } else if (tabela === 'comercios') {
-                        return `
-                            <div class="card">
-                                <h3>${item.nome || ''}</h3>
-                                <p>${item.descricao || ''}</p>
-                                <p><strong>Categoria:</strong> ${item.categoria || '-'}</p>
-                                ${item.telefone ? `<p><strong>Telefone:</strong> ${item.telefone}</p>` : ''}
-                            </div>
-                        `;
-                    }
-                }).join('');
-            } catch (err) {
-                elemento.innerHTML = `<p class="erro">Erro ao carregar: ${err.message}</p>`;
-                console.error(`Erro na tabela ${tabela}:`, err);
-            }
-        }
+<button type="submit">
+Salvar Empresa
+</button>
 
-        // Carrega todas as seções
-        carregarDados('publicacoes', 'publicacoes', 3, { coluna: 'data_publicacao', direcao: 'desc' });
-        carregarDados('eventos', 'eventos', 3, { coluna: 'data_evento', direcao: 'asc' });
-        carregarDados('comercios', 'parceiros', 4, { coluna: 'destaque', direcao: 'desc' });
-    </script>
+</form>
+
+<script type="module" src="js/main.js"></script>
+
 </body>
 </html>
