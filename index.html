@@ -1,101 +1,44 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-<title>Teste Supabase</title>
-</head>
-
-<body>
-
-<h2 id="status">Testando conexão...</h2>
-
-<pre id="resultado"></pre>
-
 <script type="module">
 
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"
 
-const supabase = createClient(
-"<!DOCTYPE html>
-<html>
+const SUPABASE_URL = "https://flidbkfrfosuahgphiza.supabase.co";
+const SUPABASE_KEY = "sb_publishable_mCBYSpZc45Pw345wZ1coEA_rYL61Ea8";
 
-<head>
-<title>Teste Supabase</title>
-</head>
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-<body>
+async function testarConexao(){
 
-<h2 id="status">Testando conexão...</h2>
+    const status = document.getElementById("status");
+    const resultado = document.getElementById("resultado");
 
-<pre id="resultado"></pre>
+    try{
 
-<script type="module">
+        const { data, error } = await supabase
+        .from("empresas")
+        .select("*")
+        .limit(5);
 
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"
+        if(error){
 
-const supabase = createClient(
-"https://flidbkfrfosuahgphiza.supabase.co",
-"sb_publishable_mCBYSpZc45Pw345wZ1coEA_rYL61Ea8"
-);
+            status.innerHTML = "Erro ao consultar banco";
+            resultado.innerText = JSON.stringify(error,null,2);
+            return;
+        }
 
-async function testar(){
+        status.innerHTML = "Conexão OK com Supabase!";
+        resultado.innerText = JSON.stringify(data,null,2);
 
-const status = document.getElementById("status");
-const resultado = document.getElementById("resultado");
+    }
+    catch(e){
 
-const { data, error } = await supabase
-.from("empresas")
-.select("*");
+        status.innerHTML = "Erro de conexão";
+        resultado.innerText = e;
 
-if(error){
-
-status.innerText = "Erro";
-resultado.innerText = JSON.stringify(error,null,2);
-return;
+    }
 
 }
 
-status.innerText = "Conectado ao Supabase!";
-resultado.innerText = JSON.stringify(data,null,2);
-
-}
-
-testar();
+testarConexao();
 
 </script>
-
-</body>
-
-</html>",
-"COLE_AQUI_ANON_KEY"
-);
-
-async function testar(){
-
-const status = document.getElementById("status");
-const resultado = document.getElementById("resultado");
-
-const { data, error } = await supabase
-.from("empresas")
-.select("*");
-
-if(error){
-
-status.innerText = "Erro";
-resultado.innerText = JSON.stringify(error,null,2);
-return;
-
-}
-
-status.innerText = "Conectado ao Supabase!";
-resultado.innerText = JSON.stringify(data,null,2);
-
-}
-
-testar();
-
-</script>
-
-</body>
-
-</html>
