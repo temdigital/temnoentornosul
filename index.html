@@ -1,54 +1,157 @@
-
-
-            <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Teste Supabase - Versão Final  2!</title>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Teste Supabase - Tem no Entorno Sul</title>
+
+<style>
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background:#f4f4f4;
+    padding:40px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#216b39;
+}
+
+.status{
+    padding:15px;
+    border-radius:6px;
+    margin-bottom:20px;
+}
+
+.ok{
+    background:#e6ffed;
+    border:1px solid #2ecc71;
+}
+
+.erro{
+    background:#ffe6e6;
+    border:1px solid #e74c3c;
+}
+
+pre{
+    background:#222;
+    color:#00ff9c;
+    padding:20px;
+    border-radius:6px;
+    overflow:auto;
+}
+
+</style>
+
 </head>
+
 <body>
-    <h1>Teste de Conexão com Supabase | 2!</h1>
-    <div id="resultado">Carregando...</div>
 
-    <!-- Biblioteca Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<div class="container">
 
-    <script>
-        // Verifica se a biblioteca carregou
-        if (typeof window.supabase === 'undefined') {
-            document.getElementById('resultado').innerHTML = 'ERRO: Biblioteca não carregada.';
-            throw new Error('Biblioteca não encontrada');
+<h1>Teste de Conexão com Supabase</h1>
+
+<div id="status" class="status">
+Conectando...
+</div>
+
+<h2>Dados retornados:</h2>
+
+<pre id="resultado">
+Aguardando resposta...
+</pre>
+
+</div>
+
+<!-- Biblioteca oficial do Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+/* ==========================
+CONFIGURAÇÃO DO SUPABASE
+========================== */
+
+const SUPABASE_URL = "SEU_SUPABASE_URL";
+const SUPABASE_KEY = "SUA_SUPABASE_ANON_KEY";
+
+/* ==========================
+CRIANDO CLIENTE SUPABASE
+========================== */
+
+const supabase = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
+/* ==========================
+TESTE DE CONSULTA
+========================== */
+
+async function testarConexao(){
+
+    const status = document.getElementById("status");
+    const resultado = document.getElementById("resultado");
+
+    try{
+
+        /* CONSULTA NA TABELA
+           TROQUE "empresas"
+           por uma tabela existente no seu banco
+        */
+
+        const { data, error } = await supabase
+        .from("empresas")
+        .select("*")
+        .limit(5);
+
+        if(error){
+
+            status.className="status erro";
+            status.innerText="Erro ao conectar no Supabase.";
+
+            resultado.innerText = JSON.stringify(error,null,2);
+
+            return;
         }
 
-        // SUAS CREDENCIAIS (substitua a chave)
-        const URL_DO_PROJETO = 'https://vjfzziprefikhidimxsi.supabase.co';
-        const CHAVE_ANONIMA = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVqZnp6aXJwZWZsa2hpaWRtc3hqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4NDU3NTcsImV4cCI6MjA4ODQyMTc1N30.bg11NhiB3al-t0lTc80sX9jKRqUKzw8cowjKPiHZk_8'; // COLE A CHAVE COMPLETA AQUI
+        status.className="status ok";
+        status.innerText="Conexão realizada com sucesso!";
 
-        // Cria o cliente com um nome ÚNICO e INUSITADO
-        const meuClienteSupabase = window.supabase.createClient(URL_DO_PROJETO, CHAVE_ANONIMA);
+        resultado.innerText = JSON.stringify(data,null,2);
 
-        console.log('Cliente criado com nome "meuClienteSupabase"');
+    }
+    catch(e){
 
-        async function testarConexao() {
-            try {
-                const { data, error } = await meuClienteSupabase
-                    .from('publicacoes')
-                    .select('*')
-                    .limit(1);
+        status.className="status erro";
+        status.innerText="Falha na conexão.";
 
-                if (error) throw error;
+        resultado.innerText = e;
 
-                document.getElementById('resultado').innerHTML = 
-                    '<p style="color:green; font-weight:bold;">✅ CONECTADO COM SUCESSO!</p>';
-                console.log('Dados recebidos:', data);
-            } catch (err) {
-                document.getElementById('resultado').innerHTML = 
-                    '<p style="color:red; font-weight:bold;">❌ ERRO: ' + err.message + '</p>';
-                console.error('Erro detalhado:', err);
-            }
-        }
+    }
 
-        testarConexao();
-    </script>
+}
+
+/* ==========================
+EXECUTA TESTE
+========================== */
+
+testarConexao();
+
+</script>
+
 </body>
 </html>
