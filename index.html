@@ -1,19 +1,124 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
 <meta charset="UTF-8">
-<title>Teste Supabase</title>
+<title>Teste do Supabase</title>
+
+<style>
+
+body{
+font-family: Arial, sans-serif;
+background:#f4f6f9;
+margin:0;
+padding:40px;
+}
+
+h1{
+text-align:center;
+font-size:40px;
+margin-bottom:40px;
+color:#222;
+}
+
+.container{
+max-width:1000px;
+margin:auto;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+.card{
+background:white;
+border-radius:10px;
+padding:20px;
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
+transition:0.2s;
+}
+
+.card:hover{
+transform:translateY(-4px);
+}
+
+.card h3{
+margin-top:0;
+color:#0077ff;
+}
+
+.field{
+font-size:14px;
+margin:6px 0;
+}
+
+form{
+margin-top:50px;
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+
+form h2{
+margin-top:0;
+}
+
+input{
+width:100%;
+padding:10px;
+margin:8px 0;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+button{
+padding:12px 20px;
+background:#0077ff;
+border:none;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+button:hover{
+background:#005edb;
+}
+
+#status{
+margin-top:10px;
+font-size:14px;
+}
+
+</style>
 </head>
 
 <body>
 
-<h1>Teste conexão Supabase</h1>
+<div class="container">
 
-<div id="status">Conectando...</div>
+<h1>TESTE DO SUPABASE</h1>
 
-<pre id="resultado"></pre>
+<div id="cards" class="cards"></div>
 
+<form id="formEmpresa">
+
+<h2>Adicionar Empresa</h2>
+
+<input type="text" id="nome" placeholder="Nome da empresa" required>
+
+<input type="text" id="cidade" placeholder="Cidade">
+
+<input type="text" id="telefone" placeholder="Telefone">
+
+<button type="submit">Salvar Empresa</button>
+
+<div id="status"></div>
+
+</form>
+
+</div>
 
 <script type="module">
 
@@ -24,30 +129,82 @@ const SUPABASE_KEY = "sb_publishable_mCBYSpZc45Pw345wZ1coEA_rYL61Ea8"
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
-async function testarConexao(){
+const cards = document.getElementById("cards")
 
-const status = document.getElementById("status")
-const resultado = document.getElementById("resultado")
+async function carregarEmpresas(){
+
+cards.innerHTML="Carregando..."
 
 const { data, error } = await supabase
 .from("empresas")
 .select("*")
-.limit(5)
+.order("id",{ascending:false})
 
 if(error){
 
-status.innerHTML = "Erro ao conectar"
-resultado.textContent = JSON.stringify(error,null,2)
+cards.innerHTML="Erro ao carregar dados"
+console.error(error)
 return
 
 }
 
-status.innerHTML = "Conexão OK com Supabase"
-resultado.textContent = JSON.stringify(data,null,2)
+cards.innerHTML=""
+
+data.forEach(emp =>{
+
+const card = document.createElement("div")
+card.className="card"
+
+card.innerHTML=`
+<h3>${emp.nome ?? ""}</h3>
+
+<div class="field"><b>ID:</b> ${emp.id}</div>
+<div class="field"><b>Cidade:</b> ${emp.cidade ?? "-"}</div>
+<div class="field"><b>Telefone:</b> ${emp.telefone ?? "-"}</div>
+
+`
+
+cards.appendChild(card)
+
+})
 
 }
 
-testarConexao()
+carregarEmpresas()
+
+const form = document.getElementById("formEmpresa")
+
+form.addEventListener("submit", async (e)=>{
+
+e.preventDefault()
+
+const nome = document.getElementById("nome").value
+const cidade = document.getElementById("cidade").value
+const telefone = document.getElementById("telefone").value
+
+const status = document.getElementById("status")
+
+status.innerHTML="Salvando..."
+
+const { error } = await supabase
+.from("empresas")
+.insert([{nome,cidade,telefone}])
+
+if(error){
+
+status.innerHTML="Erro ao salvar"
+console.error(error)
+return
+
+}
+
+status.innerHTML="Empresa salva!"
+
+form.reset()
+
+carregarEmpresas()
+
+})
 
 </script>
 
