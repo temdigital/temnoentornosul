@@ -1,105 +1,11 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<script type="module">
 
-<head>
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+const SUPABASE_URL = "https://ujfzzirpeflkhiidmsxj.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVqZnp6aXJwZWZsa2hpaWRtc3hqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4NDU3NTcsImV4cCI6MjA4ODQyMTc1N30.bg11NhiB3al-t0lTc80sX9jKRqUKzw8cowjKPiHZk_8";
 
-<title>Teste Supabase - Tem no Entorno Sul</title>
-
-<style>
-
-body{
-    font-family: Arial, Helvetica, sans-serif;
-    background:#f4f4f4;
-    padding:40px;
-}
-
-.container{
-    max-width:900px;
-    margin:auto;
-    background:white;
-    padding:30px;
-    border-radius:10px;
-    box-shadow:0 0 10px rgba(0,0,0,0.1);
-}
-
-h1{
-    color:#216b39;
-}
-
-.status{
-    padding:15px;
-    border-radius:6px;
-    margin-bottom:20px;
-}
-
-.ok{
-    background:#e6ffed;
-    border:1px solid #2ecc71;
-}
-
-.erro{
-    background:#ffe6e6;
-    border:1px solid #e74c3c;
-}
-
-pre{
-    background:#222;
-    color:#00ff9c;
-    padding:20px;
-    border-radius:6px;
-    overflow:auto;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<div class="container">
-
-<h1>Teste de Conexão com Supabase</h1>
-
-<div id="status" class="status">
-Conectando...
-</div>
-
-<h2>Dados retornados:</h2>
-
-<pre id="resultado">
-Aguardando resposta...
-</pre>
-
-</div>
-
-<!-- Biblioteca oficial do Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-
-/* ==========================
-CONFIGURAÇÃO DO SUPABASE
-========================== */
-
-const SUPABASE_URL = "sb_publishable_KR-fJPXlPB2Ehw5Cv3171Q_MX9EfOig";
-const SUPABASE_KEY = "sb_secret_LE-TY••••••••••••••••";
-
-/* ==========================
-CRIANDO CLIENTE SUPABASE
-========================== */
-
-const supabase = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
-
-
-/* ==========================
-TESTE DE CONSULTA
-========================== */
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 async function testarConexao(){
 
@@ -108,11 +14,6 @@ async function testarConexao(){
 
     try{
 
-        /* CONSULTA NA TABELA
-           TROQUE "empresas"
-           por uma tabela existente no seu banco
-        */
-
         const { data, error } = await supabase
         .from("empresas")
         .select("*")
@@ -120,38 +21,24 @@ async function testarConexao(){
 
         if(error){
 
-            status.className="status erro";
-            status.innerText="Erro ao conectar no Supabase.";
-
+            status.innerHTML = "Erro ao consultar banco";
             resultado.innerText = JSON.stringify(error,null,2);
-
             return;
         }
 
-        status.className="status ok";
-        status.innerText="Conexão realizada com sucesso!";
-
+        status.innerHTML = "Conexão OK com Supabase!";
         resultado.innerText = JSON.stringify(data,null,2);
 
     }
     catch(e){
 
-        status.className="status erro";
-        status.innerText="Falha na conexão.";
-
+        status.innerHTML = "Erro de conexão";
         resultado.innerText = e;
 
     }
 
 }
 
-/* ==========================
-EXECUTA TESTE
-========================== */
-
 testarConexao();
 
 </script>
-
-</body>
-</html>
