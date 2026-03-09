@@ -1,44 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+<meta charset="UTF-8">
+<title>Teste Supabase</title>
+</head>
+
+<body>
+
+<h1>Teste conexão Supabase</h1>
+
+<div id="status">Conectando...</div>
+
+<pre id="resultado"></pre>
+
+
 <script type="module">
 
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 
-const SUPABASE_URL = "https://flidbkfrfosuahgphiza.supabase.co";
-const SUPABASE_KEY = "sb_publishable_mCBYSpZc45Pw345wZ1coEA_rYL61Ea8";
+const SUPABASE_URL = "https://flidbkfrfosuahgphiza.supabase.co"
+const SUPABASE_KEY = "sb_publishable_mCBYSpZc45Pw345wZ1coEA_rYL61Ea8"
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
 async function testarConexao(){
 
-    const status = document.getElementById("status");
-    const resultado = document.getElementById("resultado");
+const status = document.getElementById("status")
+const resultado = document.getElementById("resultado")
 
-    try{
+const { data, error } = await supabase
+.from("empresas")
+.select("*")
+.limit(5)
 
-        const { data, error } = await supabase
-        .from("empresas")
-        .select("*")
-        .limit(5);
+if(error){
 
-        if(error){
-
-            status.innerHTML = "Erro ao consultar banco";
-            resultado.innerText = JSON.stringify(error,null,2);
-            return;
-        }
-
-        status.innerHTML = "Conexão OK com Supabase!";
-        resultado.innerText = JSON.stringify(data,null,2);
-
-    }
-    catch(e){
-
-        status.innerHTML = "Erro de conexão";
-        resultado.innerText = e;
-
-    }
+status.innerHTML = "Erro ao conectar"
+resultado.textContent = JSON.stringify(error,null,2)
+return
 
 }
 
-testarConexao();
+status.innerHTML = "Conexão OK com Supabase"
+resultado.textContent = JSON.stringify(data,null,2)
+
+}
+
+testarConexao()
 
 </script>
+
+</body>
+</html>
