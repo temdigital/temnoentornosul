@@ -1,27 +1,37 @@
-<!DOCTYPE html>
+
+
+            <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Meu Site - Teste Inicial</title>
+    <title>Teste Supabase - Versão Final</title>
 </head>
 <body>
     <h1>Teste de Conexão com Supabase</h1>
     <div id="resultado">Carregando...</div>
 
-    <!-- CDN do Supabase -->
+    <!-- Biblioteca Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
-        // SUAS CREDENCIAIS - COLE AQUI
-        const SUPABASE_URL = 'https://vjfzziprefikhidimxsi.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVqZnp6aXJwZWZsa2hpaWRtc3hqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4NDU3NTcsImV4cCI6MjA4ODQyMTc1N30.bg11NhiB3al-t0lTc80sX9jKRqUKzw8cowjKPiHZk_8'; // <-- COLE A CHAVE COMPLETA
+        // Verifica se a biblioteca carregou
+        if (typeof window.supabase === 'undefined') {
+            document.getElementById('resultado').innerHTML = 'ERRO: Biblioteca não carregada.';
+            throw new Error('Biblioteca não encontrada');
+        }
 
-        // Inicializa o cliente (nome diferente para evitar conflitos)
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // SUAS CREDENCIAIS (substitua a chave)
+        const URL_DO_PROJETO = 'https://vjfzziprefikhidimxsi.supabase.co';
+        const CHAVE_ANONIMA = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVqZnp6aXJwZWZsa2hpaWRtc3hqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4NDU3NTcsImV4cCI6MjA4ODQyMTc1N30.bg11NhiB3al-t0lTc80sX9jKRqUKzw8cowjKPiHZk_8'; // COLE A CHAVE COMPLETA AQUI
 
-        async function testar() {
+        // Cria o cliente com um nome ÚNICO e INUSITADO
+        const meuClienteSupabase = window.supabase.createClient(URL_DO_PROJETO, CHAVE_ANONIMA);
+
+        console.log('Cliente criado com nome "meuClienteSupabase"');
+
+        async function testarConexao() {
             try {
-                const { data, error } = await supabase
+                const { data, error } = await meuClienteSupabase
                     .from('publicacoes')
                     .select('*')
                     .limit(1);
@@ -29,16 +39,16 @@
                 if (error) throw error;
 
                 document.getElementById('resultado').innerHTML = 
-                    '<p style="color:green">✅ Conectado! Dados recebidos.</p>';
-                console.log('Dados:', data);
+                    '<p style="color:green; font-weight:bold;">✅ CONECTADO COM SUCESSO!</p>';
+                console.log('Dados recebidos:', data);
             } catch (err) {
                 document.getElementById('resultado').innerHTML = 
-                    '<p style="color:red">❌ Erro: ' + err.message + '</p>';
-                console.error(err);
+                    '<p style="color:red; font-weight:bold;">❌ ERRO: ' + err.message + '</p>';
+                console.error('Erro detalhado:', err);
             }
         }
 
-        testar();
+        testarConexao();
     </script>
 </body>
 </html>
