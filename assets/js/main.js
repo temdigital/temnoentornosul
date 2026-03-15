@@ -114,4 +114,58 @@ async function carregarEmpresas() {
         
         if (loading) loading.style.display = 'none';
         
-        if (!dados || dados.length === 
+        if (!dados || dados.length === 0) {
+            grid.innerHTML = '<div class="empty-state"><i class="fas fa-store-alt"></i><p>Nenhuma empresa encontrada</p></div>';
+            return;
+        }
+        
+        grid.innerHTML = dados.map(item => `
+            <article class="empresa-card fade-in">
+                <div class="empresa-image">
+                    <img src="${item.imagem_url || 'https://images.pexels.com/photos/264636/pexels-photo-264636.jpeg'}" 
+                         alt="${item.nome || 'Empresa'}"
+                         loading="lazy"
+                         onerror="this.src='https://images.pexels.com/photos/264636/pexels-photo-264636.jpeg'">
+                </div>
+                <div class="empresa-content">
+                    <h3 class="empresa-nome">${item.nome || 'Sem nome'}</h3>
+                    <p class="empresa-categoria">
+                        <i class="fas fa-tag"></i> ${item.categoria || 'Geral'}
+                    </p>
+                    <p class="empresa-endereco">
+                        <i class="fas fa-map-marker-alt"></i> ${item.endereco || 'Não informado'}
+                    </p>
+                    ${item.telefone ? `
+                        <p class="empresa-telefone">
+                            <i class="fas fa-phone"></i> ${item.telefone}
+                        </p>
+                    ` : ''}
+                    <a href="pages/empresas.html?id=${item.id}" class="btn" style="margin-top: 10px;">Ver detalhes</a>
+                </div>
+            </article>
+        `).join('');
+        
+    } catch (error) {
+        console.error('Erro:', error);
+        if (loading) loading.style.display = 'none';
+        grid.innerHTML = '<div class="error-message"><i class="fas fa-exclamation-triangle"></i><p>Erro ao carregar</p></div>';
+    }
+}
+
+// Carrega estatísticas
+async function carregarStats() {
+    try {
+        const stats = await fetchStats();
+        
+        const elPub = document.getElementById('statPublicacoes');
+        const elEvt = document.getElementById('statEventos');
+        const elEmp = document.getElementById('statEmpresas');
+        
+        if (elPub) elPub.textContent = stats.publicacoes;
+        if (elEvt) elEvt.textContent = stats.eventos;
+        if (elEmp) elEmp.textContent = stats.empresas;
+        
+    } catch (error) {
+        console.error('Erro ao carregar stats:', error);
+    }
+}
