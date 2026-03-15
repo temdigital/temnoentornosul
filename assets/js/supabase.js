@@ -4,17 +4,17 @@
 
 // IMPORTANTE: Substitua pelas suas credenciais reais do Supabase!
 const SUPABASE_URL = 'https://flidbkfrfosuahgphiza.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsaWRia2ZyZm9zdWFoZ3BoaXphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNDQ4NDEsImV4cCI6MjA4ODYyMDg0MX0.VigqHuXyOvmO9YuGYCTobFW4yecByK7FQxGtsIAiHOM';
+const SUPABASE_ANON_KEY = 'sb_publishable_mCBYSpZc45Pw345wZ1coEA_rYL61Ea8';
 
-// Verifica se o Supabase já foi carregado
-if (typeof supabaseJs === 'undefined') {
+// Verifica se o Supabase foi carregado corretamente
+if (typeof supabase === 'undefined') {
     console.error('❌ Supabase JS não carregado! Verifique o CDN no HTML');
 } else {
     console.log('✅ Supabase JS carregado com sucesso');
 }
 
-// Cria uma ÚNICA instância global
-window.supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Cria uma ÚNICA instância global (usando a variável 'supabase' do CDN)
+window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 console.log('✅ Cliente Supabase inicializado');
 
 // ============================================
