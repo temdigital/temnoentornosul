@@ -96,4 +96,31 @@ window.fetchEmpresas = async function(limit = 6) {
     }
 };
 
+// ============================================
+// FUNÇÃO PARA BUSCAR UMA PUBLICAÇÃO POR ID
+// ============================================
+window.fetchPublicacaoById = async function(id) {
+    try {
+        console.log(`🔍 Buscando publicação ID: ${id}`);
+        
+        const { data, error } = await window.supabase
+            .from('publicacoes')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+        if (error) {
+            console.error('❌ Erro na consulta:', error);
+            return null;
+        }
+
+        console.log(`✅ Publicação encontrada: ${data.titulo}`);
+        return data;
+        
+    } catch (error) {
+        console.error('❌ Erro ao buscar publicação:', error);
+        return null;
+    }
+};
+
 console.log('✅ Módulo Supabase carregado completamente');

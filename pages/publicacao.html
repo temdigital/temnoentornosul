@@ -1,63 +1,349 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-
+<html lang="pt-BR">
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>Agenda</title>
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<link rel="stylesheet" href="css/admin.css">
-
-<script src="js/supabase.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/admin.js"></script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carregando... - Tem no Entorno Sul</title>
+    
+    <!-- Meta tags SEO (serão atualizadas via JS) -->
+    <meta name="description" content="Leia a publicação completa no Tem no Entorno Sul.">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph (serão atualizados via JS) -->
+    <meta property="og:title" content="Tem no Entorno Sul">
+    <meta property="og:description" content="Leia a publicação completa.">
+    <meta property="og:image" content="https://i.imgur.com/WVSr0qr.png">
+    <meta property="og:url" content="">
+    
+    <!-- Fontes e Ícones -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS Principal -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    
+    <style>
+        /* Estilos para a página de detalhe */
+        .publicacao-detalhe {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 40px;
+        }
+        
+        .publicacao-detalhe .categoria {
+            display: inline-block;
+            background-color: var(--color-secondary-bg);
+            color: #333;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+        
+        .publicacao-detalhe h1 {
+            font-size: 2.5rem;
+            color: var(--color-primary);
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+        
+        .publicacao-detalhe .data {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .publicacao-detalhe .data i {
+            color: var(--color-accent);
+        }
+        
+        .publicacao-detalhe .imagem-principal {
+            width: 100%;
+            max-height: 500px;
+            object-fit: cover;
+            border-radius: var(--radius);
+            margin-bottom: 30px;
+        }
+        
+        .publicacao-detalhe .conteudo {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #333;
+        }
+        
+        .publicacao-detalhe .conteudo p {
+            margin-bottom: 20px;
+        }
+        
+        .publicacao-detalhe .conteudo img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .loading-spinner, .error-message {
+            text-align: center;
+            padding: 60px;
+        }
+        
+        .compartilhar {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .compartilhar span {
+            font-weight: 500;
+            color: var(--color-primary);
+        }
+        
+        .compartilhar .social-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-primary);
+            color: white;
+            border-radius: 50%;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+        
+        .compartilhar .social-btn:hover {
+            background-color: var(--color-accent);
+            transform: translateY(-3px);
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .publicacao-detalhe {
+                padding: 20px;
+            }
+            
+            .publicacao-detalhe h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
 </head>
-
 <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="../index.html" class="logo-link">
+                <img src="https://i.imgur.com/WVSr0qr.png" alt="Tem no Entorno Sul" class="logo">
+            </a>
+            
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link">Home</a></li>
+                <li><a href="publicacoes.html" class="nav-link">Publicações</a></li>
+                <li><a href="eventos.html" class="nav-link">Eventos</a></li>
+                <li><a href="colunistas.html" class="nav-link">Colunistas</a></li>
+                <li><a href="contato.html" class="nav-link">Contato</a></li>
+            </ul>
+            
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
 
-<div class="d-flex">
+    <!-- Conteúdo principal -->
+    <section class="section section-light">
+        <div class="container">
+            <!-- Loading -->
+            <div class="loading-spinner" id="loading">
+                <i class="fas fa-spinner fa-spin fa-3x"></i>
+                <p>Carregando publicação...</p>
+            </div>
+            
+            <!-- Área de conteúdo da publicação -->
+            <div id="publicacaoContainer" style="display: none;"></div>
+            
+            <!-- Botão Voltar -->
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="publicacoes.html" class="btn btn-accent"><i class="fas fa-arrow-left"></i> Voltar para publicações</a>
+            </div>
+        </div>
+    </section>
 
-<div class="sidebar p-3">
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <img src="https://i.imgur.com/lD6krRL.png" alt="Tem no Entorno Sul" class="footer-logo" loading="lazy">
+                    <p class="footer-description">O seu portal de notícias e eventos do Entorno Sul.</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/temnoentornosul" class="social-link" rel="noopener noreferrer" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/temnoentornosul" class="social-link" rel="noopener noreferrer" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@temnoentornosul" class="social-link" rel="noopener noreferrer" target="_blank"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3 class="footer-title">Links Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="publicacoes.html">Publicações</a></li>
+                        <li><a href="eventos.html">Eventos</a></li>
+                        <li><a href="colunistas.html">Colunistas</a></li>
+                        <li><a href="contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3 class="footer-title">WhatsApp</h3>
+                    <button id="whatsapp-group-btn" class="btn btn-accent" style="width: 100%;">
+                        <i class="fab fa-whatsapp"></i> Entrar no Grupo
+                    </button>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Tem no Entorno Sul. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
 
-<h4 class="text-white">Sistema</h4>
-
-<a href="dashboard.html">Dashboard</a>
-
-<a id="menuUsuarios" href="usuarios.html">Usuários</a>
-
-<a href="pedidos.html">Pedidos</a>
-
-<a href="agenda.html">Agenda</a>
-
-</div>
-
-<div class="flex-grow-1">
-
-<nav class="navbar bg-light px-4">
-
-<span id="usuarioInfo"></span>
-
-<button class="btn btn-warning" onclick="logout()">Sair</button>
-
-</nav>
-
-<div class="container py-4">
-
-<h2>Agenda</h2>
-
-<p>Agenda de serviços em desenvolvimento.</p>
-
-</div>
-
-</div>
-
-</div>
-
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../assets/js/supabase.js"></script>
+    <script src="../assets/js/main.js"></script>
+    
+    <script>
+        // Função para buscar uma publicação por ID
+        window.fetchPublicacaoById = async function(id) {
+            try {
+                const { data, error } = await window.supabase
+                    .from('publicacoes')
+                    .select('*')
+                    .eq('id', id)
+                    .single();
+                
+                if (error) throw error;
+                return data;
+            } catch (error) {
+                console.error('Erro ao buscar publicação:', error);
+                return null;
+            }
+        };
+        
+        // Carregar publicação com base no ID da URL
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            
+            if (!id) {
+                mostrarErro('ID da publicação não informado.');
+                return;
+            }
+            
+            carregarPublicacao(id);
+            
+            // Menu mobile e botão WhatsApp
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
+            if (hamburger && navMenu) {
+                hamburger.addEventListener('click', function() {
+                    navMenu.classList.toggle('active');
+                    const icon = hamburger.querySelector('i');
+                    if (icon) {
+                        icon.className = navMenu.classList.contains('active') ? 'fas fa-times' : 'fas fa-bars';
+                    }
+                });
+            }
+            
+            document.getElementById('whatsapp-group-btn')?.addEventListener('click', function() {
+                window.open('https://chat.whatsapp.com/DvTQra8rDQp01NqUCmwa8N', '_blank');
+            });
+        });
+        
+        async function carregarPublicacao(id) {
+            const loading = document.getElementById('loading');
+            const container = document.getElementById('publicacaoContainer');
+            
+            try {
+                const dados = await window.fetchPublicacaoById(id);
+                
+                loading.style.display = 'none';
+                
+                if (!dados) {
+                    mostrarErro('Publicação não encontrada.');
+                    return;
+                }
+                
+                // Atualizar título da página e metatags SEO
+                document.title = `${dados.titulo} - Tem no Entorno Sul`;
+                document.querySelector('meta[name="description"]').setAttribute('content', dados.resumo || 'Leia a publicação completa.');
+                document.querySelector('meta[property="og:title"]').setAttribute('content', dados.titulo);
+                document.querySelector('meta[property="og:description"]').setAttribute('content', dados.resumo || '');
+                if (dados.imagem_url) {
+                    document.querySelector('meta[property="og:image"]').setAttribute('content', dados.imagem_url);
+                }
+                document.querySelector('meta[property="og:url"]').setAttribute('content', window.location.href);
+                
+                // Formatar data (se existir)
+                let dataHtml = '';
+                if (dados.data_publicacao) {
+                    const dataObj = new Date(dados.data_publicacao);
+                    const dataStr = dataObj.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+                    dataHtml = `<div class="data"><i class="far fa-calendar-alt"></i> ${dataStr}</div>`;
+                }
+                
+                // Conteúdo (pode ser HTML ou texto)
+                const conteudoHtml = dados.conteudo ? dados.conteudo.replace(/\n/g, '<br>') : '';
+                
+                container.innerHTML = `
+                    <article class="publicacao-detalhe fade-in">
+                        <span class="categoria">${dados.categoria || 'Geral'}</span>
+                        <h1>${dados.titulo}</h1>
+                        ${dataHtml}
+                        <img src="${dados.imagem_url || 'https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg'}" 
+                             alt="${dados.titulo}" 
+                             class="imagem-principal"
+                             onerror="this.src='https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg'">
+                        <div class="conteudo">
+                            ${conteudoHtml}
+                        </div>
+                        
+                        <div class="compartilhar">
+                            <span>Compartilhar:</span>
+                            <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}" target="_blank" class="social-btn" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(dados.titulo)}" target="_blank" class="social-btn" rel="noopener"><i class="fab fa-twitter"></i></a>
+                            <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(dados.titulo + ' ' + window.location.href)}" target="_blank" class="social-btn" rel="noopener"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                    </article>
+                `;
+                
+                container.style.display = 'block';
+                
+            } catch (error) {
+                console.error('Erro:', error);
+                mostrarErro('Erro ao carregar a publicação.');
+            }
+        }
+        
+        function mostrarErro(mensagem) {
+            document.getElementById('loading').style.display = 'none';
+            const container = document.getElementById('publicacaoContainer');
+            container.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-triangle fa-3x"></i><p>${mensagem}</p><a href="publicacoes.html" class="btn" style="margin-top:20px;">Ver todas as publicações</a></div>`;
+            container.style.display = 'block';
+        }
+    </script>
 </body>
 </html>
