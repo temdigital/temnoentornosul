@@ -6,76 +6,39 @@
     <title>Tem no Entorno Sul - Sua fonte de notícias regional</title>
     
     <!-- Meta tags SEO -->
-    <meta name="description" content="Portal de notícias, eventos e informações do Entorno Sul. Fique por dentro das novidades regionais, comércios locais e cultura.">
-    <meta name="keywords" content="notícias entorno sul, eventos região, comércio local, valparaíso, cidade ocidental">
-    <meta name="author" content="Tem no Entorno Sul">
+    <meta name="description" content="Portal de notícias, eventos e informações do Entorno Sul.">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://www.temnoentornosul.com.br/">
     
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.temnoentornosul.com.br/">
-    <meta property="og:title" content="Tem no Entorno Sul - Sua fonte de notícias regional">
-    <meta property="og:description" content="Notícias, eventos e informações relevantes da nossa região.">
-    <meta property="og:image" content="https://i.imgur.com/WVSr0qr.png">
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://www.temnoentornosul.com.br/">
-    <meta property="twitter:title" content="Tem no Entorno Sul - Sua fonte de notícias regional">
-    <meta property="twitter:description" content="Notícias, eventos e informações relevantes da nossa região.">
-    <meta property="twitter:image" content="https://i.imgur.com/WVSr0qr.png">
-    
-    <!-- PWA -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#216b39">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
-    <!-- Fontes e Ícones -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- CSS Principal -->
+    <!-- CSS - CAMINHO CORRIGIDO -->
     <link rel="stylesheet" href="assets/css/style.css">
     
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Font Awesome (CDN seguro) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Schema.org -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Tem no Entorno Sul",
-        "url": "https://www.temnoentornosul.com.br/",
-        "logo": "https://i.imgur.com/WVSr0qr.png",
-        "sameAs": [
-            "https://www.facebook.com/temnoentornosul",
-            "https://www.instagram.com/temnoentornosul",
-            "https://www.youtube.com/@temnoentornosul"
-        ],
-        "description": "Portal de notícias e eventos do Entorno Sul."
-    }
-    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Supabase - CDN seguro -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar" id="navbar">
         <div class="container navbar-container">
-            <a href="/" class="logo-link">
+            <a href="index.html" class="logo-link">
                 <img src="https://i.imgur.com/WVSr0qr.png" alt="Tem no Entorno Sul" class="logo" loading="lazy">
             </a>
             
             <ul class="nav-menu" id="navMenu">
-                <li><a href="/" class="nav-link active">Home</a></li>
-                <li><a href="/pages/publicacao.html" class="nav-link">Publicações</a></li>
-                <li><a href="/pages/eventos.html" class="nav-link">Eventos</a></li>
-                <li><a href="/pages/empresas.html" class="nav-link">Empresas</a></li>
-                <li><a href="/pages/colunistas.html" class="nav-link">Colunistas</a></li>
-                <li><a href="/pages/contato.html" class="nav-link">Contato</a></li>
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="pages/publicacao.html" class="nav-link">Publicações</a></li>
+                <li><a href="pages/eventos.html" class="nav-link">Eventos</a></li>
+                <li><a href="pages/empresas.html" class="nav-link">Empresas</a></li>
+                <li><a href="pages/colunistas.html" class="nav-link">Colunistas</a></li>
+                <li><a href="pages/contato.html" class="nav-link">Contato</a></li>
             </ul>
             
             <div class="hamburger" id="hamburger">
@@ -116,7 +79,7 @@
                         <i class="fas fa-user"></i>
                     </div>
                     <h3>Para Usuários</h3>
-                    <p>Encontre comércios e serviços próximos de você, avalie estabelecimentos, participe de eventos locais e receba ofertas exclusivas.</p>
+                    <p>Encontre comércios e serviços próximos de você.</p>
                 </div>
                 
                 <div class="feature-card fade-in delay-1">
@@ -124,7 +87,7 @@
                         <i class="fas fa-store"></i>
                     </div>
                     <h3>Para Comércios</h3>
-                    <p>Divulgue seu negócio gratuitamente, promova eventos e ofertas, conecte-se com clientes locais e fortaleça sua presença digital.</p>
+                    <p>Divulgue seu negócio gratuitamente.</p>
                 </div>
                 
                 <div class="feature-card fade-in delay-2">
@@ -132,40 +95,33 @@
                         <i class="fas fa-users"></i>
                     </div>
                     <h3>Para a Comunidade</h3>
-                    <p>Fortalecimento da economia regional, geração de empregos, desenvolvimento comunitário e valorização da identidade local.</p>
+                    <p>Fortalecimento da economia regional.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Publicações em Destaque -->
+    <!-- Publicações -->
     <section class="section section-light">
         <div class="container">
             <h2 class="section-title">Publicações em Destaque</h2>
             
-            <!-- Loading State -->
-            <div class="loading-spinner" id="publicacoesLoading">
+            <div class="loading-spinner" id="publicacoesLoading" style="display: none;">
                 <i class="fas fa-spinner fa-spin"></i>
                 <p>Carregando publicações...</p>
             </div>
             
-            <!-- Grid de Publicações -->
-            <div class="cards-grid" id="publicacoesGrid"></div>
+            <div class="cards-grid" id="publicacoesGrid">
+                <!-- Cards serão inseridos via JS -->
+            </div>
             
-            <!-- Error State -->
             <div class="error-message" id="publicacoesError" style="display: none;">
                 <i class="fas fa-exclamation-triangle"></i>
-                <p>Erro ao carregar publicações. <button onclick="carregarPublicacoes()">Tentar novamente</button></p>
+                <p>Erro ao carregar publicações.</p>
             </div>
             
-            <!-- Empty State -->
-            <div class="empty-state" id="publicacoesEmpty" style="display: none;">
-                <i class="fas fa-newspaper"></i>
-                <p>Nenhuma publicação encontrada no momento.</p>
-            </div>
-            
-            <div class="verpublicacao-div" style="text-align: center; margin-top: 40px;">
-                <a href="/pages/publicacao.html" class="btn btn-accent">Ver Todas as Publicações</a>
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="pages/publicacao.html" class="btn btn-accent">Ver Todas as Publicações</a>
             </div>
         </div>
     </section>
@@ -176,73 +132,58 @@
             <div class="mission-content">
                 <h2 class="section-title">Nossa Missão</h2>
                 <div class="mission-text">
-                    <p>Comércio e serviços locais. Cultura também é negócio! Valorizamos o crescimento da nossa região e o fortalecimento da economia nacional. Por isso, convidamos você a conhecer nosso site Tem no Entorno Sul! Através de informações atualizadas e soluções inovadoras, estamos comprometidos em impulsionar o desenvolvimento dos comércios locais. Os pequenos negócios são a espinha dorsal da nossa cidade, gerando empregos e promovendo prosperidade. Junte-se a nós nesse movimento em prol do progresso. Siga nossas redes sociais para ficar por dentro das novidades e fazer parte dessa jornada transformadora.</p>
-                    <div class="highlight">Apoiar os comércios locais é fundamental para o desenvolvimento da região e para a economia do país.</div>
+                    <p>Comércio e serviços locais. Cultura também é negócio! Valorizamos o crescimento da nossa região.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Eventos em Destaque -->
+    <!-- Eventos -->
     <section class="section section-colored">
         <div class="container">
             <h2 class="section-title">Eventos em Destaque</h2>
             
-            <!-- Loading State -->
-            <div class="loading-spinner" id="eventosLoading">
+            <div class="loading-spinner" id="eventosLoading" style="display: none;">
                 <i class="fas fa-spinner fa-spin"></i>
                 <p>Carregando eventos...</p>
             </div>
             
-            <!-- Grid de Eventos -->
-            <div class="cards-grid" id="eventosGrid"></div>
-            
-            <!-- Error State -->
-            <div class="error-message" id="eventosError" style="display: none;">
-                <i class="fas fa-exclamation-triangle"></i>
-                <p>Erro ao carregar eventos. <button onclick="carregarEventos()">Tentar novamente</button></p>
+            <div class="cards-grid" id="eventosGrid">
+                <!-- Cards serão inseridos via JS -->
             </div>
             
-            <!-- Empty State -->
-            <div class="empty-state" id="eventosEmpty" style="display: none;">
-                <i class="fas fa-calendar-times"></i>
-                <p>Nenhum evento encontrado no momento.</p>
+            <div class="error-message" id="eventosError" style="display: none;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>Erro ao carregar eventos.</p>
             </div>
             
             <div style="text-align: center; margin-top: 40px;">
-                <a href="/pages/eventos.html" class="btn btn-accent">Ver Todos os Eventos</a>
+                <a href="pages/eventos.html" class="btn btn-accent">Ver Todos os Eventos</a>
             </div>
         </div>
     </section>
 
-    <!-- Empresas Parceiras -->
+    <!-- Empresas -->
     <section class="section section-light">
         <div class="container">
             <h2 class="section-title">Empresas Parceiras</h2>
             
-            <!-- Loading State -->
-            <div class="loading-spinner" id="empresasLoading">
+            <div class="loading-spinner" id="empresasLoading" style="display: none;">
                 <i class="fas fa-spinner fa-spin"></i>
                 <p>Carregando empresas...</p>
             </div>
             
-            <!-- Grid de Empresas -->
-            <div class="empresas-grid" id="empresasGrid"></div>
-            
-            <!-- Error State -->
-            <div class="error-message" id="empresasError" style="display: none;">
-                <i class="fas fa-exclamation-triangle"></i>
-                <p>Erro ao carregar empresas. <button onclick="carregarEmpresas()">Tentar novamente</button></p>
+            <div class="empresas-grid" id="empresasGrid">
+                <!-- Cards serão inseridos via JS -->
             </div>
             
-            <!-- Empty State -->
-            <div class="empty-state" id="empresasEmpty" style="display: none;">
-                <i class="fas fa-store-alt"></i>
-                <p>Nenhuma empresa cadastrada no momento.</p>
+            <div class="error-message" id="empresasError" style="display: none;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>Erro ao carregar empresas.</p>
             </div>
             
             <div style="text-align: center; margin-top: 40px;">
-                <a href="/pages/empresas.html" class="btn btn-accent">Ver Todas as Empresas</a>
+                <a href="pages/empresas.html" class="btn btn-accent">Ver Todas as Empresas</a>
             </div>
         </div>
     </section>
@@ -253,36 +194,26 @@
             <div class="footer-container">
                 <div class="footer-col">
                     <img src="https://i.imgur.com/lD6krRL.png" alt="Tem no Entorno Sul" class="footer-logo" loading="lazy">
-                    <p class="footer-description">O seu portal de notícias e eventos do Entorno Sul. Trazendo informação relevante e de qualidade para toda a região.</p>
+                    <p class="footer-description">Portal de notícias e eventos do Entorno Sul.</p>
                     <div class="social-links">
-                        <a href="https://www.facebook.com/temnoentornosul" class="social-link" rel="noopener noreferrer" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://www.instagram.com/temnoentornosul" class="social-link" rel="noopener noreferrer" target="_blank"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.youtube.com/@temnoentornosul" class="social-link" rel="noopener noreferrer" target="_blank"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
                 
                 <div class="footer-col">
                     <h3 class="footer-title">Links Rápidos</h3>
                     <ul class="footer-links">
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/pages/publicacao.html">Publicações</a></li>
-                        <li><a href="/pages/eventos.html">Eventos</a></li>
-                        <li><a href="/pages/empresas.html">Empresas</a></li>
-                        <li><a href="/pages/colunistas.html">Colunistas</a></li>
-                        <li><a href="/pages/contato.html">Contato</a></li>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="pages/publicacao.html">Publicações</a></li>
+                        <li><a href="pages/eventos.html">Eventos</a></li>
+                        <li><a href="pages/empresas.html">Empresas</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-col">
-                    <h3 class="footer-title">Categorias</h3>
-                    <ul class="footer-links" id="footerCategorias">
-                        <!-- Categorias serão carregadas dinamicamente -->
-                    </ul>
-                </div>
-                
-                <div class="footer-col">
-                    <h3 class="footer-title">Newsletter</h3>
-                    <p class="footer-description">Junte-se ao nosso grupo do WhatsApp para receber as novidades do Entorno Sul em tempo real.</p>
+                    <h3 class="footer-title">WhatsApp</h3>
                     <button id="whatsapp-group-btn" class="btn btn-accent" style="width: 100%;">
                         <i class="fab fa-whatsapp"></i> Entrar no Grupo
                     </button>
@@ -291,27 +222,34 @@
             
             <div class="footer-bottom">
                 <p>&copy; 2026 Tem no Entorno Sul. Todos os direitos reservados.</p>
-                <p class="footer-version">Versão 2.0 - Desenvolvido com 💚 para a comunidade</p>
             </div>
         </div>
     </footer>
 
-    <!-- Service Worker Registration -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').then(registration => {
-                    console.log('ServiceWorker registrado com sucesso:', registration.scope);
-                }).catch(error => {
-                    console.log('Falha ao registrar ServiceWorker:', error);
-                });
-            });
-        }
-    </script>
-
-    <!-- Scripts -->
+    <!-- SCRIPTS - ORDEM CORRETA -->
     <script src="assets/js/supabase.js"></script>
-    <script src="assets/js/cache.js"></script>
     <script src="assets/js/main.js"></script>
+    
+    <script>
+        // Menu mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.getElementById('hamburger');
+            const navMenu = document.getElementById('navMenu');
+            
+            if (hamburger && navMenu) {
+                hamburger.addEventListener('click', function() {
+                    navMenu.classList.toggle('active');
+                });
+            }
+            
+            // WhatsApp button
+            const whatsappBtn = document.getElementById('whatsapp-group-btn');
+            if (whatsappBtn) {
+                whatsappBtn.addEventListener('click', function() {
+                    window.open('https://chat.whatsapp.com/DvTQra8rDQp01NqUCmwa8N', '_blank');
+                });
+            }
+        });
+    </script>
 </body>
 </html>
