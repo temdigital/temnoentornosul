@@ -1,0 +1,59 @@
+{
+  "name": "Tem no Entorno Sul",
+  "short_name": "Entorno Sul",
+  "description": "Portal de notícias, eventos e informações do Entorno Sul. Fique por dentro das novidades regionais, comércios locais e cultura.",
+  "theme_color": "#216b39",
+  "background_color": "#fffefd",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
+  "id": "/",
+  "icons": [
+    {
+      "src": "https://i.imgur.com/WVSr0qr.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://i.imgur.com/WVSr0qr.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://i.imgur.com/WVSr0qr.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "monochrome"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Publicações",
+      "short_name": "Posts",
+      "description": "Veja as últimas publicações",
+      "url": "/pages/publicacao.html",
+      "icons": [{ "src": "https://i.imgur.com/WVSr0qr.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Eventos",
+      "short_name": "Agenda",
+      "description": "Confira os próximos eventos",
+      "url": "/pages/eventos.html",
+      "icons": [{ "src": "https://i.imgur.com/WVSr0qr.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Empresas",
+      "short_name": "Negócios",
+      "description": "Encontre empresas locais",
+      "url": "/pages/empresas.html",
+      "icons": [{ "src": "https://i.imgur.com/WVSr0qr.png", "sizes": "192x192" }]
+    }
+  ],
+  "categories": ["news", "events", "business", "community"],
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "prefer_related_applications": false
+}
