@@ -4,251 +4,795 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tem no Entorno Sul - Sua fonte de notícias regional</title>
-    
-    <!-- Meta tags SEO -->
-    <meta name="description" content="Portal de notícias, eventos e informações do Entorno Sul.">
+    <!-- Melhoria SEO: Adicionada meta description para melhor exibição nos resultados de busca -->
+    <meta name="description" content="Portal de notícias, eventos e informações do Entorno Sul. Fique por dentro das novidades regionais, comércios locais e cultura.">
+    <!-- Melhoria SEO: Meta robots para instruir crawlers -->
     <meta name="robots" content="index, follow">
-    
-    <!-- CSS - CAMINHO CORRIGIDO -->
-    <link rel="stylesheet" href="assets/css/style.css">
-    
-    <!-- Font Awesome (CDN seguro) -->
+    <!-- Melhoria SEO: Link canonical para evitar duplicatas de URL -->
+    <link rel="canonical" href="https://www.temnoentornosul.com.br/">
+    <!-- Melhoria SEO: Tags Open Graph para compartilhamento social -->
+    <meta property="og:title" content="Tem no Entorno Sul - Sua fonte de notícias regional">
+    <meta property="og:description" content="Notícias, eventos e informações relevantes da nossa região.">
+    <meta property="og:image" content="https://i.imgur.com/WVSr0qr.png">
+    <meta property="og:url" content="https://www.temnoentornosul.com.br/">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- CSS Principal - CAMINHO CORRIGIDO -->
+    <link rel="stylesheet" href="assets/css/style.css">
     
-    <!-- Manifest -->
+    <!-- Manifest PWA -->
     <link rel="manifest" href="manifest.json">
     
-    <!-- Supabase - CDN seguro -->
+    <!-- Supabase - CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Melhoria SEO: Adicionado schema markup para organização e eventos (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Tem no Entorno Sul",
+      "url": "https://www.temnoentornosul.com.br/",
+      "logo": "https://i.imgur.com/WVSr0qr.png",
+      "description": "Portal de notícias e eventos do Entorno Sul."
+    }
+    </script>
+    
+    <style>
+        /* Variáveis de cores e estilos */
+        :root {
+            --color-bg: #fffefd;
+            --color-primary: #216b39;
+            --color-accent: #faa011;
+            --color-highlight: #f8d22d;
+            --color-secondary-bg: #f2c585;
+            --font-main: 'Roboto', sans-serif;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: var(--font-main);
+            background-color: var(--color-bg);
+            color: #333;
+            line-height: 1.6;
+            padding-top: 80px; /* Compensar a navbar fixa */
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        ul {
+            list-style: none;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .section-title {
+            font-size: 2rem;
+            color: var(--color-primary);
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--color-accent);
+            border-radius: 2px;
+        }
+        .btn {
+            display: inline-block;
+            background-color: var(--color-primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+        .btn:hover {
+            background-color: #1a5930;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        .btn-accent {
+            background-color: var(--color-accent);
+        }
+        .btn-accent:hover {
+            background-color: #e5940a;
+        }
+        .card {
+            background: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 15px 0;
+        }
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            height: 50px;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+        }
+        .nav-link {
+            font-weight: 500;
+            color: #444;
+            transition: var(--transition);
+            position: relative;
+        }
+        .nav-link:hover {
+            color: var(--color-primary);
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--color-primary);
+            transition: var(--transition);
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--color-primary);
+        }
+        /* Banner Hero */
+        .hero {
+            background: linear-gradient(rgba(15, 20, 11, 0.5), rgba(15, 20, 11, 0.5)), url('https://images.pexels.com/photos/38271/ipad-map-tablet-internet-38271.jpeg') center/cover no-repeat;
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+            border-radius: var(--radius);
+            margin-bottom: 60px;
+        }
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .hero-logo {
+            height: 100px;
+            margin: 0 auto 20px;
+            /* filter: brightness(0) invert(1); */
+        }
+        .hero-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        .hero-subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        /* Seções de conteúdo */
+        .section {
+            padding: 60px 0;
+        }
+        .section-light {
+            background-color: white;
+        }
+        .section-colored {
+            background-color: var(--color-secondary-bg);
+        }
+        /* Grid de cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .post-card .card-img {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+        .post-card .card-content {
+            padding: 20px;
+        }
+        .post-card .card-category {
+            display: inline-block;
+            background-color: var(--color-secondary-bg);
+            color: #333;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            margin-bottom: 12px;
+        }
+        .post-card .card-title {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            color: var(--color-primary);
+        }
+        .post-card .card-excerpt {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        /* Eventos */
+        .event-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .event-card .card-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .event-date {
+            display: flex;
+            align-items: center;
+            color: var(--color-accent);
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        .event-date i {
+            margin-right: 8px;
+        }
+        .event-location {
+            display: flex;
+            align-items: center;
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+        .event-location i {
+            margin-right: 8px;
+        }
+        .event-card .card-title {
+            margin-bottom: 15px;
+            color: var(--color-primary);
+        }
+        .event-card .btn {
+            margin-top: auto;
+            align-self: flex-start;
+        }
+        .event-past {
+            opacity: 0.7;
+        }
+        /* Footer */
+        .footer {
+            background-color: var(--color-primary);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-logo {
+            height: 60px;
+            margin-bottom: 20px;
+            /* filter: brightness(0) invert(1); */
+        }
+        .footer-description {
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+        .social-link:hover {
+            background-color: var(--color-accent);
+            transform: translateY(-3px);
+        }
+        .footer-title {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .footer-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--color-accent);
+        }
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        .footer-links a {
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--color-highlight);
+        }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .nav-menu {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                background-color: white;
+                width: 100%;
+                flex-direction: column;
+                gap: 0;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+                padding: 30px;
+                transition: var(--transition);
+            }
+            .nav-menu.active {
+                left: 0;
+            }
+            .nav-link {
+                padding: 15px 0;
+                display: block;
+                border-bottom: 1px solid #eee;
+            }
+            .hamburger {
+                display: block;
+            }
+            .hero-title {
+                font-size: 2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .hero {
+                padding: 60px 20px;
+            }
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        /* Animações */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+/* CSS de fora */
+/* MISSÃO */
+        .mission {
+            background-color: white;
+            padding: 80px 0;
+        }
+       
+        .mission-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+       
+        .mission-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            padding: 30px;
+            background: rgba(242, 197, 133, 0.1);
+            border-radius: 15px;
+            position: relative;
+        }
+       
+        .mission-text::before {
+            content: '"';
+            font-size: 5rem;
+            position: absolute;
+            top: -30px;
+            left: 20px;
+            color: rgba(250, 160, 17, 0.2);
+            font-family: Georgia, serif;
+        }
+        /* FEATURES */
+        .features {
+            padding: 80px 0;
+            background-color: #f9f9f9;
+        }
+       
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+       
+        .feature-card {
+            text-align: center;
+            padding: 40px 25px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+       
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+       
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--color-accent), var(--color-highlight));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            color: white;
+            font-size: 2rem;
+        }
+        
+/* div solta do botão para ver eventos */
+.verpublicacao-div {
+  margin-top: 20px; /* Espaçamento de 20 pixels em cima */
+  margin-bottom: 65px; /* Espaçamento de 15 pixels em baixo */
+  /* Outras propriedades da div */
+}
+       
+/* Loading e Error States */
+.loading-spinner {
+    text-align: center;
+    padding: 40px;
+    color: var(--color-primary);
+}
+.loading-spinner i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+.error-message {
+    text-align: center;
+    padding: 40px;
+    color: #dc3545;
+}
+.error-message i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    color: var(--color-primary);
+}
+    </style>
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar" id="navbar">
+    <nav class="navbar">
         <div class="container navbar-container">
-            <a href="index.html" class="logo-link">
-                <img src="https://i.imgur.com/WVSr0qr.png" alt="Tem no Entorno Sul" class="logo" loading="lazy">
-            </a>
-            
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="index.html" class="nav-link active">Home</a></li>
-                <li><a href="pages/publicacao.html" class="nav-link">Publicações</a></li>
-                <li><a href="pages/eventos.html" class="nav-link">Eventos</a></li>
-                <li><a href="pages/empresas.html" class="nav-link">Empresas</a></li>
-                <li><a href="pages/colunistas.html" class="nav-link">Colunistas</a></li>
-                <li><a href="pages/contato.html" class="nav-link">Contato</a></li>
+           <!-- <a href="https://sites.google.com/view/temnoentornosul/inicio" class="logo-link">
+                <img src="https://i.imgur.com/WVSr0qr.png" alt="Tem no Entorno Sul" class="logo">
+            </a> -->
+           
+            <!-- <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="publicacoes.html" class="nav-link">Publicações</a></li>
+                <li><a href="eventos.html" class="nav-link">Eventos</a></li>
+                <li><a href="colunistas.html" class="nav-link">Colunistas</a></li>
+                <li><a href="contato.html" class="nav-link">Contato</a></li>
             </ul>
-            
-            <div class="hamburger" id="hamburger">
+           
+            <div class="hamburger">
                 <i class="fas fa-bars"></i>
             </div>
-        </div>
+        </div> -->
     </nav>
-
+  <!-- BANNER PRINCIPAL -->
+   
     <!-- Banner Hero -->
     <section class="hero">
         <div class="container hero-content">
+           <!-- <img src="https://i.imgur.com/WVSr0qr.png" alt="Tem no Entorno Sul" class="hero-logo"> -->
             <h1 class="hero-title">O que acontece no Entorno Sul</h1>
             <p class="hero-subtitle">Notícias, eventos e informações relevantes da nossa região</p>
-            <div class="hero-stats" id="heroStats">
-                <div class="stat-item">
-                    <span class="stat-number" id="statPublicacoes">0</span>
-                    <span class="stat-label">Publicações</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number" id="statEventos">0</span>
-                    <span class="stat-label">Eventos</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number" id="statEmpresas">0</span>
-                    <span class="stat-label">Empresas</span>
-                </div>
-            </div>
         </div>
     </section>
-
-    <!-- Como Funciona -->
+    <!-- Código de Fora como funciona -->
+    <!-- RECURSOS -->
     <section class="features">
         <div class="container">
             <h2 class="section-title">Como Funciona</h2>
             <div class="features-grid">
-                <div class="feature-card fade-in">
+                <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-user"></i>
                     </div>
                     <h3>Para Usuários</h3>
-                    <p>Encontre comércios e serviços próximos de você.</p>
+                    <p>Encontre comércios e serviços próximos de você, avalie estabelecimentos, participe de eventos locais e receba ofertas exclusivas.</p>
                 </div>
-                
-                <div class="feature-card fade-in delay-1">
+               
+                <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-store"></i>
                     </div>
                     <h3>Para Comércios</h3>
-                    <p>Divulgue seu negócio gratuitamente.</p>
+                    <p>Divulgue seu negócio gratuitamente, promova eventos e ofertas, conecte-se com clientes locais e fortaleça sua presença digital.</p>
                 </div>
-                
-                <div class="feature-card fade-in delay-2">
+               
+                <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-users"></i>
                     </div>
                     <h3>Para a Comunidade</h3>
-                    <p>Fortalecimento da economia regional.</p>
+                    <p>Fortalecimento da economia regional, geração de empregos, desenvolvimento comunitário e valorização da identidade local.</p>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- Publicações -->
+    
+    <!-- PUBLICAÇÕES (conteúdo original preservado + dados do Supabase) -->
     <section class="section section-light">
         <div class="container">
-            <h2 class="section-title">Publicações em Destaque</h2>
+            <h2 class="section-title">Publicações Recentes</h2>
             
-            <div class="loading-spinner" id="publicacoesLoading" style="display: none;">
+            <!-- Loading -->
+            <div class="loading-spinner" id="publicacoesLoading" style="display: block;">
                 <i class="fas fa-spinner fa-spin"></i>
                 <p>Carregando publicações...</p>
             </div>
             
-            <div class="cards-grid" id="publicacoesGrid">
-                <!-- Cards serão inseridos via JS -->
-            </div>
+            <!-- Grid de publicações (será preenchido pelo JavaScript) -->
+            <div class="cards-grid" id="publicacoesGrid"></div>
             
-            <div class="error-message" id="publicacoesError" style="display: none;">
-                <i class="fas fa-exclamation-triangle"></i>
-                <p>Erro ao carregar publicações.</p>
-            </div>
-            
-            <div style="text-align: center; margin-top: 40px;">
-                <a href="pages/publicacao.html" class="btn btn-accent">Ver Todas as Publicações</a>
+            <!-- Botão original -->
+            <div class="verpublicacao-div" style="text-align: center; margin-top: 40px;">
+                <a href="https://www.temnoentornosul.com.br/publicacao" class="btn btn-accent">Ver Todas as Publicações</a>
             </div>
         </div>
     </section>
-
-    <!-- Nossa Missão -->
+    
+    <!-- Melhoria: Mesclada as duas seções mission em uma para evitar duplicatas, mantendo conteúdo e estilo original -->
     <section class="mission">
         <div class="container">
             <div class="mission-content">
                 <h2 class="section-title">Nossa Missão</h2>
                 <div class="mission-text">
-                    <p>Comércio e serviços locais. Cultura também é negócio! Valorizamos o crescimento da nossa região.</p>
+                    <p>Comercio e serviços locais. Cultura também é negócio! Valorizamos o crescimento da nossa região e o fortalecimento da economia nacional. Por isso, convidamos você a conhecer nosso site Tem no Entorno sul!. Através de informações atualizadas e soluções inovadoras, estamos comprometidos em impulsionar o desenvolvimento dos comércios locais. Os pequenos negócios são a espinha dorsal da nossa cidade, gerando empregos e promovendo prosperidade. Junte-se a nós nesse movimento em prol do progresso. Siga nossas redes sociais para ficar por dentro das novidades e fazer parte dessa jornada transformadora.</p>
+                    <div class="highlight">Apoiar os comércios locais é fundamental para o desenvolvimento da região e para a economia do país.</div>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- Eventos -->
+    
+    <!-- EVENTOS EM DESTAQUE (conteúdo original + dados do Supabase) -->
     <section class="section section-colored">
         <div class="container">
             <h2 class="section-title">Eventos em Destaque</h2>
             
-            <div class="loading-spinner" id="eventosLoading" style="display: none;">
+            <!-- Loading -->
+            <div class="loading-spinner" id="eventosLoading" style="display: block;">
                 <i class="fas fa-spinner fa-spin"></i>
                 <p>Carregando eventos...</p>
             </div>
             
-            <div class="cards-grid" id="eventosGrid">
-                <!-- Cards serão inseridos via JS -->
-            </div>
-            
-            <div class="error-message" id="eventosError" style="display: none;">
-                <i class="fas fa-exclamation-triangle"></i>
-                <p>Erro ao carregar eventos.</p>
-            </div>
-            
-            <div style="text-align: center; margin-top: 40px;">
-                <a href="pages/eventos.html" class="btn btn-accent">Ver Todos os Eventos</a>
+            <!-- Grid de eventos (será preenchido pelo JavaScript) -->
+            <div class="cards-grid" id="eventosGrid"></div>
+           
+            <div style="text-align: center; margin-top: 40px; margin-bottom: 60px">
+                <a href="https://www.temnoentornosul.com.br/eventos" class="btn btn-accent">Ver Todos os Eventos</a>
             </div>
         </div>
     </section>
-
-    <!-- Empresas -->
+    
+    <!-- EMPRESAS PARCEIRAS (NOVA SEÇÃO) -->
     <section class="section section-light">
         <div class="container">
             <h2 class="section-title">Empresas Parceiras</h2>
             
-            <div class="loading-spinner" id="empresasLoading" style="display: none;">
+            <!-- Loading -->
+            <div class="loading-spinner" id="empresasLoading" style="display: block;">
                 <i class="fas fa-spinner fa-spin"></i>
                 <p>Carregando empresas...</p>
             </div>
             
-            <div class="empresas-grid" id="empresasGrid">
-                <!-- Cards serão inseridos via JS -->
-            </div>
-            
-            <div class="error-message" id="empresasError" style="display: none;">
-                <i class="fas fa-exclamation-triangle"></i>
-                <p>Erro ao carregar empresas.</p>
-            </div>
+            <!-- Grid de empresas -->
+            <div class="cards-grid" id="empresasGrid"></div>
             
             <div style="text-align: center; margin-top: 40px;">
-                <a href="pages/empresas.html" class="btn btn-accent">Ver Todas as Empresas</a>
+                <a href="https://www.temnoentornosul.com.br/empresas" class="btn btn-accent">Ver Todas as Empresas</a>
             </div>
         </div>
     </section>
-
+    
+    <!-- Melhoria SEO: Adicionado schema para eventos (exemplo para o primeiro evento; expanda para mais) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Event",
+      "name": "Carnaval 2026",
+      "startDate": "2026-02-13",
+      "endDate": "2026-02-17",
+      "location": {
+        "@type": "Place",
+        "name": "Prefeitura Municipal"
+      },
+      "description": "Durante fevereiro de 2026, com foco na semana do carnaval."
+    }
+    </script>
+    
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-container">
                 <div class="footer-col">
                     <img src="https://i.imgur.com/lD6krRL.png" alt="Tem no Entorno Sul" class="footer-logo" loading="lazy">
-                    <p class="footer-description">Portal de notícias e eventos do Entorno Sul.</p>
+                    <p class="footer-description">O seu portal de notícias e eventos do Entorno Sul. Trazendo informação relevante e de qualidade para toda a região.</p>
                     <div class="social-links">
-                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                        <!-- Melhoria: Adicionado rel="noopener" em links sociais -->
+                        <a href="https://www.facebook.com/temnoentornosul" class="social-link" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/temnoentornosul" class="social-link" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@temnoentornosul" class="social-link" rel="noopener noreferrer"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
-                
+               
                 <div class="footer-col">
                     <h3 class="footer-title">Links Rápidos</h3>
                     <ul class="footer-links">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="pages/publicacao.html">Publicações</a></li>
-                        <li><a href="pages/eventos.html">Eventos</a></li>
-                        <li><a href="pages/empresas.html">Empresas</a></li>
+                        <li><a href="https://www.temnoentornosul.com.br/inicio">Home</a></li>
+                        <li><a href="https://www.temnoentornosul.com.br/publicacao">Publicações</a></li>
+                        <li><a href="https://www.temnoentornosul.com.br/eventos">Eventos</a></li>
+                        <li><a href="https://www.temnoentornosul.com.br/colunistas">Colunistas</a></li>
+                        <li><a href="https://www.temnoentornosul.com.br/parceiros">Parceiros</a></li>
+                        <li><a href="https://www.temnoentornosul.com.br/contato">Contato</a></li>
                     </ul>
                 </div>
-                
+               
+                <!-- <div class="footer-col">
+                    <h3 class="footer-title">Categorias</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Política</a></li>
+                        <li><a href="#">Economia</a></li>
+                        <li><a href="#">Cultura</a></li>
+                        <li><a href="#">Esportes</a></li>
+                        <li><a href="#">Educação</a></li>
+                    </ul>
+                </div> -->
+               
                 <div class="footer-col">
-                    <h3 class="footer-title">WhatsApp</h3>
-                    <button id="whatsapp-group-btn" class="btn btn-accent" style="width: 100%;">
-                        <i class="fab fa-whatsapp"></i> Entrar no Grupo
-                    </button>
-                </div>
+    <h3 class="footer-title">Newsletter</h3>
+    <p class="footer-description">Junte-se ao nosso grupo do WhatsApp para receber as novidades do Entorno Sul em tempo real.</p>
+    <div class="footer-form">
+        <button id="whatsapp-group-btn" class="btn btn-accent" style="margin-top: 10px; width: 100%;">
+            <i class="fab fa-whatsapp"></i> Entrar no Grupo
+        </button>
+    </div>
+</div>
             </div>
-            
+           
             <div class="footer-bottom">
+                <!-- Melhoria: Atualizado ano para data atual (2026) -->
                 <p>&copy; 2026 Tem no Entorno Sul. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
-
-    <!-- SCRIPTS - ORDEM CORRETA -->
+    
+    <!-- SCRIPTS - CAMINHOS CORRIGIDOS -->
     <script src="assets/js/supabase.js"></script>
     <script src="assets/js/main.js"></script>
     
     <script>
-        // Menu mobile
+        // Menu mobile toggle (preservado do original)
         document.addEventListener('DOMContentLoaded', function() {
-            const hamburger = document.getElementById('hamburger');
-            const navMenu = document.getElementById('navMenu');
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
             
             if (hamburger && navMenu) {
-                hamburger.addEventListener('click', function() {
+                hamburger.addEventListener('click', () => {
                     navMenu.classList.toggle('active');
+                    hamburger.innerHTML = navMenu.classList.contains('active')
+                        ? '<i class="fas fa-times"></i>'
+                        : '<i class="fas fa-bars"></i>';
+                });
+                
+                // Fechar menu ao clicar em um link
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', () => {
+                        navMenu.classList.remove('active');
+                        hamburger.innerHTML = '<i class="fas fa-bars"></i>';
+                    });
                 });
             }
             
             // WhatsApp button
-            const whatsappBtn = document.getElementById('whatsapp-group-btn');
-            if (whatsappBtn) {
-                whatsappBtn.addEventListener('click', function() {
-                    window.open('https://chat.whatsapp.com/DvTQra8rDQp01NqUCmwa8N', '_blank');
-                });
-            }
+            document.getElementById('whatsapp-group-btn')?.addEventListener('click', function() {
+                window.open('https://chat.whatsapp.com/DvTQra8rDQp01NqUCmwa8N', '_blank');
+            });
         });
     </script>
 </body>

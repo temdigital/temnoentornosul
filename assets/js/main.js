@@ -1,33 +1,37 @@
 // Aguarda o carregamento do DOM
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Site inicializado');
+    console.log('🚀 Inicializando site...');
     
-    // Carrega conteúdo do Supabase
+    // Carrega todos os dados
     carregarPublicacoes();
     carregarEventos();
     carregarEmpresas();
-    carregarStats();
 });
 
 // Carrega publicações
 async function carregarPublicacoes() {
-    const grid = document.getElementById('publicacoesGrid');
     const loading = document.getElementById('publicacoesLoading');
+    const grid = document.getElementById('publicacoesGrid');
     
     if (!grid) return;
     
     try {
+        // Mostra loading
         if (loading) loading.style.display = 'block';
         
+        // Busca dados
         const dados = await fetchPublicacoes(3);
         
+        // Esconde loading
         if (loading) loading.style.display = 'none';
         
+        // Se não tem dados
         if (!dados || dados.length === 0) {
             grid.innerHTML = '<div class="empty-state"><i class="fas fa-newspaper"></i><p>Nenhuma publicação encontrada</p></div>';
             return;
         }
         
+        // Renderiza os cards
         grid.innerHTML = dados.map(item => `
             <article class="card post-card fade-in">
                 <img src="${item.imagem_url || 'https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg'}" 
@@ -38,23 +42,25 @@ async function carregarPublicacoes() {
                 <div class="card-content">
                     <span class="card-category">${item.categoria || 'Geral'}</span>
                     <h3 class="card-title">${item.titulo || 'Sem título'}</h3>
-                    <p class="card-excerpt">${item.resumo || item.conteudo?.substring(0, 100) || 'Clique para ler mais...'}</p>
-                    <a href="pages/publicacao.html?id=${item.id}" class="btn">Ler mais</a>
+                    <p class="card-excerpt">${item.resumo || (item.conteudo ? item.conteudo.substring(0, 100) + '...' : 'Clique para ler mais...')}</p>
+                    <a href="https://www.temnoentornosul.com.br/publicacao?id=${item.id}" class="btn">Ler mais</a>
                 </div>
             </article>
         `).join('');
         
+        console.log('Publicações renderizadas:', dados.length);
+        
     } catch (error) {
-        console.error('Erro:', error);
+        console.error('Erro em carregarPublicacoes:', error);
         if (loading) loading.style.display = 'none';
-        grid.innerHTML = '<div class="error-message"><i class="fas fa-exclamation-triangle"></i><p>Erro ao carregar</p></div>';
+        grid.innerHTML = '<div class="error-message"><i class="fas fa-exclamation-triangle"></i><p>Erro ao carregar publicações</p></div>';
     }
 }
 
 // Carrega eventos
 async function carregarEventos() {
-    const grid = document.getElementById('eventosGrid');
     const loading = document.getElementById('eventosLoading');
+    const grid = document.getElementById('eventosGrid');
     
     if (!grid) return;
     
@@ -66,44 +72,51 @@ async function carregarEventos() {
         if (loading) loading.style.display = 'none';
         
         if (!dados || dados.length === 0) {
-            grid.innerHTML = '<div class="empty-state"><i class="fas fa-calendar-times"></i><p>Nenhum evento encontrado</p></div>';
+            grid.innerHTML = '<div class="empty-state"><i class="fas fa-calendar-alt"></i><p>Nenhum evento encontrado</p></div>';
             return;
         }
         
-        grid.innerHTML = dados.map(item => `
-            <article class="card event-card fade-in">
-                <img src="${item.imagem_url || 'https://images.pexels.com/photos/30354453/pexels-photo-30354453.jpeg'}" 
-                     alt="${item.titulo || 'Evento'}" 
-                     class="card-img" 
-                     loading="lazy"
-                     onerror="this.src='https://images.pexels.com/photos/30354453/pexels-photo-30354453.jpeg'">
-                <div class="card-content">
-                    <div class="event-date">
-                        <i class="far fa-calendar-alt"></i>
-                        ${item.data || 'Data a definir'}
+        grid.innerHTML = dados.map(item => {
+            // Verifica se é evento passado (opcional)
+            const isPassado = false; // Implementar lógica se necessário
+            
+            return `
+                <article class="card event-card ${isPassado ? 'event-past' : ''} fade-in">
+                    <img src="${item.imagem_url || 'https://images.pexels.com/photos/30354453/pexels-photo-30354453.jpeg'}" 
+                         alt="${item.titulo || 'Evento'}" 
+                         class="card-img" 
+                         loading="lazy"
+                         onerror="this.src='https://images.pexels.com/photos/30354453/pexels-photo-30354453.jpeg'">
+                    <div class="card-content">
+                        <div class="event-date">
+                            <i class="far fa-calendar-alt"></i>
+                            ${item.data || item.data_inicio || 'Data a definir'}
+                        </div>
+                        <div class="event-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            ${item.local || 'Local a definir'}
+                        </div>
+                        <h3 class="card-title">${item.titulo || 'Sem título'}</h3>
+                        <p>${item.descricao || item.resumo || ''}</p>
+                        <a href="https://www.temnoentornosul.com.br/eventos?id=${item.id}" class="btn">+ Saiba mais</a>
                     </div>
-                    <div class="event-location">
-                        <i class="fas fa-map-marker-alt"></i>
-                        ${item.local || 'Local a definir'}
-                    </div>
-                    <h3 class="card-title">${item.titulo || 'Sem título'}</h3>
-                    <p>${item.descricao || item.resumo || ''}</p>
-                    <a href="pages/eventos.html?id=${item.id}" class="btn">+ Saiba mais</a>
-                </div>
-            </article>
-        `).join('');
+                </article>
+            `;
+        }).join('');
+        
+        console.log('Eventos renderizados:', dados.length);
         
     } catch (error) {
-        console.error('Erro:', error);
+        console.error('Erro em carregarEventos:', error);
         if (loading) loading.style.display = 'none';
-        grid.innerHTML = '<div class="error-message"><i class="fas fa-exclamation-triangle"></i><p>Erro ao carregar</p></div>';
+        grid.innerHTML = '<div class="error-message"><i class="fas fa-exclamation-triangle"></i><p>Erro ao carregar eventos</p></div>';
     }
 }
 
 // Carrega empresas
 async function carregarEmpresas() {
-    const grid = document.getElementById('empresasGrid');
     const loading = document.getElementById('empresasLoading');
+    const grid = document.getElementById('empresasGrid');
     
     if (!grid) return;
     
@@ -120,52 +133,29 @@ async function carregarEmpresas() {
         }
         
         grid.innerHTML = dados.map(item => `
-            <article class="empresa-card fade-in">
-                <div class="empresa-image">
-                    <img src="${item.imagem_url || 'https://images.pexels.com/photos/264636/pexels-photo-264636.jpeg'}" 
-                         alt="${item.nome || 'Empresa'}"
-                         loading="lazy"
-                         onerror="this.src='https://images.pexels.com/photos/264636/pexels-photo-264636.jpeg'">
-                </div>
-                <div class="empresa-content">
-                    <h3 class="empresa-nome">${item.nome || 'Sem nome'}</h3>
-                    <p class="empresa-categoria">
-                        <i class="fas fa-tag"></i> ${item.categoria || 'Geral'}
+            <article class="card post-card fade-in">
+                <img src="${item.imagem_url || 'https://images.pexels.com/photos/264636/pexels-photo-264636.jpeg'}" 
+                     alt="${item.nome || 'Empresa'}" 
+                     class="card-img" 
+                     loading="lazy"
+                     onerror="this.src='https://images.pexels.com/photos/264636/pexels-photo-264636.jpeg'">
+                <div class="card-content">
+                    <span class="card-category">${item.categoria || 'Empresa'}</span>
+                    <h3 class="card-title">${item.nome || 'Sem nome'}</h3>
+                    <p class="card-excerpt">
+                        <i class="fas fa-map-marker-alt"></i> ${item.endereco || 'Local não informado'}<br>
+                        ${item.telefone ? '<i class="fas fa-phone"></i> ' + item.telefone : ''}
                     </p>
-                    <p class="empresa-endereco">
-                        <i class="fas fa-map-marker-alt"></i> ${item.endereco || 'Não informado'}
-                    </p>
-                    ${item.telefone ? `
-                        <p class="empresa-telefone">
-                            <i class="fas fa-phone"></i> ${item.telefone}
-                        </p>
-                    ` : ''}
-                    <a href="pages/empresas.html?id=${item.id}" class="btn" style="margin-top: 10px;">Ver detalhes</a>
+                    <a href="https://www.temnoentornosul.com.br/empresas?id=${item.id}" class="btn">Ver detalhes</a>
                 </div>
             </article>
         `).join('');
         
+        console.log('Empresas renderizadas:', dados.length);
+        
     } catch (error) {
-        console.error('Erro:', error);
+        console.error('Erro em carregarEmpresas:', error);
         if (loading) loading.style.display = 'none';
-        grid.innerHTML = '<div class="error-message"><i class="fas fa-exclamation-triangle"></i><p>Erro ao carregar</p></div>';
-    }
-}
-
-// Carrega estatísticas
-async function carregarStats() {
-    try {
-        const stats = await fetchStats();
-        
-        const elPub = document.getElementById('statPublicacoes');
-        const elEvt = document.getElementById('statEventos');
-        const elEmp = document.getElementById('statEmpresas');
-        
-        if (elPub) elPub.textContent = stats.publicacoes;
-        if (elEvt) elEvt.textContent = stats.eventos;
-        if (elEmp) elEmp.textContent = stats.empresas;
-        
-    } catch (error) {
-        console.error('Erro ao carregar stats:', error);
+        grid.innerHTML = '<div class="error-message"><i class="fas fa-exclamation-triangle"></i><p>Erro ao carregar empresas</p></div>';
     }
 }
