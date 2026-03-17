@@ -15,8 +15,8 @@
     <title>Tem no Entorno Sul - Sua região em um só lugar</title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Descubra o melhor do comércio, eventos e notícias da região. Cadastre seu negócio gratuitamente e alcance mais clientes!">
-    <meta name="keywords" content="comércio local, eventos, notícias, Toledo PR, restaurantes, serviços, agenda cultural">
+    <meta name="description" content="Descubra o melhor do comércio, eventos e notícias da região do Entorno Sul. Cadastre seu negócio gratuitamente e alcance mais clientes!">
+    <meta name="keywords" content="comércio local, eventos, notícias, Toledo PR, restaurantes, serviços, agenda cultural, Entorno Sul">
     <meta name="author" content="Tem no Entorno Sul">
     <meta name="robots" content="index, follow">
     
@@ -24,20 +24,18 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.temnoentornosul.com.br/">
     <meta property="og:title" content="Tem no Entorno Sul - Sua região em um só lugar">
-    <meta property="og:description" content="Descubra o melhor do comércio, eventos e notícias da região.">
-    <meta property="og:image" content="https://www.temnoentornosul.com.br/images/og-image.jpg">
+    <meta property="og:description" content="Descubra o melhor do comércio, eventos e notícias da região do Entorno Sul.">
+    <meta property="og:image" content="https://i.imgur.com/9eZarki.png">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://www.temnoentornosul.com.br/">
     <meta property="twitter:title" content="Tem no Entorno Sul - Sua região em um só lugar">
-    <meta property="twitter:description" content="Descubra o melhor do comércio, eventos e notícias da região.">
-    <meta property="twitter:image" content="https://www.temnoentornosul.com.br/images/og-image.jpg">
+    <meta property="twitter:description" content="Descubra o melhor do comércio, eventos e notícias da região do Entorno Sul.">
+    <meta property="twitter:image" content="https://i.imgur.com/9eZarki.png">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
-    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="https://i.imgur.com/9eZarki.png">
     
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -45,39 +43,482 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Nossos estilos -->
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/home.css">
+    <!-- Google Fonts - Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- NOSSOS ESTILOS - CAMINHOS CORRIGIDOS -->
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/home.css">
     
     <!-- Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <style>
+        /* Estilos inline para garantir que a página apareça mesmo sem os CSS carregarem */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
+        
+        .menu-desktop {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .menu-desktop a {
+            color: #256d3c;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .menu-desktop a:hover,
+        .menu-desktop a.active {
+            color: #faa115;
+        }
+        
+        .btn-login {
+            background: #256d3c;
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 5px;
+        }
+        
+        .btn-login:hover {
+            background: #1a4f2b;
+            color: white !important;
+        }
+        
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: #256d3c;
+            margin: 2px 0;
+            transition: 0.3s;
+        }
+        
+        .menu-mobile {
+            display: none;
+            width: 100%;
+            background: white;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .menu-mobile a {
+            display: block;
+            padding: 10px 0;
+            color: #256d3c;
+            text-decoration: none;
+            border-bottom: 1px solid #eee;
+        }
+        
+        @media (max-width: 768px) {
+            .menu-desktop {
+                display: none;
+            }
+            
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .menu-mobile.active {
+                display: block;
+            }
+            
+            .logo img {
+                height: 40px;
+            }
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, rgba(37, 109, 60, 0.95) 0%, rgba(145, 182, 157, 0.9) 100%), 
+                        url('https://images.unsplash.com/photo-1556742044-3c52d6e88c62?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .hero .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        .hero-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+        
+        .hero-text {
+            flex: 1;
+        }
+        
+        .hero-text h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .hero-text p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+        
+        .hero-image {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+        
+        .btn-primary {
+            background: #256d3c;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #1a4f2b;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #f8d236;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #e5bc1f;
+        }
+        
+        .btn-outline {
+            border: 2px solid #256d3c;
+            color: #256d3c;
+            background: transparent;
+        }
+        
+        .btn-outline:hover {
+            background: #256d3c;
+            color: white;
+        }
+        
+        @media (max-width: 992px) {
+            .hero-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hero-image {
+                order: -1;
+            }
+            
+            .hero-image img {
+                max-width: 80%;
+            }
+            
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+            grid-column: 1 / -1;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #91b69d;
+            border-top-color: #256d3c;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .destaques,
+        .como-funciona,
+        .missao,
+        .parceiros-destaque,
+        .eventos-home,
+        .planos,
+        .sobre,
+        .newsletter {
+            padding: 60px 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        h2 {
+            color: #256d3c;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .destaque-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .destaque-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .card-title {
+            margin-bottom: 10px;
+        }
+        
+        .card-title a {
+            color: #256d3c;
+            text-decoration: none;
+        }
+        
+        .card-meta {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .card-meta small {
+            margin-right: 15px;
+        }
+    </style>
 </head>
 <body>
-    <!-- HEADER será carregado via JavaScript -->
-    <div id="header-placeholder"></div>
+    <!-- HEADER com logo e menu -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="./index.html">
+                    <img src="https://i.imgur.com/9eZarki.png" alt="Tem no Entorno Sul">
+                </a>
+            </div>
+            
+            <!-- Menu Desktop -->
+            <nav class="menu-desktop">
+                <a href="./index.html" class="active">Início</a>
+                <a href="./publicacoes.html">Publicações</a>
+                <a href="./eventos.html">Eventos</a>
+                <a href="./colunistas.html">Colunistas</a>
+                <a href="./parceiros.html">Parceiros</a>
+                <a href="./contato.html">Contato</a>
+                <a href="./admin/login.html" class="btn-login">
+                    <i class="fas fa-user"></i> Login
+                </a>
+            </nav>
+            
+            <!-- Menu Mobile Toggle -->
+            <div class="menu-toggle" id="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <!-- Menu Mobile -->
+            <div class="menu-mobile" id="menu-mobile">
+                <a href="./index.html">Início</a>
+                <a href="./publicacoes.html">Publicações</a>
+                <a href="./eventos.html">Eventos</a>
+                <a href="./colunistas.html">Colunistas</a>
+                <a href="./parceiros.html">Parceiros</a>
+                <a href="./contato.html">Contato</a>
+                <a href="./admin/login.html" class="btn-login">
+                    <i class="fas fa-user"></i> Login
+                </a>
+            </div>
+        </div>
+    </header>
 
     <main>
         <!-- HERO SECTION -->
         <section class="hero">
             <div class="container">
-                <h1>Descubra o melhor da sua região</h1>
-                <p>Encontre comércios, eventos e notícias do Entorno Sul em um só lugar</p>
-                <div class="hero-buttons">
-                    <a href="/parceiros.html" class="btn btn-primary">Explorar Comércios</a>
-                    <a href="/cadastro.html" class="btn btn-secondary">Cadastrar Meu Negócio</a>
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1>O que acontece no Entorno Sul</h1>
+                        <p>Notícias, eventos e informações relevantes da nossa região</p>
+                        <div class="hero-buttons">
+                            <a href="./parceiros.html" class="btn btn-primary">Explorar Comércios</a>
+                            <a href="./cadastro.html" class="btn btn-secondary">Cadastrar Meu Negócio</a>
+                        </div>
+                    </div>
+                    <div class="hero-image">
+                        <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                             alt="Pessoas usando tablet" 
+                             loading="lazy">
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- SEÇÃO DESTAQUES (Publicações) -->
+        <!-- SEÇÃO PUBLICAÇÕES RECENTES -->
         <section class="destaques">
             <div class="container">
-                <h2>Últimas Publicações</h2>
-                <div id="publicacoes-destaque" class="destaque-grid">
-                    <!-- Cards serão carregados via JavaScript -->
+                <div class="section-header">
+                    <h2>Publicações Recentes</h2>
+                    <a href="./publicacoes.html" class="btn btn-outline">Ver Todas as Publicações <i class="fas fa-arrow-right"></i></a>
                 </div>
-                <div class="text-center mt-3">
-                    <a href="/publicacoes.html" class="btn btn-outline">Ver todas as publicações</a>
+                <div id="publicacoes-destaque" class="destaque-grid">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO COMO FUNCIONA -->
+        <section class="como-funciona" style="background: #f8f9fa;">
+            <div class="container">
+                <h2 style="text-align: center;">Como Funciona</h2>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 40px;">
+                    <div style="background: white; padding: 40px 30px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                        <div style="width: 100px; height: 100px; background: #256d3c; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; font-size: 40px;">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h3 style="color: #256d3c; margin-bottom: 15px;">Para Usuários</h3>
+                        <p style="color: #666;">Encontre comércios e serviços próximos de você, avalie estabelecimentos, participe de eventos locais e receba ofertas exclusivas.</p>
+                    </div>
+                    
+                    <div style="background: white; padding: 40px 30px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                        <div style="width: 100px; height: 100px; background: #256d3c; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; font-size: 40px;">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <h3 style="color: #256d3c; margin-bottom: 15px;">Para Comércios</h3>
+                        <p style="color: #666;">Divulgue seu negócio gratuitamente, promova eventos e ofertas, conecte-se com clientes locais e fortaleça sua presença digital.</p>
+                    </div>
+                    
+                    <div style="background: white; padding: 40px 30px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                        <div style="width: 100px; height: 100px; background: #256d3c; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; font-size: 40px;">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 style="color: #256d3c; margin-bottom: 15px;">Para a Comunidade</h3>
+                        <p style="color: #666;">Fortalecimento da economia regional, geração de empregos, desenvolvimento comunitário e valorização da identidade local.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO NOSSA MISSÃO -->
+        <section class="missao" style="background: #256d3c; color: white;">
+            <div class="container">
+                <div style="max-width: 900px; margin: 0 auto; text-align: center;">
+                    <h2 style="color: white;">Nossa Missão</h2>
+                    <p style="font-size: 1.5rem; color: #f8d236; margin-bottom: 30px;">Comercio e serviços locais. Cultura também é negócio!</p>
+                    <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 20px;">Valorizamos o crescimento da nossa região e o fortalecimento da economia nacional. Por isso, convidamos você a conhecer nosso site <strong>Tem no Entorno Sul</strong>. Através de informações atualizadas e soluções inovadoras, estamos comprometidos em impulsionar o desenvolvimento dos comércios locais.</p>
+                    <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 20px;">Os pequenos negócios são a espinha dorsal da nossa cidade, gerando empregos e promovendo prosperidade. Junte-se a nós nesse movimento em prol do progresso. Siga nossas redes sociais para ficar por dentro das novidades e fazer parte dessa jornada transformadora.</p>
+                    <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 15px; margin: 40px 0;">
+                        <i class="fas fa-quote-left" style="font-size: 30px; color: #f8d236; margin-bottom: 15px;"></i>
+                        <p style="font-size: 1.2rem; font-style: italic;">Apoiar os comércios locais é fundamental para o desenvolvimento da região e para a economia do país.</p>
+                    </div>
+                    <div style="display: flex; justify-content: center; gap: 20px; margin-top: 40px;">
+                        <a href="https://www.facebook.com/temnoentornosul" target="_blank" style="width: 50px; height: 50px; border-radius: 50%; background: #3b5998; color: white; display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/temnoentornosul" target="_blank" style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(45deg, #f09433, #d62976, #962fbf); color: white; display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.youtube.com/@temnoentornosul" target="_blank" style="width: 50px; height: 50px; border-radius: 50%; background: #ff0000; color: white; display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
@@ -85,25 +526,29 @@
         <!-- SEÇÃO PARCEIROS EM DESTAQUE -->
         <section class="parceiros-destaque">
             <div class="container">
-                <div class="parceiros-header">
+                <div class="section-header">
                     <h2>Parceiros em Destaque</h2>
-                    <a href="/parceiros.html" class="btn btn-outline">Ver todos</a>
+                    <a href="./parceiros.html" class="btn btn-outline">Ver todos <i class="fas fa-arrow-right"></i></a>
                 </div>
-                <div id="parceiros-destaque" class="parceiros-grid">
-                    <!-- Cards serão carregados via JavaScript -->
+                <div id="parceiros-destaque" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- SEÇÃO PRÓXIMOS EVENTOS -->
-        <section class="eventos-home">
+        <section class="eventos-home" style="background: #f8f9fa;">
             <div class="container">
-                <h2>Próximos Eventos</h2>
-                <div id="eventos-lista" class="eventos-lista">
-                    <!-- Eventos serão carregados via JavaScript -->
+                <div class="section-header">
+                    <h2>Próximos Eventos</h2>
+                    <a href="./eventos.html" class="btn btn-outline">Ver agenda completa <i class="fas fa-arrow-right"></i></a>
                 </div>
-                <div class="text-center mt-3">
-                    <a href="/eventos.html" class="btn btn-outline">Ver agenda completa</a>
+                <div id="eventos-lista">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -111,88 +556,488 @@
         <!-- SEÇÃO PLANOS -->
         <section class="planos">
             <div class="container">
-                <h2 class="text-center">Escolha o plano ideal para seu negócio</h2>
-                <div class="planos-grid">
+                <h2 style="text-align: center;">Escolha o plano ideal para seu negócio</h2>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; max-width: 1000px; margin: 40px auto 0;">
                     <!-- Plano Grátis -->
-                    <div class="plano-card gratis">
-                        <h3>Plano Grátis</h3>
-                        <div class="plano-preco">
-                            R$ 0 <small>/mês</small>
+                    <div style="background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.1);">
+                        <div style="padding: 30px; text-align: center; background: linear-gradient(135deg, #f8f9fa, #ffffff);">
+                            <h3 style="color: #256d3c;">Plano Grátis</h3>
+                            <div style="font-size: 2.5rem; font-weight: bold; color: #256d3c; margin: 15px 0;">
+                                R$ 0 <span style="font-size: 1rem; color: #666;">/mês</span>
+                            </div>
                         </div>
-                        <ul class="plano-recursos">
-                            <li><i class="fas fa-check"></i> Página de perfil básica</li>
-                            <li><i class="fas fa-check"></i> Listagem no diretório</li>
-                            <li><i class="fas fa-check"></i> Informações de contato</li>
-                            <li><i class="fas fa-check"></i> Horário de funcionamento</li>
-                            <li class="disabled"><i class="fas fa-times"></i> Sistema de agendamentos</li>
-                            <li class="disabled"><i class="fas fa-times"></i> Destaque nas buscas</li>
-                            <li class="disabled"><i class="fas fa-times"></i> Estatísticas</li>
+                        <ul style="padding: 30px; list-style: none;">
+                            <li style="padding: 10px 0; border-bottom: 1px solid #eee;"><i class="fas fa-check" style="color: #28a745; margin-right: 10px;"></i> Página de perfil básica</li>
+                            <li style="padding: 10px 0; border-bottom: 1px solid #eee;"><i class="fas fa-check" style="color: #28a745; margin-right: 10px;"></i> Listagem no diretório</li>
+                            <li style="padding: 10px 0; border-bottom: 1px solid #eee;"><i class="fas fa-check" style="color: #28a745; margin-right: 10px;"></i> Informações de contato</li>
+                            <li style="padding: 10px 0; border-bottom: 1px solid #eee;"><i class="fas fa-check" style="color: #28a745; margin-right: 10px;"></i> Horário de funcionamento</li>
+                            <li style="padding: 10px 0; border-bottom: 1px solid #eee; color: #999;"><i class="fas fa-times" style="color: #dc3545; margin-right: 10px;"></i> Sistema de agendamentos</li>
+                            <li style="padding: 10px 0; border-bottom: 1px solid #eee; color: #999;"><i class="fas fa-times" style="color: #dc3545; margin-right: 10px;"></i> Destaque nas buscas</li>
+                            <li style="padding: 10px 0; color: #999;"><i class="fas fa-times" style="color: #dc3545; margin-right: 10px;"></i> Estatísticas</li>
                         </ul>
-                        <a href="/cadastro.html" class="btn btn-outline">Começar grátis</a>
+                        <a href="./cadastro.html" class="btn btn-outline" style="display: block; width: 90%; margin: 0 auto 30px; text-align: center;">Começar grátis</a>
                     </div>
 
                     <!-- Plano Premium -->
-                    <div class="plano-card premium">
-                        <h3>Plano Premium</h3>
-                        <div class="plano-preco">
-                            R$ 29,90 <small>/mês</small>
+                    <div style="background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.1); border: 3px solid #faa115; position: relative;">
+                        <div style="position: absolute; top: 20px; right: 20px; background: #faa115; color: white; padding: 5px 15px; border-radius: 25px; font-size: 0.85rem; font-weight: bold;">MAIS VENDIDO</div>
+                        <div style="padding: 30px; text-align: center; background: linear-gradient(135deg, #f8f9fa, #ffffff);">
+                            <h3 style="color: #256d3c;">Plano Premium</h3>
+                            <div style="font-size: 2.5rem; font-weight: bold; color: #256d3c; margin: 15px 0;">
+                                R$ 29,90 <span style="font-size: 1rem; color: #666;">/mês</span>
+                            </div>
                         </div>
-                        <ul class="plano-recursos">
-                            <li><i class="fas fa-check"></i> Tudo do plano grátis</li>
-                            <li><i class="fas fa-check"></i> Página personalizada completa</li>
-                            <li><i class="fas fa-check"></i> Sistema de agendamentos</li>
-                            <li><i class="fas fa-check"></i> Destaque nas buscas</li>
-                            <li><i class="fas fa-check"></i> Selo "Premium"</li>
-                            <li><i class="fas fa-check"></i> Estatísticas de visualizações</li>
-                            <li><i class="fas fa-check"></i> Múltiplas fotos</li>
+                        <ul style="padding: 30px; list-style: none;">
+                            <li style="padding: 10px 0; border-bottom: 1px solid #eee;"><i class="fas fa-check" style="color: #28a745; margin-right: 10px;"></i> Tudo do plano grátis</li>
+                            <li style="padding: 10px 0; border-bottom: 1px solid #eee;"><i class="fas fa-check" style="color: #28a745; margin-right: 10px;"></i> Página personalizada completa</li>
+                            <li style="padding: 10px 0; border-bottom: 1px solid #eee;"><i class="fas fa-check" style="color: #28a745; margin-right: 10px;"></i> Sistema de agendamentos</li>
+                            <li style="padding: 10px 0; border-bottom: 1px solid #eee;"><i class="fas fa-check" style="color: #28a745; margin-right: 10px;"></i> Destaque nas buscas</li>
+                            <li style="padding: 10px 0; border-bottom: 1px solid #eee;"><i class="fas fa-check" style="color: #28a745; margin-right: 10px;"></i> Selo "Premium"</li>
+                            <li style="padding: 10px 0; border-bottom: 1px solid #eee;"><i class="fas fa-check" style="color: #28a745; margin-right: 10px;"></i> Estatísticas de visualizações</li>
+                            <li style="padding: 10px 0;"><i class="fas fa-check" style="color: #28a745; margin-right: 10px;"></i> Múltiplas fotos</li>
                         </ul>
-                        <a href="/cadastro.html?plano=premium" class="btn btn-primary">Assinar agora</a>
+                        <a href="./cadastro.html?plano=premium" class="btn btn-primary" style="display: block; width: 90%; margin: 0 auto 30px; text-align: center;">Assinar agora</a>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- SEÇÃO SOBRE -->
-        <section class="sobre">
+        <section class="sobre" style="background: #f8f9fa;">
             <div class="container">
-                <div class="sobre-content">
-                    <div class="sobre-texto">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center;">
+                    <div>
                         <h2>Sobre o Tem no Entorno Sul</h2>
-                        <p>Somos uma plataforma que conecta moradores aos melhores comércios, serviços e eventos da região do Entorno Sul. Nosso objetivo é fortalecer o comércio local e facilitar o acesso da comunidade a tudo que nossa região oferece.</p>
-                        <p>Acreditamos no poder do comércio local para gerar emprego, renda e desenvolvimento. Por isso, oferecemos uma plataforma acessível para pequenos negócios se destacarem e alcançarem novos clientes.</p>
-                        <p><strong>Junte-se a nós e faça parte dessa comunidade!</strong></p>
+                        <p style="font-size: 1.1rem; line-height: 1.8; color: #555; margin-bottom: 20px;">Somos uma plataforma que conecta moradores aos melhores comércios, serviços e eventos da região do Entorno Sul. Nosso objetivo é fortalecer o comércio local e facilitar o acesso da comunidade a tudo que nossa região oferece.</p>
+                        <p style="font-size: 1.1rem; line-height: 1.8; color: #555; margin-bottom: 20px;">Acreditamos no poder do comércio local para gerar emprego, renda e desenvolvimento. Por isso, oferecemos uma plataforma acessível para pequenos negócios se destacarem e alcançarem novos clientes.</p>
+                        <p style="font-size: 1.2rem; color: #256d3c; font-weight: bold;">Junte-se a nós e faça parte dessa comunidade!</p>
                     </div>
-                    <div class="sobre-imagem">
-                        <img src="/images/sobre-nos.jpg" alt="Sobre o Tem no Entorno Sul">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                             alt="Equipe Tem no Entorno Sul"
+                             style="width: 100%; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.15);"
+                             loading="lazy">
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- NEWSLETTER -->
-        <section class="newsletter">
+        <section class="newsletter" style="background: linear-gradient(135deg, #faa115, #f8d236);">
             <div class="container">
-                <h2>Fique por dentro das novidades</h2>
-                <p>Receba em primeira mão os eventos e promoções da região</p>
-                <form id="newsletter-form" class="newsletter-form">
-                    <input type="email" placeholder="Seu melhor e-mail" required>
-                    <button type="submit" class="btn btn-primary">Inscrever-se</button>
-                </form>
+                <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+                    <h2 style="color: #256d3c;">Fique por dentro das novidades</h2>
+                    <p style="color: #333; font-size: 1.1rem; margin-bottom: 30px;">Receba em primeira mão os eventos e promoções da região</p>
+                    <form id="newsletter-form">
+                        <div style="display: flex; gap: 10px; background: white; padding: 5px; border-radius: 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                            <input type="email" placeholder="Seu melhor e-mail" required style="flex: 1; border: none; padding: 15px 25px; border-radius: 50px; font-size: 1rem;">
+                            <button type="submit" class="btn btn-primary" style="padding: 15px 40px; border-radius: 50px; font-weight: bold;">Inscrever-se</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </section>
     </main>
 
-    <!-- FOOTER será carregado via JavaScript -->
-    <div id="footer-placeholder"></div>
+    <!-- FOOTER -->
+    <footer style="background: #1a4f2b; color: white; padding: 60px 0 20px;">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 40px; margin-bottom: 40px;">
+                <div>
+                    <img src="https://i.imgur.com/9eZarki.png" alt="Tem no Entorno Sul" style="height: 50px; margin-bottom: 20px; filter: brightness(0) invert(1);">
+                    <p style="opacity: 0.8; line-height: 1.6;">Conectando moradores aos melhores comércios, serviços e eventos da região do Entorno Sul.</p>
+                    <div style="display: flex; gap: 15px; margin-top: 20px;">
+                        <a href="https://www.facebook.com/temnoentornosul" target="_blank" style="width: 40px; height: 40px; border-radius: 50%; background: #3b5998; color: white; display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/temnoentornosul" target="_blank" style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(45deg, #f09433, #d62976, #962fbf); color: white; display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.youtube.com/@temnoentornosul" target="_blank" style="width: 40px; height: 40px; border-radius: 50%; background: #ff0000; color: white; display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 style="color: white; margin-bottom: 20px;">Links Rápidos</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 10px;"><a href="./publicacoes.html" style="color: rgba(255,255,255,0.8); text-decoration: none;">Publicações</a></li>
+                        <li style="margin-bottom: 10px;"><a href="./eventos.html" style="color: rgba(255,255,255,0.8); text-decoration: none;">Eventos</a></li>
+                        <li style="margin-bottom: 10px;"><a href="./colunistas.html" style="color: rgba(255,255,255,0.8); text-decoration: none;">Colunistas</a></li>
+                        <li style="margin-bottom: 10px;"><a href="./parceiros.html" style="color: rgba(255,255,255,0.8); text-decoration: none;">Parceiros</a></li>
+                        <li style="margin-bottom: 10px;"><a href="./contato.html" style="color: rgba(255,255,255,0.8); text-decoration: none;">Contato</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 style="color: white; margin-bottom: 20px;">Para Comércios</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 10px;"><a href="./cadastro.html" style="color: rgba(255,255,255,0.8); text-decoration: none;">Cadastrar grátis</a></li>
+                        <li style="margin-bottom: 10px;"><a href="./planos.html" style="color: rgba(255,255,255,0.8); text-decoration: none;">Planos premium</a></li>
+                        <li style="margin-bottom: 10px;"><a href="./admin/login.html" style="color: rgba(255,255,255,0.8); text-decoration: none;">Área do parceiro</a></li>
+                        <li style="margin-bottom: 10px;"><a href="./como-funciona.html" style="color: rgba(255,255,255,0.8); text-decoration: none;">Como funciona</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 style="color: white; margin-bottom: 20px;">Contato</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;"><i class="fas fa-phone" style="color: #f8d236; width: 20px;"></i> (45) 99999-9999</li>
+                        <li style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;"><i class="fas fa-envelope" style="color: #f8d236; width: 20px;"></i> contato@temnoentornosul.com.br</li>
+                        <li style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;"><i class="fas fa-map-marker-alt" style="color: #f8d236; width: 20px;"></i> Toledo - PR</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                <p>&copy; 2026 Tem no Entorno Sul. Todos os direitos reservados.</p>
+                <div style="display: flex; gap: 20px;">
+                    <a href="./termos.html" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem;">Termos de uso</a>
+                    <a href="./privacidade.html" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem;">Política de privacidade</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-    <!-- Scripts -->
+    <!-- SCRIPTS - CAMINHOS CORRIGIDOS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/supabase-config.js"></script>
-    <script src="/js/api/publicacoes.js"></script>
-    <script src="/js/api/parceiros.js"></script>
-    <script src="/js/api/eventos.js"></script>
-    <script src="/js/utils/formatadores.js"></script>
-    <script src="/js/main.js"></script>
-    <script src="/js/pages/home.js"></script>
+    <script src="./js/supabase-config.js"></script>
+    <script src="./js/api/publicacoes.js"></script>
+    <script src="./js/api/parceiros.js"></script>
+    <script src="./js/api/eventos.js"></script>
+    <script src="./js/utils/formatadores.js"></script>
+    <script src="./js/main.js"></script>
+    <script src="./js/pages/home.js"></script>
+    
+    <script>
+        // Menu mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menu-toggle');
+            const menuMobile = document.getElementById('menu-mobile');
+            
+            if (menuToggle && menuMobile) {
+                menuToggle.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    menuMobile.classList.toggle('active');
+                    
+                    const spans = this.querySelectorAll('span');
+                    if (this.classList.contains('active')) {
+                        spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                        spans[1].style.opacity = '0';
+                        spans[2].style.transform = 'rotate(-45deg) translate(7px, -7px)';
+                    } else {
+                        spans[0].style.transform = 'none';
+                        spans[1].style.opacity = '1';
+                        spans[2].style.transform = 'none';
+                    }
+                });
+            }
+            
+            // Carregar publicações
+            carregarPublicacoes();
+            carregarParceiros();
+            carregarEventos();
+        });
+        
+        async function carregarPublicacoes() {
+            try {
+                // Simulação enquanto os arquivos não existem
+                const container = document.getElementById('publicacoes-destaque');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="card">
+                            <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400" alt="Publicação" class="card-image">
+                            <div class="card-content">
+                                <h3 class="card-title"><a href="#">Como fortalecer o comércio local</a></h3>
+                                <p class="card-text">Dicas práticas para pequenos negócios se destacarem na região...</p>
+                                <div class="card-meta">
+                                    <small><i class="far fa-calendar"></i> 15/03/2026</small>
+                                    <small><i class="far fa-user"></i> João Silva</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400" alt="Publicação" class="card-image">
+                            <div class="card-content">
+                                <h3 class="card-title"><a href="#">Eventos imperdíveis em março</a></h3>
+                                <p class="card-text">Confira a agenda completa de eventos na região do Entorno Sul...</p>
+                                <div class="card-meta">
+                                    <small><i class="far fa-calendar"></i> 10/03/2026</small>
+                                    <small><i class="far fa-user"></i> Maria Santos</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400" alt="Publicação" class="card-image">
+                            <div class="card-content">
+                                <h3 class="card-title"><a href="#">Novos parceiros chegando</a></h3>
+                                <p class="card-text">Conheça os novos comércios que estão se juntando à nossa plataforma...</p>
+                                <div class="card-meta">
+                                    <small><i class="far fa-calendar"></i> 05/03/2026</small>
+                                    <small><i class="far fa-user"></i> Administrador</small>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+            }
+        }
+        
+        async function carregarParceiros() {
+            try {
+                const container = document.getElementById('parceiros-destaque');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="parceiro-card premium">
+                            <span class="badge badge-premium">Premium</span>
+                            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200" alt="Restaurante" class="parceiro-logo">
+                            <h3 class="parceiro-nome"><a href="#">Restaurante Sabor Caseiro</a></h3>
+                            <p class="parceiro-descricao">Comida caseira com qualidade</p>
+                            <div class="parceiro-contato">
+                                <a href="#" class="btn btn-small btn-success"><i class="fab fa-whatsapp"></i></a>
+                                <a href="#" class="btn btn-small btn-outline">Ver perfil</a>
+                            </div>
+                        </div>
+                        <div class="parceiro-card">
+                            <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=200" alt="Barbearia" class="parceiro-logo">
+                            <h3 class="parceiro-nome"><a href="#">Barbearia Estilo</a></h3>
+                            <p class="parceiro-descricao">Corte e barba com estilo</p>
+                            <div class="parceiro-contato">
+                                <a href="#" class="btn btn-small btn-success"><i class="fab fa-whatsapp"></i></a>
+                                <a href="#" class="btn btn-small btn-outline">Ver perfil</a>
+                            </div>
+                        </div>
+                        <div class="parceiro-card">
+                            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=200" alt="Padaria" class="parceiro-logo">
+                            <h3 class="parceiro-nome"><a href="#">Padaria Pão Quente</a></h3>
+                            <p class="parceiro-descricao">Pães e doces fresquinhos</p>
+                            <div class="parceiro-contato">
+                                <a href="#" class="btn btn-small btn-success"><i class="fab fa-whatsapp"></i></a>
+                                <a href="#" class="btn btn-small btn-outline">Ver perfil</a>
+                            </div>
+                        </div>
+                        <div class="parceiro-card">
+                            <img src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=200" alt="Academia" class="parceiro-logo">
+                            <h3 class="parceiro-nome"><a href="#">Academia Corpo em Ação</a></h3>
+                            <p class="parceiro-descricao">Saúde e bem-estar</p>
+                            <div class="parceiro-contato">
+                                <a href="#" class="btn btn-small btn-success"><i class="fab fa-whatsapp"></i></a>
+                                <a href="#" class="btn btn-small btn-outline">Ver perfil</a>
+                            </div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+            }
+        }
+        
+        async function carregarEventos() {
+            try {
+                const container = document.getElementById('eventos-lista');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="evento-card">
+                            <div class="evento-data">
+                                <span class="dia">20</span>
+                                <span class="mes">MAR</span>
+                            </div>
+                            <div class="evento-info">
+                                <h3>Feira Gastronômica</h3>
+                                <p>Evento com os melhores food trucks da região...</p>
+                                <div class="evento-meta">
+                                    <span class="evento-local"><i class="fas fa-map-marker-alt"></i> Praça Central</span>
+                                    <span class="evento-horario"><i class="far fa-clock"></i> 18:00 - 23:00</span>
+                                </div>
+                                <a href="#" class="btn btn-outline btn-small">Saiba mais <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="evento-card">
+                            <div class="evento-data">
+                                <span class="dia">25</span>
+                                <span class="mes">MAR</span>
+                            </div>
+                            <div class="evento-info">
+                                <h3>Show Sertanejo</h3>
+                                <p>Show com artistas locais e regionais...</p>
+                                <div class="evento-meta">
+                                    <span class="evento-local"><i class="fas fa-map-marker-alt"></i> Parque de Exposições</span>
+                                    <span class="evento-horario"><i class="far fa-clock"></i> 21:00</span>
+                                </div>
+                                <a href="#" class="btn btn-outline btn-small">Saiba mais <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="evento-card">
+                            <div class="evento-data">
+                                <span class="dia">30</span>
+                                <span class="mes">MAR</span>
+                            </div>
+                            <div class="evento-info">
+                                <h3>Oficina de Empreendedorismo</h3>
+                                <p>Aprenda a alavancar seu negócio...</p>
+                                <div class="evento-meta">
+                                    <span class="evento-local"><i class="fas fa-map-marker-alt"></i> SEBRAE Toledo</span>
+                                    <span class="evento-horario"><i class="far fa-clock"></i> 19:00</span>
+                                </div>
+                                <a href="#" class="btn btn-outline btn-small">Saiba mais <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+            }
+        }
+    </script>
+    
+    <style>
+        .parceiros-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        .parceiro-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        
+        .parceiro-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .parceiro-card.premium {
+            border: 2px solid #faa115;
+        }
+        
+        .badge-premium {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #faa115;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+        }
+        
+        .parceiro-logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+        
+        .parceiro-nome a {
+            color: #256d3c;
+            text-decoration: none;
+        }
+        
+        .parceiro-descricao {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 10px 0;
+        }
+        
+        .parceiro-contato {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .btn-small {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+        
+        .btn-success {
+            background: #25D366;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #128C7E;
+            color: white;
+        }
+        
+        .evento-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .evento-data {
+            background: #256d3c;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            min-width: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .evento-data .dia {
+            font-size: 2rem;
+            font-weight: bold;
+            line-height: 1;
+        }
+        
+        .evento-data .mes {
+            font-size: 1rem;
+            text-transform: uppercase;
+        }
+        
+        .evento-info {
+            padding: 20px;
+            flex: 1;
+        }
+        
+        .evento-info h3 {
+            color: #256d3c;
+            margin-bottom: 10px;
+        }
+        
+        .evento-meta {
+            display: flex;
+            gap: 20px;
+            margin: 15px 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .parceiros-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .evento-card {
+                flex-direction: column;
+            }
+            
+            .evento-data {
+                flex-direction: row;
+                justify-content: center;
+                gap: 10px;
+                min-width: auto;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    </style>
 </body>
 </html>
