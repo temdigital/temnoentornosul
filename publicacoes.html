@@ -29,9 +29,12 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <style>
         /* =====================================================
-           RESET E VARIÁVEIS
+           RESET E VARIÁVEIS (mantido igual)
            ===================================================== */
         * {
             margin: 0;
@@ -69,7 +72,7 @@
         }
         
         /* =====================================================
-           HEADER
+           HEADER (mantido igual)
            ===================================================== */
         .header {
             background: var(--branco);
@@ -548,8 +551,8 @@
             color: var(--cinza-escuro);
         }
         
-        /* Posts Recentes */
-        .recent-post {
+        /* Posts Mais Vistos */
+        .mais-vistos-item {
             display: flex;
             gap: 15px;
             margin-bottom: 20px;
@@ -557,44 +560,50 @@
             transition: opacity 0.3s ease;
         }
         
-        .recent-post:hover {
+        .mais-vistos-item:hover {
             opacity: 0.8;
         }
         
-        .recent-post:last-child {
+        .mais-vistos-item:last-child {
             margin-bottom: 0;
         }
         
-        .recent-post-image {
+        .mais-vistos-image {
             width: 70px;
             height: 70px;
             border-radius: 10px;
             object-fit: cover;
         }
         
-        .recent-post-info h4 {
+        .mais-vistos-info {
+            flex: 1;
+        }
+        
+        .mais-vistos-info h4 {
             font-size: 1rem;
             margin-bottom: 5px;
             line-height: 1.3;
         }
         
-        .recent-post-info h4 a {
+        .mais-vistos-info h4 a {
             color: var(--verde-escuro);
             text-decoration: none;
             transition: color 0.3s ease;
         }
         
-        .recent-post-info h4 a:hover {
+        .mais-vistos-info h4 a:hover {
             color: var(--laranja);
         }
         
-        .recent-post-info .date {
+        .mais-vistos-stats {
+            display: flex;
+            gap: 10px;
             font-size: 0.85rem;
             color: var(--cinza-texto);
         }
         
-        .recent-post-info .date i {
-            margin-right: 5px;
+        .mais-vistos-stats i {
+            margin-right: 3px;
             color: var(--laranja);
         }
         
@@ -1032,11 +1041,7 @@
                 
                 <div class="filter-tabs" id="filterTabs">
                     <button class="filter-tab active" data-categoria="todas">Todas</button>
-                    <button class="filter-tab" data-categoria="Gastronomia">Gastronomia</button>
-                    <button class="filter-tab" data-categoria="Eventos">Eventos</button>
-                    <button class="filter-tab" data-categoria="Comércio Local">Comércio Local</button>
-                    <button class="filter-tab" data-categoria="Entrevistas">Entrevistas</button>
-                    <button class="filter-tab" data-categoria="Opinião">Opinião</button>
+                    <!-- Categorias serão carregadas do banco -->
                 </div>
             </div>
         </section>
@@ -1046,7 +1051,6 @@
             <div class="publicacoes-layout">
                 <!-- Grid de Publicações -->
                 <div class="publicacoes-grid" id="publicacoesGrid">
-                    <!-- Cards serão carregados via JavaScript -->
                     <div class="loading">
                         <div class="loading-spinner"></div>
                     </div>
@@ -1058,83 +1062,32 @@
                     <div class="sidebar-widget">
                         <h3>Categorias</h3>
                         <ul class="categorias-list" id="categoriasList">
-                            <li class="categoria-item">
-                                <a data-categoria="Gastronomia">
-                                    Gastronomia
-                                    <span>12</span>
-                                </a>
-                            </li>
-                            <li class="categoria-item">
-                                <a data-categoria="Comércio Local">
-                                    Comércio Local
-                                    <span>8</span>
-                                </a>
-                            </li>
-                            <li class="categoria-item">
-                                <a data-categoria="Eventos">
-                                    Eventos
-                                    <span>15</span>
-                                </a>
-                            </li>
-                            <li class="categoria-item">
-                                <a data-categoria="Entrevistas">
-                                    Entrevistas
-                                    <span>6</span>
-                                </a>
-                            </li>
-                            <li class="categoria-item">
-                                <a data-categoria="Opinião">
-                                    Opinião
-                                    <span>9</span>
-                                </a>
+                            <!-- Categorias serão carregadas do banco -->
+                            <li class="loading">
+                                <div class="loading-spinner" style="width: 30px; height: 30px;"></div>
                             </li>
                         </ul>
                     </div>
 
-                    <!-- Posts Recentes -->
+                    <!-- Posts Mais Vistos -->
                     <div class="sidebar-widget">
-                        <h3>Posts Recentes</h3>
-                        <div class="recent-post" data-titulo="Como fortalecer o comércio local com estratégias digitais">
-                            <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=100" alt="Post" class="recent-post-image" loading="lazy">
-                            <div class="recent-post-info">
-                                <h4><a href="#" onclick="filtrarPorTitulo('Como fortalecer o comércio local com estratégias digitais'); return false;">Como fortalecer o comércio local</a></h4>
-                                <div class="date">
-                                    <i class="far fa-calendar"></i> 15/03/2026
-                                </div>
-                            </div>
-                        </div>
-                        <div class="recent-post" data-titulo="Eventos imperdíveis em março: agenda completa da região">
-                            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=100" alt="Post" class="recent-post-image" loading="lazy">
-                            <div class="recent-post-info">
-                                <h4><a href="#" onclick="filtrarPorTitulo('Eventos imperdíveis em março: agenda completa da região'); return false;">Eventos imperdíveis em março</a></h4>
-                                <div class="date">
-                                    <i class="far fa-calendar"></i> 10/03/2026
-                                </div>
-                            </div>
-                        </div>
-                        <div class="recent-post" data-titulo="Novos parceiros: conheça os comércios que chegaram">
-                            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=100" alt="Post" class="recent-post-image" loading="lazy">
-                            <div class="recent-post-info">
-                                <h4><a href="#" onclick="filtrarPorTitulo('Novos parceiros: conheça os comércios que chegaram'); return false;">Novos parceiros chegando</a></h4>
-                                <div class="date">
-                                    <i class="far fa-calendar"></i> 05/03/2026
-                                </div>
+                        <h3>Mais Vistos</h3>
+                        <div id="maisVistosContainer">
+                            <!-- Posts mais vistos serão carregados do banco -->
+                            <div class="loading">
+                                <div class="loading-spinner" style="width: 30px; height: 30px;"></div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Tags -->
+                    <!-- Tags Populares -->
                     <div class="sidebar-widget">
                         <h3>Tags Populares</h3>
                         <div class="tags-cloud" id="tagsCloud">
-                            <button class="tag" data-tag="gastronomia">#gastronomia</button>
-                            <button class="tag" data-tag="comércio local">#comérciolocal</button>
-                            <button class="tag" data-tag="eventos">#eventos</button>
-                            <button class="tag" data-tag="entrevistas">#entrevistas</button>
-                            <button class="tag" data-tag="cultura">#cultura</button>
-                            <button class="tag" data-tag="empreendedorismo">#empreendedorismo</button>
-                            <button class="tag" data-tag="toledo">#toledo</button>
-                            <button class="tag" data-tag="entorno sul">#entornosul</button>
+                            <!-- Tags serão carregadas do banco -->
+                            <div class="loading">
+                                <div class="loading-spinner" style="width: 30px; height: 30px;"></div>
+                            </div>
                         </div>
                     </div>
                     
@@ -1150,9 +1103,9 @@
             <!-- PAGINAÇÃO -->
             <div class="pagination" id="pagination">
                 <button class="page-link prev disabled" id="prevPage"><i class="fas fa-chevron-left"></i></button>
-                <button class="page-link active" data-page="1">1</button>
-                <button class="page-link" data-page="2">2</button>
-                <button class="page-link" data-page="3">3</button>
+                <div id="pageNumbers">
+                    <!-- Números das páginas serão gerados dinamicamente -->
+                </div>
                 <button class="page-link next" id="nextPage">Próximo <i class="fas fa-chevron-right"></i></button>
             </div>
         </div>
@@ -1222,110 +1175,24 @@
     <!-- Scripts -->
     <script>
         // =====================================================
-        // BANCO DE DADOS DAS PUBLICAÇÕES
+        // CONFIGURAÇÃO DO SUPABASE
         // =====================================================
-        const publicacoesDB = [
-            {
-                id: 1,
-                titulo: "Como fortalecer o comércio local com estratégias digitais",
-                categoria: "Gastronomia",
-                data: "15/03/2026",
-                visualizacoes: 234,
-                autor: "João Silva",
-                autorFoto: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50",
-                imagem: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400",
-                excerpt: "Descubra estratégias práticas para pequenos negócios se destacarem no ambiente digital e atraírem mais clientes...",
-                tags: ["gastronomia", "empreendedorismo", "digital"]
-            },
-            {
-                id: 2,
-                titulo: "Eventos imperdíveis em março: agenda completa da região",
-                categoria: "Eventos",
-                data: "10/03/2026",
-                visualizacoes: 567,
-                autor: "Maria Santos",
-                autorFoto: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50",
-                imagem: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400",
-                excerpt: "Confira a lista completa de shows, feiras, exposições e eventos culturais que acontecerão em março...",
-                tags: ["eventos", "cultura", "agenda"]
-            },
-            {
-                id: 3,
-                titulo: "Novos parceiros: conheça os comércios que chegaram",
-                categoria: "Comércio Local",
-                data: "05/03/2026",
-                visualizacoes: 189,
-                autor: "Admin",
-                autorFoto: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50",
-                imagem: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400",
-                excerpt: "Recebemos novos parceiros incríveis! Conheça as lojas, restaurantes e serviços que estão se juntando a nós...",
-                tags: ["comércio local", "parceiros", "novidades"]
-            },
-            {
-                id: 4,
-                titulo: "Entrevista: Como empreender na região e ter sucesso",
-                categoria: "Entrevistas",
-                data: "28/02/2026",
-                visualizacoes: 421,
-                autor: "Ana Oliveira",
-                autorFoto: "https://images.unsplash.com/photo-1494790108777-847ef61b5a5f?w=50",
-                imagem: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400",
-                excerpt: "Conversamos com empreendedores de sucesso da região que compartilharam dicas valiosas para quem está começando...",
-                tags: ["entrevistas", "empreendedorismo", "sucesso"]
-            },
-            {
-                id: 5,
-                titulo: "A importância de apoiar o comércio local",
-                categoria: "Opinião",
-                data: "20/02/2026",
-                visualizacoes: 312,
-                autor: "João Silva",
-                autorFoto: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50",
-                imagem: "https://images.unsplash.com/photo-1456324504439-367cee3b3c32?w=400",
-                excerpt: "Um artigo sobre como o consumo consciente e o apoio aos pequenos negócios transformam a economia local...",
-                tags: ["opinião", "economia local", "consumo consciente"]
-            },
-            {
-                id: 6,
-                titulo: "5 novos restaurantes para conhecer na região",
-                categoria: "Gastronomia",
-                data: "15/02/2026",
-                visualizacoes: 678,
-                autor: "Maria Santos",
-                autorFoto: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50",
-                imagem: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400",
-                excerpt: "Selecionamos 5 restaurantes que abriram recentemente e já estão fazendo sucesso com suas delícias...",
-                tags: ["gastronomia", "restaurantes", "novidades"]
-            },
-            {
-                id: 7,
-                titulo: "Feira de artesanato movimenta o centro da cidade",
-                categoria: "Eventos",
-                data: "10/02/2026",
-                visualizacoes: 245,
-                autor: "Admin",
-                autorFoto: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50",
-                imagem: "https://images.unsplash.com/photo-1485182708500-8d703a3e5a4b?w=400",
-                excerpt: "Feira de artesanato reúne mais de 50 expositores com produtos locais e regionais...",
-                tags: ["eventos", "artesanato", "cultura"]
-            },
-            {
-                id: 8,
-                titulo: "Dicas para abrir seu próprio negócio",
-                categoria: "Comércio Local",
-                data: "05/02/2026",
-                visualizacoes: 156,
-                autor: "Ana Oliveira",
-                autorFoto: "https://images.unsplash.com/photo-1494790108777-847ef61b5a5f?w=50",
-                imagem: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400",
-                excerpt: "Passo a passo para quem quer empreender e abrir seu próprio negócio na região...",
-                tags: ["empreendedorismo", "comércio local", "dicas"]
+        const SUPABASE_URL = 'https://seu-projeto.supabase.co'; // Substitua pela URL do seu projeto
+        const SUPABASE_ANON_KEY = 'sua-chave-anonima'; // Substitua pela sua chave
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+            auth: {
+                autoRefreshToken: true,
+                persistSession: true
             }
-        ];
+        });
 
         // =====================================================
         // VARIÁVEIS DE ESTADO
         // =====================================================
+        let publicacoes = [];
+        let categorias = [];
+        let todasTags = [];
         let currentFilter = {
             categoria: 'todas',
             busca: '',
@@ -1334,7 +1201,7 @@
         };
         
         const itemsPerPage = 6;
-        let filteredPublicacoes = [...publicacoesDB];
+        let filteredPublicacoes = [];
 
         // =====================================================
         // MENU HAMBURGUER
@@ -1376,44 +1243,280 @@
                 });
             }
             
-            // Inicializar a página
-            renderizarPublicacoes();
-            configurarFiltros();
-            configurarBusca();
-            configurarCategorias();
-            configurarTags();
-            configurarPaginacao();
-            configurarLimparFiltros();
+            // Carregar dados do Supabase
+            carregarDados();
         });
 
         // =====================================================
-        // FUNÇÃO PARA RENDERIZAR PUBLICAÇÕES
+        // CARREGAR DADOS DO SUPABASE
         // =====================================================
-        function renderizarPublicacoes() {
-            const grid = document.getElementById('publicacoesGrid');
+        async function carregarDados() {
+            try {
+                // Carregar publicações com dados do colunista
+                const { data: publicacoesData, error: pubError } = await supabase
+                    .from('publicacoes')
+                    .select(`
+                        *,
+                        colunistas (
+                            nome,
+                            foto_url
+                        ),
+                        categorias (
+                            id,
+                            nome,
+                            cor_fundo
+                        )
+                    `)
+                    .eq('status', 'publicado')
+                    .order('published_at', { ascending: false });
+                
+                if (pubError) throw pubError;
+                
+                publicacoes = publicacoesData || [];
+                filteredPublicacoes = [...publicacoes];
+                
+                // Extrair categorias únicas
+                const categoriasMap = new Map();
+                publicacoes.forEach(pub => {
+                    if (pub.categorias && !categoriasMap.has(pub.categorias.id)) {
+                        categoriasMap.set(pub.categorias.id, {
+                            id: pub.categorias.id,
+                            nome: pub.categorias.nome,
+                            cor: pub.categorias.cor_fundo
+                        });
+                    }
+                });
+                categorias = Array.from(categoriasMap.values());
+                
+                // Extrair todas as tags
+                const tagsSet = new Set();
+                publicacoes.forEach(pub => {
+                    if (pub.palavras_chave) {
+                        pub.palavras_chave.forEach(tag => tagsSet.add(tag));
+                    }
+                });
+                todasTags = Array.from(tagsSet);
+                
+                // Renderizar tudo
+                renderizarCategorias();
+                renderizarTabs();
+                renderizarPublicacoes();
+                carregarMaisVistos();
+                renderizarTags();
+                
+            } catch (error) {
+                console.error('Erro ao carregar dados:', error);
+                mostrarErro('Erro ao carregar publicações. Tente novamente mais tarde.');
+            }
+        }
+
+        // =====================================================
+        // CARREGAR MAIS VISTOS
+        // =====================================================
+        async function carregarMaisVistos() {
+            try {
+                const { data, error } = await supabase
+                    .from('publicacoes')
+                    .select(`
+                        id,
+                        titulo,
+                        views,
+                        imagem_destaque,
+                        published_at,
+                        colunistas (
+                            nome
+                        )
+                    `)
+                    .eq('status', 'publicado')
+                    .order('views', { ascending: false })
+                    .limit(3);
+                
+                if (error) throw error;
+                
+                const maisVistosContainer = document.getElementById('maisVistosContainer');
+                
+                if (data && data.length > 0) {
+                    maisVistosContainer.innerHTML = data.map(pub => `
+                        <div class="mais-vistos-item" onclick="filtrarPorId(${pub.id})">
+                            <img src="${pub.imagem_destaque || 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=100'}" 
+                                 alt="${pub.titulo}" 
+                                 class="mais-vistos-image"
+                                 loading="lazy">
+                            <div class="mais-vistos-info">
+                                <h4><a href="#" onclick="filtrarPorId(${pub.id}); return false;">${pub.titulo.substring(0, 40)}${pub.titulo.length > 40 ? '...' : ''}</a></h4>
+                                <div class="mais-vistos-stats">
+                                    <span><i class="far fa-eye"></i> ${pub.views || 0}</span>
+                                    <span><i class="far fa-calendar"></i> ${formatarData(pub.published_at)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    maisVistosContainer.innerHTML = '<p style="color: var(--cinza-texto); text-align: center;">Nenhuma publicação encontrada.</p>';
+                }
+            } catch (error) {
+                console.error('Erro ao carregar mais vistos:', error);
+            }
+        }
+
+        // =====================================================
+        // RENDERIZAR CATEGORIAS NA SIDEBAR
+        // =====================================================
+        function renderizarCategorias() {
+            const categoriasList = document.getElementById('categoriasList');
             
-            // Aplicar filtros
-            filteredPublicacoes = publicacoesDB.filter(pub => {
+            if (categorias.length === 0) {
+                categoriasList.innerHTML = '<p style="color: var(--cinza-texto);">Nenhuma categoria encontrada.</p>';
+                return;
+            }
+            
+            categoriasList.innerHTML = categorias.map(cat => {
+                const count = publicacoes.filter(p => p.categorias && p.categorias.id === cat.id).length;
+                return `
+                    <li class="categoria-item">
+                        <a data-categoria="${cat.nome}">
+                            ${cat.nome}
+                            <span>${count}</span>
+                        </a>
+                    </li>
+                `;
+            }).join('');
+            
+            // Adicionar eventos
+            document.querySelectorAll('.categoria-item a').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const categoria = this.dataset.categoria;
+                    
+                    // Atualizar tabs
+                    document.querySelectorAll('.filter-tab').forEach(tab => {
+                        if (tab.dataset.categoria === categoria) {
+                            tab.classList.add('active');
+                        } else if (tab.dataset.categoria === 'todas') {
+                            tab.classList.remove('active');
+                        } else {
+                            tab.classList.remove('active');
+                        }
+                    });
+                    
+                    currentFilter.categoria = categoria;
+                    currentFilter.pagina = 1;
+                    aplicarFiltros();
+                });
+            });
+        }
+
+        // =====================================================
+        // RENDERIZAR TABS DE CATEGORIA
+        // =====================================================
+        function renderizarTabs() {
+            const filterTabs = document.getElementById('filterTabs');
+            
+            // Manter a tab "Todas"
+            const todasTab = filterTabs.querySelector('[data-categoria="todas"]');
+            filterTabs.innerHTML = '';
+            filterTabs.appendChild(todasTab);
+            
+            // Adicionar categorias
+            categorias.forEach(cat => {
+                const tab = document.createElement('button');
+                tab.className = 'filter-tab';
+                tab.dataset.categoria = cat.nome;
+                tab.textContent = cat.nome;
+                filterTabs.appendChild(tab);
+            });
+            
+            // Adicionar eventos
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const categoria = this.dataset.categoria;
+                    
+                    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    currentFilter.categoria = categoria;
+                    currentFilter.pagina = 1;
+                    aplicarFiltros();
+                });
+            });
+        }
+
+        // =====================================================
+        // RENDERIZAR TAGS
+        // =====================================================
+        function renderizarTags() {
+            const tagsCloud = document.getElementById('tagsCloud');
+            
+            if (todasTags.length === 0) {
+                tagsCloud.innerHTML = '<p style="color: var(--cinza-texto);">Nenhuma tag encontrada.</p>';
+                return;
+            }
+            
+            // Contar frequência das tags
+            const tagCount = {};
+            publicacoes.forEach(pub => {
+                if (pub.palavras_chave) {
+                    pub.palavras_chave.forEach(tag => {
+                        tagCount[tag] = (tagCount[tag] || 0) + 1;
+                    });
+                }
+            });
+            
+            // Pegar tags mais frequentes (top 15)
+            const tagsMaisFrequentes = Object.entries(tagCount)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 15)
+                .map(([tag]) => tag);
+            
+            tagsCloud.innerHTML = tagsMaisFrequentes.map(tag => `
+                <button class="tag" data-tag="${tag}">#${tag}</button>
+            `).join('');
+            
+            // Adicionar eventos
+            document.querySelectorAll('.tag').forEach(tag => {
+                tag.addEventListener('click', function() {
+                    const tagValue = this.dataset.tag;
+                    
+                    document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    currentFilter.tag = tagValue;
+                    currentFilter.pagina = 1;
+                    document.getElementById('searchInput').value = '';
+                    currentFilter.busca = '';
+                    aplicarFiltros();
+                });
+            });
+        }
+
+        // =====================================================
+        // APLICAR FILTROS
+        // =====================================================
+        function aplicarFiltros() {
+            filteredPublicacoes = publicacoes.filter(pub => {
                 // Filtro por categoria
-                if (currentFilter.categoria !== 'todas' && pub.categoria !== currentFilter.categoria) {
-                    return false;
+                if (currentFilter.categoria !== 'todas') {
+                    if (!pub.categorias || pub.categorias.nome !== currentFilter.categoria) {
+                        return false;
+                    }
                 }
                 
                 // Filtro por busca
                 if (currentFilter.busca) {
                     const termo = currentFilter.busca.toLowerCase();
                     const tituloMatch = pub.titulo.toLowerCase().includes(termo);
-                    const excerptMatch = pub.excerpt.toLowerCase().includes(termo);
-                    const autorMatch = pub.autor.toLowerCase().includes(termo);
+                    const conteudoMatch = pub.conteudo ? pub.conteudo.toLowerCase().includes(termo) : false;
+                    const autorMatch = pub.colunistas && pub.colunistas.nome ? 
+                                     pub.colunistas.nome.toLowerCase().includes(termo) : false;
                     
-                    if (!tituloMatch && !excerptMatch && !autorMatch) {
+                    if (!tituloMatch && !conteudoMatch && !autorMatch) {
                         return false;
                     }
                 }
                 
                 // Filtro por tag
                 if (currentFilter.tag) {
-                    if (!pub.tags.includes(currentFilter.tag.toLowerCase())) {
+                    if (!pub.palavras_chave || !pub.palavras_chave.includes(currentFilter.tag)) {
                         return false;
                     }
                 }
@@ -1421,12 +1524,15 @@
                 return true;
             });
             
-            // Calcular paginação
-            const startIndex = (currentFilter.pagina - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-            const paginatedPublicacoes = filteredPublicacoes.slice(startIndex, endIndex);
+            renderizarPublicacoes();
+        }
+
+        // =====================================================
+        // RENDERIZAR PUBLICAÇÕES
+        // =====================================================
+        function renderizarPublicacoes() {
+            const grid = document.getElementById('publicacoesGrid');
             
-            // Renderizar
             if (filteredPublicacoes.length === 0) {
                 grid.innerHTML = `
                     <div class="no-results">
@@ -1435,67 +1541,83 @@
                         <p>Tente buscar com outros termos ou limpar os filtros.</p>
                     </div>
                 `;
-            } else {
-                grid.innerHTML = paginatedPublicacoes.map(pub => `
-                    <div class="pub-card">
-                        <div class="pub-card-image">
-                            <span class="pub-category">${pub.categoria}</span>
-                            <img src="${pub.imagem}" alt="${pub.titulo}" loading="lazy">
-                        </div>
-                        <div class="pub-card-content">
-                            <h3 class="pub-card-title">
-                                <a href="#" onclick="filtrarPorTitulo('${pub.titulo}'); return false;">${pub.titulo}</a>
-                            </h3>
-                            <div class="pub-card-meta">
-                                <span><i class="far fa-calendar"></i> ${pub.data}</span>
-                                <span><i class="far fa-eye"></i> ${pub.visualizacoes} visualizações</span>
-                            </div>
-                            <p class="pub-card-excerpt">${pub.excerpt}</p>
-                            <div class="pub-card-footer">
-                                <div class="pub-author">
-                                    <img src="${pub.autorFoto}" alt="${pub.autor}">
-                                    <span>${pub.autor}</span>
-                                </div>
-                                <a href="#" class="pub-read-more" onclick="filtrarPorTitulo('${pub.titulo}'); return false;">
-                                    Ler mais <i class="fas fa-arrow-right"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
+                atualizarPaginacao();
+                return;
             }
             
-            // Atualizar contadores nas categorias
-            atualizarContadoresCategorias();
+            // Calcular paginação
+            const startIndex = (currentFilter.pagina - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedPublicacoes = filteredPublicacoes.slice(startIndex, endIndex);
             
-            // Atualizar paginação
+            grid.innerHTML = paginatedPublicacoes.map(pub => `
+                <div class="pub-card">
+                    <div class="pub-card-image">
+                        <span class="pub-category" style="background-color: ${pub.categorias?.cor_fundo || '#faa115'}">
+                            ${pub.categorias?.nome || 'Sem categoria'}
+                        </span>
+                        <img src="${pub.imagem_destaque || 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400'}" 
+                             alt="${pub.titulo}" 
+                             loading="lazy">
+                    </div>
+                    <div class="pub-card-content">
+                        <h3 class="pub-card-title">
+                            <a href="#" onclick="abrirPublicacao(${pub.id}); return false;">${pub.titulo}</a>
+                        </h3>
+                        <div class="pub-card-meta">
+                            <span><i class="far fa-calendar"></i> ${formatarData(pub.published_at || pub.created_at)}</span>
+                            <span><i class="far fa-eye"></i> ${pub.views || 0} visualizações</span>
+                        </div>
+                        <p class="pub-card-excerpt">${pub.subtitulo || (pub.conteudo ? pub.conteudo.substring(0, 100) + '...' : '')}</p>
+                        <div class="pub-card-footer">
+                            <div class="pub-author">
+                                <img src="${pub.colunistas?.foto_url || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50'}" 
+                                     alt="${pub.colunistas?.nome || 'Autor'}">
+                                <span>${pub.colunistas?.nome || 'Autor'}</span>
+                            </div>
+                            <a href="#" class="pub-read-more" onclick="abrirPublicacao(${pub.id}); return false;">
+                                Ler mais <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
             atualizarPaginacao();
         }
-        
+
         // =====================================================
-        // CONFIGURAR FILTROS POR CATEGORIA (TABS)
+        // ATUALIZAR PAGINAÇÃO
         // =====================================================
-        function configurarFiltros() {
-            const filterTabs = document.querySelectorAll('.filter-tab');
+        function atualizarPaginacao() {
+            const totalPages = Math.ceil(filteredPublicacoes.length / itemsPerPage);
+            const prevBtn = document.getElementById('prevPage');
+            const nextBtn = document.getElementById('nextPage');
+            const pageNumbers = document.getElementById('pageNumbers');
             
-            filterTabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const categoria = this.dataset.categoria;
-                    
-                    // Remover active de todos
-                    filterTabs.forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    // Atualizar filtro
-                    currentFilter.categoria = categoria;
-                    currentFilter.pagina = 1; // Voltar para primeira página
-                    
-                    // Renderizar
-                    renderizarPublicacoes();
+            // Gerar números das páginas
+            let pagesHtml = '';
+            for (let i = 1; i <= totalPages; i++) {
+                pagesHtml += `<button class="page-link ${i === currentFilter.pagina ? 'active' : ''}" data-page="${i}">${i}</button>`;
+            }
+            pageNumbers.innerHTML = pagesHtml;
+            
+            // Adicionar eventos aos botões de página
+            document.querySelectorAll('.page-link[data-page]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const page = parseInt(this.dataset.page);
+                    if (page !== currentFilter.pagina) {
+                        currentFilter.pagina = page;
+                        renderizarPublicacoes();
+                    }
                 });
             });
+            
+            // Atualizar botões anterior/próximo
+            prevBtn.classList.toggle('disabled', currentFilter.pagina === 1);
+            nextBtn.classList.toggle('disabled', currentFilter.pagina === totalPages || totalPages === 0);
         }
-        
+
         // =====================================================
         // CONFIGURAR BUSCA
         // =====================================================
@@ -1507,7 +1629,7 @@
                 const termo = searchInput.value.trim();
                 currentFilter.busca = termo;
                 currentFilter.pagina = 1;
-                renderizarPublicacoes();
+                aplicarFiltros();
             }
             
             searchButton.addEventListener('click', realizarBusca);
@@ -1518,177 +1640,7 @@
                 }
             });
         }
-        
-        // =====================================================
-        // CONFIGURAR CATEGORIAS DA SIDEBAR
-        // =====================================================
-        function configurarCategorias() {
-            const categoriasItems = document.querySelectorAll('.categoria-item a');
-            
-            categoriasItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const categoria = this.dataset.categoria;
-                    
-                    // Atualizar tabs
-                    const filterTabs = document.querySelectorAll('.filter-tab');
-                    filterTabs.forEach(tab => {
-                        if (tab.dataset.categoria === categoria) {
-                            tab.classList.add('active');
-                        } else {
-                            tab.classList.remove('active');
-                        }
-                    });
-                    
-                    // Atualizar filtro
-                    currentFilter.categoria = categoria;
-                    currentFilter.pagina = 1;
-                    
-                    // Renderizar
-                    renderizarPublicacoes();
-                });
-            });
-        }
-        
-        // =====================================================
-        // CONFIGURAR TAGS
-        // =====================================================
-        function configurarTags() {
-            const tags = document.querySelectorAll('.tag');
-            
-            tags.forEach(tag => {
-                tag.addEventListener('click', function() {
-                    const tagValue = this.dataset.tag;
-                    
-                    // Toggle active
-                    tags.forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    // Atualizar filtro
-                    currentFilter.tag = tagValue;
-                    currentFilter.pagina = 1;
-                    
-                    // Limpar busca (opcional)
-                    document.getElementById('searchInput').value = '';
-                    currentFilter.busca = '';
-                    
-                    // Renderizar
-                    renderizarPublicacoes();
-                });
-            });
-        }
-        
-        // =====================================================
-        // FUNÇÃO PARA FILTRAR POR TÍTULO (posts recentes)
-        // =====================================================
-        window.filtrarPorTitulo = function(titulo) {
-            // Limpar outros filtros
-            document.getElementById('searchInput').value = '';
-            
-            // Atualizar tabs
-            const filterTabs = document.querySelectorAll('.filter-tab');
-            filterTabs.forEach(tab => {
-                if (tab.dataset.categoria === 'todas') {
-                    tab.classList.add('active');
-                } else {
-                    tab.classList.remove('active');
-                }
-            });
-            
-            // Limpar tags
-            document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
-            
-            // Atualizar filtros
-            currentFilter = {
-                categoria: 'todas',
-                busca: titulo,
-                tag: '',
-                pagina: 1
-            };
-            
-            // Renderizar
-            renderizarPublicacoes();
-        };
-        
-        // =====================================================
-        // ATUALIZAR CONTADORES DAS CATEGORIAS
-        // =====================================================
-        function atualizarContadoresCategorias() {
-            const categorias = ['Gastronomia', 'Comércio Local', 'Eventos', 'Entrevistas', 'Opinião'];
-            
-            categorias.forEach(categoria => {
-                const count = publicacoesDB.filter(p => p.categoria === categoria).length;
-                const span = document.querySelector(`.categoria-item a[data-categoria="${categoria}"] span`);
-                if (span) {
-                    span.textContent = count;
-                }
-            });
-        }
-        
-        // =====================================================
-        // CONFIGURAR PAGINAÇÃO
-        // =====================================================
-        function configurarPaginacao() {
-            const prevBtn = document.getElementById('prevPage');
-            const nextBtn = document.getElementById('nextPage');
-            const pageButtons = document.querySelectorAll('.page-link[data-page]');
-            
-            prevBtn.addEventListener('click', function() {
-                if (!this.classList.contains('disabled') && currentFilter.pagina > 1) {
-                    currentFilter.pagina--;
-                    renderizarPublicacoes();
-                }
-            });
-            
-            nextBtn.addEventListener('click', function() {
-                const totalPages = Math.ceil(filteredPublicacoes.length / itemsPerPage);
-                if (!this.classList.contains('disabled') && currentFilter.pagina < totalPages) {
-                    currentFilter.pagina++;
-                    renderizarPublicacoes();
-                }
-            });
-            
-            pageButtons.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const page = parseInt(this.dataset.page);
-                    if (page !== currentFilter.pagina) {
-                        currentFilter.pagina = page;
-                        renderizarPublicacoes();
-                    }
-                });
-            });
-        }
-        
-        // =====================================================
-        // ATUALIZAR PAGINAÇÃO
-        // =====================================================
-        function atualizarPaginacao() {
-            const totalPages = Math.ceil(filteredPublicacoes.length / itemsPerPage);
-            const prevBtn = document.getElementById('prevPage');
-            const nextBtn = document.getElementById('nextPage');
-            const pageButtons = document.querySelectorAll('.page-link[data-page]');
-            
-            // Atualizar botões de página
-            pageButtons.forEach((btn, index) => {
-                const pageNum = index + 1;
-                if (pageNum <= totalPages) {
-                    btn.style.display = 'flex';
-                    if (pageNum === currentFilter.pagina) {
-                        btn.classList.add('active');
-                    } else {
-                        btn.classList.remove('active');
-                    }
-                } else {
-                    btn.style.display = 'none';
-                }
-            });
-            
-            // Atualizar botões anterior/próximo
-            prevBtn.classList.toggle('disabled', currentFilter.pagina === 1);
-            nextBtn.classList.toggle('disabled', currentFilter.pagina === totalPages || totalPages === 0);
-        }
-        
+
         // =====================================================
         // LIMPAR FILTROS
         // =====================================================
@@ -1707,8 +1659,7 @@
                 // Resetar UI
                 document.getElementById('searchInput').value = '';
                 
-                const filterTabs = document.querySelectorAll('.filter-tab');
-                filterTabs.forEach(tab => {
+                document.querySelectorAll('.filter-tab').forEach(tab => {
                     if (tab.dataset.categoria === 'todas') {
                         tab.classList.add('active');
                     } else {
@@ -1718,10 +1669,56 @@
                 
                 document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
                 
-                // Renderizar
+                // Aplicar
+                filteredPublicacoes = [...publicacoes];
                 renderizarPublicacoes();
             });
         }
+
+        // =====================================================
+        // FUNÇÕES AUXILIARES
+        // =====================================================
+        function formatarData(data) {
+            if (!data) return '';
+            const d = new Date(data);
+            return d.toLocaleDateString('pt-BR');
+        }
+
+        window.filtrarPorId = function(id) {
+            const publicacao = publicacoes.find(p => p.id === id);
+            if (publicacao) {
+                currentFilter.busca = publicacao.titulo;
+                document.getElementById('searchInput').value = publicacao.titulo;
+                aplicarFiltros();
+            }
+        };
+
+        window.abrirPublicacao = function(id) {
+            // Aqui você pode redirecionar para a página individual da publicação
+            // window.location.href = `publicacao.html?id=${id}`;
+            alert(`Abrir publicação ID: ${id} - Em breve página individual`);
+            
+            // Incrementar visualizações
+            supabase.rpc('increment_visualizacoes', {
+                table_name: 'publicacoes',
+                record_id: id
+            });
+        };
+
+        function mostrarErro(mensagem) {
+            const grid = document.getElementById('publicacoesGrid');
+            grid.innerHTML = `
+                <div class="no-results">
+                    <i class="fas fa-exclamation-triangle" style="color: #dc3545;"></i>
+                    <h3>Ops! Algo deu errado</h3>
+                    <p>${mensagem}</p>
+                </div>
+            `;
+        }
+
+        // Inicializar
+        configurarBusca();
+        configurarLimparFiltros();
     </script>
 </body>
 </html>
