@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Publicações - Tem no Entorno Sul</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Fique por dentro das últimas notícias, artigos e informações relevantes da região do Entorno Sul.">
+    <meta name="keywords" content="notícias, artigos, blog, informações, Entorno Sul, Toledo PR">
+    <meta name="author" content="Tem no Entorno Sul">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.temnoentornosul.com.br/publicacoes.html">
+    <meta property="og:title" content="Publicações - Tem no Entorno Sul">
+    <meta property="og:description" content="Fique por dentro das últimas notícias e artigos da região.">
+    <meta property="og:image" content="https://i.imgur.com/9eZarki.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://i.imgur.com/9eZarki.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =====================================================
+           RESET E VARIÁVEIS (mesmo da home)
+           ===================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --verde-escuro: #256d3c;
+            --amarelo: #f8d236;
+            --laranja: #faa115;
+            --verde-claro: #91b69d;
+            --branco: #ffffff;
+            --marrom-verde: #928a27;
+            --cinza-claro: #f5f5f5;
+            --cinza-medio: #e0e0e0;
+            --cinza-escuro: #333333;
+            --cinza-texto: #666666;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+            overflow-x: hidden;
+            width: 100%;
+            background: var(--cinza-claro);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* =====================================================
+           HEADER (idêntico ao da home)
+           ===================================================== */
+        .header {
+            background: var(--branco);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+        
+        .header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+            padding: 0 15px;
+        }
+        
+        .logo img {
+            height: 45px;
+            width: auto;
+            display: block;
+        }
+        
+        /* Menu Desktop */
+        .menu-desktop {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .menu-desktop a {
+            color: var(--verde-escuro);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .menu-desktop a:hover,
+        .menu-desktop a.active {
+            color: var(--laranja);
+        }
+        
+        .btn-login {
+            background: var(--verde-escuro);
+            color: var(--branco) !important;
+            padding: 8px 20px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        
+        .btn-login:hover {
+            background: #1a4f2b;
+        }
+        
+        /* Menu Hamburguer */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        .menu-toggle span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: var(--verde-escuro);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-toggle.active span:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+        }
+        
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .menu-toggle.active span:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+        }
+        
+        /* Menu Mobile */
+        .menu-mobile {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 70px);
+            background: var(--branco);
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            overflow-y: auto;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .menu-mobile.active {
+            transform: translateX(0);
+            display: block;
+        }
+        
+        .menu-mobile a {
+            display: block;
+            padding: 15px 0;
+            color: var(--verde-escuro);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            border-bottom: 1px solid var(--cinza-claro);
+        }
+        
+        .menu-mobile a:last-child {
+            border-bottom: none;
+        }
+        
+        .menu-mobile .btn-login {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 30px;
+            background: var(--verde-escuro);
+            color: var(--branco) !important;
+            border-radius: 5px;
+            text-align: center;
+            border-bottom: none;
+        }
+        
+        /* =====================================================
+           HERO DA PÁGINA DE PUBLICAÇÕES
+           ===================================================== */
+        .page-hero {
+            background: linear-gradient(135deg, var(--verde-escuro) 0%, var(--verde-claro) 100%);
+            color: var(--branco);
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .page-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--branco);
+        }
+        
+        .page-hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.95;
+        }
+        
+        /* =====================================================
+           BARRA DE BUSCA E FILTROS
+           ===================================================== */
+        .search-section {
+            background: var(--branco);
+            padding: 30px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--branco);
+            border: 2px solid var(--cinza-medio);
+            border-radius: 50px;
+            padding: 5px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .search-box:focus-within {
+            border-color: var(--verde-escuro);
+        }
+        
+        .search-box input {
+            flex: 1;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 50px;
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        .search-box button {
+            background: var(--verde-escuro);
+            color: var(--branco);
+            border: none;
+            padding: 0 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .search-box button:hover {
+            background: #1a4f2b;
+        }
+        
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-tab {
+            padding: 8px 25px;
+            border: 2px solid var(--verde-escuro);
+            border-radius: 30px;
+            color: var(--verde-escuro);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: transparent;
+        }
+        
+        .filter-tab:hover,
+        .filter-tab.active {
+            background: var(--verde-escuro);
+            color: var(--branco);
+        }
+        
+        /* =====================================================
+           LAYOUT PRINCIPAL
+           ===================================================== */
+        .publicacoes-layout {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        /* Grid de Publicações */
+        .publicacoes-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+        
+        /* Card de Publicação */
+        .pub-card {
+            background: var(--branco);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .pub-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .pub-card-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .pub-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .pub-card:hover .pub-card-image img {
+            transform: scale(1.05);
+        }
+        
+        .pub-category {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--laranja);
+            color: var(--branco);
+            padding: 5px 15px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            z-index: 1;
+        }
+        
+        .pub-card-content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .pub-card-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+        
+        .pub-card-title a {
+            color: var(--verde-escuro);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .pub-card-title a:hover {
+            color: var(--laranja);
+        }
+        
+        .pub-card-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            color: var(--cinza-texto);
+            font-size: 0.9rem;
+        }
+        
+        .pub-card-meta i {
+            margin-right: 5px;
+            color: var(--laranja);
+        }
+        
+        .pub-card-excerpt {
+            color: var(--cinza-texto);
+            margin-bottom: 20px;
+            line-height: 1.6;
+            flex: 1;
+        }
+        
+        .pub-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--cinza-medio);
+            padding-top: 15px;
+        }
+        
+        .pub-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .pub-author img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .pub-author span {
+            font-size: 0.9rem;
+            color: var(--cinza-texto);
+        }
+        
+        .pub-read-more {
+            color: var(--verde-escuro);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        
+        .pub-read-more:hover {
+            color: var(--laranja);
+        }
+        
+        .pub-read-more i {
+            margin-left: 5px;
+            transition: transform 0.3s ease;
+        }
+        
+        .pub-read-more:hover i {
+            transform: translateX(5px);
+        }
+        
+        /* =====================================================
+           SIDEBAR
+           ===================================================== */
+        .sidebar {
+            background: var(--branco);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+        
+        .sidebar-widget {
+            margin-bottom: 35px;
+        }
+        
+        .sidebar-widget:last-child {
+            margin-bottom: 0;
+        }
+        
+        .sidebar-widget h3 {
+            color: var(--verde-escuro);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--laranja);
+            display: inline-block;
+        }
+        
+        /* Categorias */
+        .categorias-list {
+            list-style: none;
+        }
+        
+        .categoria-item {
+            margin-bottom: 12px;
+        }
+        
+        .categoria-item a {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--cinza-texto);
+            text-decoration: none;
+            padding: 8px 0;
+            transition: color 0.3s ease;
+            border-bottom: 1px dashed var(--cinza-medio);
+        }
+        
+        .categoria-item a:hover {
+            color: var(--laranja);
+        }
+        
+        .categoria-item span {
+            background: var(--cinza-claro);
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            color: var(--cinza-escuro);
+        }
+        
+        /* Posts Recentes */
+        .recent-post {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .recent-post:last-child {
+            margin-bottom: 0;
+        }
+        
+        .recent-post-image {
+            width: 70px;
+            height: 70px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+        
+        .recent-post-info h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            line-height: 1.3;
+        }
+        
+        .recent-post-info h4 a {
+            color: var(--verde-escuro);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .recent-post-info h4 a:hover {
+            color: var(--laranja);
+        }
+        
+        .recent-post-info .date {
+            font-size: 0.85rem;
+            color: var(--cinza-texto);
+        }
+        
+        .recent-post-info .date i {
+            margin-right: 5px;
+            color: var(--laranja);
+        }
+        
+        /* Tags */
+        .tags-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .tag {
+            background: var(--cinza-claro);
+            color: var(--cinza-escuro);
+            padding: 6px 15px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .tag:hover {
+            background: var(--verde-escuro);
+            color: var(--branco);
+        }
+        
+        /* =====================================================
+           PAGINAÇÃO
+           ===================================================== */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 40px 0 60px;
+            flex-wrap: wrap;
+        }
+        
+        .page-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: var(--branco);
+            color: var(--verde-escuro);
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .page-link:hover,
+        .page-link.active {
+            background: var(--verde-escuro);
+            color: var(--branco);
+        }
+        
+        .page-link.next {
+            width: auto;
+            padding: 0 20px;
+        }
+        
+        /* =====================================================
+           BOTÕES (reutilizando da home)
+           ===================================================== */
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: var(--verde-escuro);
+            color: var(--branco);
+        }
+        
+        .btn-primary:hover {
+            background: #1a4f2b;
+            color: var(--branco);
+        }
+        
+        .btn-outline {
+            border: 2px solid var(--verde-escuro);
+            color: var(--verde-escuro);
+            background: transparent;
+        }
+        
+        .btn-outline:hover {
+            background: var(--verde-escuro);
+            color: var(--branco);
+        }
+        
+        .btn-small {
+            padding: 8px 20px;
+            font-size: 0.9rem;
+        }
+        
+        /* =====================================================
+           FOOTER (idêntico ao da home)
+           ===================================================== */
+        .footer {
+            background: #1a4f2b;
+            color: var(--branco);
+            padding: 60px 0 20px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            height: 45px;
+            margin-bottom: 20px;
+            filter: brightness(0) invert(1);
+        }
+        
+        .footer-info p {
+            opacity: 0.8;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--branco);
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+        
+        .social-link:hover {
+            transform: translateY(-5px);
+        }
+        
+        .social-link.facebook { background: #3b5998; }
+        .social-link.instagram { background: linear-gradient(45deg, #f09433, #d62976, #962fbf); }
+        .social-link.youtube { background: #ff0000; }
+        
+        .footer h3 {
+            color: var(--branco);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--amarelo);
+            display: inline-block;
+        }
+        
+        .footer-links ul,
+        .footer-contato ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li,
+        .footer-contato li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--amarelo);
+        }
+        
+        .footer-contato li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .footer-contato i {
+            width: 20px;
+            color: var(--amarelo);
+        }
+        
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .footer-extra {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-extra a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+        }
+        
+        .footer-extra a:hover {
+            color: var(--amarelo);
+        }
+        
+        /* =====================================================
+           MEDIA QUERIES - RESPONSIVIDADE
+           ===================================================== */
+        @media (max-width: 1024px) {
+            .publicacoes-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .publicacoes-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-desktop {
+                display: none;
+            }
+            
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .page-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .page-hero p {
+                font-size: 1rem;
+            }
+            
+            .search-box {
+                flex-direction: column;
+                background: transparent;
+                border: none;
+                gap: 10px;
+            }
+            
+            .search-box input {
+                border: 2px solid var(--cinza-medio);
+            }
+            
+            .search-box button {
+                width: 100%;
+                padding: 15px;
+            }
+            
+            .filter-tabs {
+                gap: 10px;
+            }
+            
+            .filter-tab {
+                padding: 6px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .publicacoes-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .page-hero {
+                padding: 40px 0;
+            }
+            
+            .page-hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .pub-card-title {
+                font-size: 1.2rem;
+            }
+            
+            .pub-card-meta {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .pub-card-footer {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-extra {
+                justify-content: center;
+            }
+            
+            .pagination {
+                gap: 5px;
+            }
+            
+            .page-link {
+                width: 40px;
+                height: 40px;
+            }
+        }
+        
+        /* Loading State */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+            grid-column: 1 / -1;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--verde-claro);
+            border-top-color: var(--verde-escuro);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER (idêntico ao da home) -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="./index.html">
+                    <img src="https://i.imgur.com/9eZarki.png" alt="Tem no Entorno Sul" loading="eager">
+                </a>
+            </div>
+            
+            <!-- Menu Desktop -->
+            <nav class="menu-desktop">
+                <a href="./index.html">Início</a>
+                <a href="./publicacoes.html" class="active">Publicações</a>
+                <a href="./eventos.html">Eventos</a>
+                <a href="./colunistas.html">Colunistas</a>
+                <a href="./parceiros.html">Parceiros</a>
+                <a href="./contato.html">Contato</a>
+                <a href="./admin/login.html" class="btn-login">
+                    <i class="fas fa-user"></i> Login
+                </a>
+            </nav>
+            
+            <!-- Menu Hamburguer -->
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <!-- Menu Mobile -->
+            <div class="menu-mobile" id="menuMobile">
+                <a href="./index.html">Início</a>
+                <a href="./publicacoes.html">Publicações</a>
+                <a href="./eventos.html">Eventos</a>
+                <a href="./colunistas.html">Colunistas</a>
+                <a href="./parceiros.html">Parceiros</a>
+                <a href="./contato.html">Contato</a>
+                <a href="./admin/login.html" class="btn-login">
+                    <i class="fas fa-user"></i> Login
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO DA PÁGINA DE PUBLICAÇÕES -->
+        <section class="page-hero">
+            <div class="container">
+                <h1>Publicações</h1>
+                <p>Fique por dentro das últimas notícias, artigos e informações relevantes da nossa região</p>
+            </div>
+        </section>
+
+        <!-- BARRA DE BUSCA E FILTROS -->
+        <section class="search-section">
+            <div class="container">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Buscar publicações..." aria-label="Buscar publicações">
+                    <button type="button" id="searchButton"><i class="fas fa-search"></i> Buscar</button>
+                </div>
+                
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-categoria="todas">Todas</button>
+                    <button class="filter-tab" data-categoria="gastronomia">Gastronomia</button>
+                    <button class="filter-tab" data-categoria="comercio">Comércio Local</button>
+                    <button class="filter-tab" data-categoria="eventos">Eventos</button>
+                    <button class="filter-tab" data-categoria="entrevistas">Entrevistas</button>
+                    <button class="filter-tab" data-categoria="opiniao">Opinião</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <div class="container">
+            <div class="publicacoes-layout">
+                <!-- Grid de Publicações -->
+                <div class="publicacoes-grid" id="publicacoesGrid">
+                    <!-- Cards serão carregados via JavaScript -->
+                </div>
+
+                <!-- Sidebar -->
+                <aside class="sidebar">
+                    <!-- Categorias -->
+                    <div class="sidebar-widget">
+                        <h3>Categorias</h3>
+                        <ul class="categorias-list">
+                            <li class="categoria-item">
+                                <a href="#">
+                                    Gastronomia
+                                    <span>12</span>
+                                </a>
+                            </li>
+                            <li class="categoria-item">
+                                <a href="#">
+                                    Comércio Local
+                                    <span>8</span>
+                                </a>
+                            </li>
+                            <li class="categoria-item">
+                                <a href="#">
+                                    Eventos
+                                    <span>15</span>
+                                </a>
+                            </li>
+                            <li class="categoria-item">
+                                <a href="#">
+                                    Entrevistas
+                                    <span>6</span>
+                                </a>
+                            </li>
+                            <li class="categoria-item">
+                                <a href="#">
+                                    Opinião
+                                    <span>9</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Posts Recentes -->
+                    <div class="sidebar-widget">
+                        <h3>Posts Recentes</h3>
+                        <div class="recent-post">
+                            <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=100" alt="Post" class="recent-post-image" loading="lazy">
+                            <div class="recent-post-info">
+                                <h4><a href="#">Como fortalecer o comércio local</a></h4>
+                                <div class="date">
+                                    <i class="far fa-calendar"></i> 15/03/2026
+                                </div>
+                            </div>
+                        </div>
+                        <div class="recent-post">
+                            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=100" alt="Post" class="recent-post-image" loading="lazy">
+                            <div class="recent-post-info">
+                                <h4><a href="#">Eventos imperdíveis em março</a></h4>
+                                <div class="date">
+                                    <i class="far fa-calendar"></i> 10/03/2026
+                                </div>
+                            </div>
+                        </div>
+                        <div class="recent-post">
+                            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=100" alt="Post" class="recent-post-image" loading="lazy">
+                            <div class="recent-post-info">
+                                <h4><a href="#">Novos parceiros chegando</a></h4>
+                                <div class="date">
+                                    <i class="far fa-calendar"></i> 05/03/2026
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tags -->
+                    <div class="sidebar-widget">
+                        <h3>Tags Populares</h3>
+                        <div class="tags-cloud">
+                            <a href="#" class="tag">#gastronomia</a>
+                            <a href="#" class="tag">#comérciolocal</a>
+                            <a href="#" class="tag">#eventos</a>
+                            <a href="#" class="tag">#entrevistas</a>
+                            <a href="#" class="tag">#cultura</a>
+                            <a href="#" class="tag">#empreendedorismo</a>
+                            <a href="#" class="tag">#toledo</a>
+                            <a href="#" class="tag">#entornosul</a>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+
+            <!-- PAGINAÇÃO -->
+            <div class="pagination">
+                <a href="#" class="page-link active">1</a>
+                <a href="#" class="page-link">2</a>
+                <a href="#" class="page-link">3</a>
+                <a href="#" class="page-link">4</a>
+                <a href="#" class="page-link">5</a>
+                <a href="#" class="page-link next">Próximo <i class="fas fa-chevron-right"></i></a>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER (idêntico ao da home) -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-info">
+                    <img src="https://i.imgur.com/9eZarki.png" alt="Tem no Entorno Sul" class="footer-logo">
+                    <p>Conectando moradores aos melhores comércios, serviços e eventos da região do Entorno Sul.</p>
+                    <div class="social-links">
+                        <a href="https://facebook.com/temnoentornosul" target="_blank" class="social-link facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://instagram.com/temnoentornosul" target="_blank" class="social-link instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://youtube.com/@temnoentornosul" target="_blank" class="social-link youtube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="./publicacoes.html">Publicações</a></li>
+                        <li><a href="./eventos.html">Eventos</a></li>
+                        <li><a href="./colunistas.html">Colunistas</a></li>
+                        <li><a href="./parceiros.html">Parceiros</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Para Comércios</h3>
+                    <ul>
+                        <li><a href="./cadastro.html">Cadastrar grátis</a></li>
+                        <li><a href="./planos.html">Planos premium</a></li>
+                        <li><a href="./admin/login.html">Área do parceiro</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contato">
+                    <h3>Contato</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> (45) 99999-9999</li>
+                        <li><i class="fas fa-envelope"></i> contato@temnoentornosul.com.br</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Toledo - PR</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Tem no Entorno Sul. Todos os direitos reservados.</p>
+                <div class="footer-extra">
+                    <a href="./termos.html">Termos de uso</a>
+                    <a href="./privacidade.html">Política de privacidade</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // =====================================================
+        // MENU HAMBURGUER (igual ao da home)
+        // =====================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const menuMobile = document.getElementById('menuMobile');
+            
+            if (menuToggle && menuMobile) {
+                menuToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    this.classList.toggle('active');
+                    menuMobile.classList.toggle('active');
+                    
+                    if (menuMobile.classList.contains('active')) {
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        document.body.style.overflow = '';
+                    }
+                });
+                
+                const menuLinks = menuMobile.querySelectorAll('a');
+                menuLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        menuToggle.classList.remove('active');
+                        menuMobile.classList.remove('active');
+                        document.body.style.overflow = '';
+                    });
+                });
+                
+                document.addEventListener('click', function(e) {
+                    if (!menuToggle.contains(e.target) && !menuMobile.contains(e.target)) {
+                        menuToggle.classList.remove('active');
+                        menuMobile.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+            
+            // =====================================================
+            // CARREGAR PUBLICAÇÕES
+            // =====================================================
+            const publicacoesGrid = document.getElementById('publicacoesGrid');
+            
+            if (publicacoesGrid) {
+                // Simular carregamento
+                setTimeout(() => {
+                    publicacoesGrid.innerHTML = `
+                        <!-- Publicação 1 -->
+                        <div class="pub-card">
+                            <div class="pub-card-image">
+                                <span class="pub-category">Gastronomia</span>
+                                <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400" alt="Publicação" loading="lazy">
+                            </div>
+                            <div class="pub-card-content">
+                                <h3 class="pub-card-title">
+                                    <a href="#">Como fortalecer o comércio local com estratégias digitais</a>
+                                </h3>
+                                <div class="pub-card-meta">
+                                    <span><i class="far fa-calendar"></i> 15/03/2026</span>
+                                    <span><i class="far fa-eye"></i> 234 visualizações</span>
+                                </div>
+                                <p class="pub-card-excerpt">
+                                    Descubra estratégias práticas para pequenos negócios se destacarem no ambiente digital e atraírem mais clientes...
+                                </p>
+                                <div class="pub-card-footer">
+                                    <div class="pub-author">
+                                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50" alt="Autor">
+                                        <span>João Silva</span>
+                                    </div>
+                                    <a href="#" class="pub-read-more">
+                                        Ler mais <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Publicação 2 -->
+                        <div class="pub-card">
+                            <div class="pub-card-image">
+                                <span class="pub-category">Eventos</span>
+                                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400" alt="Publicação" loading="lazy">
+                            </div>
+                            <div class="pub-card-content">
+                                <h3 class="pub-card-title">
+                                    <a href="#">Eventos imperdíveis em março: agenda completa da região</a>
+                                </h3>
+                                <div class="pub-card-meta">
+                                    <span><i class="far fa-calendar"></i> 10/03/2026</span>
+                                    <span><i class="far fa-eye"></i> 567 visualizações</span>
+                                </div>
+                                <p class="pub-card-excerpt">
+                                    Confira a lista completa de shows, feiras, exposições e eventos culturais que acontecerão em março...
+                                </p>
+                                <div class="pub-card-footer">
+                                    <div class="pub-author">
+                                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50" alt="Autor">
+                                        <span>Maria Santos</span>
+                                    </div>
+                                    <a href="#" class="pub-read-more">
+                                        Ler mais <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Publicação 3 -->
+                        <div class="pub-card">
+                            <div class="pub-card-image">
+                                <span class="pub-category">Comércio Local</span>
+                                <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400" alt="Publicação" loading="lazy">
+                            </div>
+                            <div class="pub-card-content">
+                                <h3 class="pub-card-title">
+                                    <a href="#">Novos parceiros: conheça os comércios que chegaram</a>
+                                </h3>
+                                <div class="pub-card-meta">
+                                    <span><i class="far fa-calendar"></i> 05/03/2026</span>
+                                    <span><i class="far fa-eye"></i> 189 visualizações</span>
+                                </div>
+                                <p class="pub-card-excerpt">
+                                    Recebemos novos parceiros incríveis! Conheça as lojas, restaurantes e serviços que estão se juntando a nós...
+                                </p>
+                                <div class="pub-card-footer">
+                                    <div class="pub-author">
+                                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50" alt="Autor">
+                                        <span>Admin</span>
+                                    </div>
+                                    <a href="#" class="pub-read-more">
+                                        Ler mais <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Publicação 4 -->
+                        <div class="pub-card">
+                            <div class="pub-card-image">
+                                <span class="pub-category">Entrevistas</span>
+                                <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400" alt="Publicação" loading="lazy">
+                            </div>
+                            <div class="pub-card-content">
+                                <h3 class="pub-card-title">
+                                    <a href="#">Entrevista: Como empreender na região e ter sucesso</a>
+                                </h3>
+                                <div class="pub-card-meta">
+                                    <span><i class="far fa-calendar"></i> 28/02/2026</span>
+                                    <span><i class="far fa-eye"></i> 421 visualizações</span>
+                                </div>
+                                <p class="pub-card-excerpt">
+                                    Conversamos com empreendedores de sucesso da região que compartilharam dicas valiosas para quem está começando...
+                                </p>
+                                <div class="pub-card-footer">
+                                    <div class="pub-author">
+                                        <img src="https://images.unsplash.com/photo-1494790108777-847ef61b5a5f?w=50" alt="Autor">
+                                        <span>Ana Oliveira</span>
+                                    </div>
+                                    <a href="#" class="pub-read-more">
+                                        Ler mais <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Publicação 5 -->
+                        <div class="pub-card">
+                            <div class="pub-card-image">
+                                <span class="pub-category">Opinião</span>
+                                <img src="https://images.unsplash.com/photo-1456324504439-367cee3b3c32?w=400" alt="Publicação" loading="lazy">
+                            </div>
+                            <div class="pub-card-content">
+                                <h3 class="pub-card-title">
+                                    <a href="#">A importância de apoiar o comércio local</a>
+                                </h3>
+                                <div class="pub-card-meta">
+                                    <span><i class="far fa-calendar"></i> 20/02/2026</span>
+                                    <span><i class="far fa-eye"></i> 312 visualizações</span>
+                                </div>
+                                <p class="pub-card-excerpt">
+                                    Um artigo sobre como o consumo consciente e o apoio aos pequenos negócios transformam a economia local...
+                                </p>
+                                <div class="pub-card-footer">
+                                    <div class="pub-author">
+                                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50" alt="Autor">
+                                        <span>João Silva</span>
+                                    </div>
+                                    <a href="#" class="pub-read-more">
+                                        Ler mais <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Publicação 6 -->
+                        <div class="pub-card">
+                            <div class="pub-card-image">
+                                <span class="pub-category">Gastronomia</span>
+                                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" alt="Publicação" loading="lazy">
+                            </div>
+                            <div class="pub-card-content">
+                                <h3 class="pub-card-title">
+                                    <a href="#">5 novos restaurantes para conhecer na região</a>
+                                </h3>
+                                <div class="pub-card-meta">
+                                    <span><i class="far fa-calendar"></i> 15/02/2026</span>
+                                    <span><i class="far fa-eye"></i> 678 visualizações</span>
+                                </div>
+                                <p class="pub-card-excerpt">
+                                    Selecionamos 5 restaurantes que abriram recentemente e já estão fazendo sucesso com suas delícias...
+                                </p>
+                                <div class="pub-card-footer">
+                                    <div class="pub-author">
+                                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50" alt="Autor">
+                                        <span>Maria Santos</span>
+                                    </div>
+                                    <a href="#" class="pub-read-more">
+                                        Ler mais <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }, 500);
+            }
+            
+            // =====================================================
+            // FILTROS DE CATEGORIA
+            // =====================================================
+            const filterTabs = document.querySelectorAll('.filter-tab');
+            
+            filterTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    filterTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const categoria = this.dataset.categoria;
+                    console.log('Filtrar por:', categoria);
+                    
+                    // Aqui você implementaria o filtro real
+                    // Por enquanto só mostra um alerta
+                    if (categoria !== 'todas') {
+                        alert(`Filtrando publicações de "${this.textContent}"`);
+                    }
+                });
+            });
+            
+            // =====================================================
+            // BUSCA
+            // =====================================================
+            const searchButton = document.getElementById('searchButton');
+            const searchInput = document.getElementById('searchInput');
+            
+            if (searchButton && searchInput) {
+                searchButton.addEventListener('click', function() {
+                    const termo = searchInput.value.trim();
+                    if (termo) {
+                        alert(`Buscando por: "${termo}"`);
+                    } else {
+                        alert('Digite um termo para buscar');
+                    }
+                });
+                
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        searchButton.click();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
