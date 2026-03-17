@@ -31,7 +31,7 @@
     
     <style>
         /* =====================================================
-           RESET E VARIÁVEIS (mesmo da home)
+           RESET E VARIÁVEIS
            ===================================================== */
         * {
             margin: 0;
@@ -69,7 +69,7 @@
         }
         
         /* =====================================================
-           HEADER (idêntico ao da home)
+           HEADER
            ===================================================== */
         .header {
             background: var(--branco);
@@ -323,6 +323,31 @@
             gap: 25px;
         }
         
+        /* Mensagem quando não encontra resultados */
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--branco);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .no-results i {
+            font-size: 4rem;
+            color: var(--cinza-medio);
+            margin-bottom: 20px;
+        }
+        
+        .no-results h3 {
+            color: var(--cinza-escuro);
+            margin-bottom: 10px;
+        }
+        
+        .no-results p {
+            color: var(--cinza-texto);
+        }
+        
         /* Card de Publicação */
         .pub-card {
             background: var(--branco);
@@ -399,6 +424,7 @@
             margin-bottom: 15px;
             color: var(--cinza-texto);
             font-size: 0.9rem;
+            flex-wrap: wrap;
         }
         
         .pub-card-meta i {
@@ -506,9 +532,11 @@
             padding: 8px 0;
             transition: color 0.3s ease;
             border-bottom: 1px dashed var(--cinza-medio);
+            cursor: pointer;
         }
         
-        .categoria-item a:hover {
+        .categoria-item a:hover,
+        .categoria-item a.active {
             color: var(--laranja);
         }
         
@@ -525,6 +553,12 @@
             display: flex;
             gap: 15px;
             margin-bottom: 20px;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+        
+        .recent-post:hover {
+            opacity: 0.8;
         }
         
         .recent-post:last-child {
@@ -579,9 +613,12 @@
             text-decoration: none;
             font-size: 0.9rem;
             transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
         }
         
-        .tag:hover {
+        .tag:hover,
+        .tag.active {
             background: var(--verde-escuro);
             color: var(--branco);
         }
@@ -610,6 +647,8 @@
             font-weight: 500;
             transition: all 0.3s ease;
             box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            border: none;
         }
         
         .page-link:hover,
@@ -623,8 +662,18 @@
             padding: 0 20px;
         }
         
+        .page-link.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .page-link.disabled:hover {
+            background: var(--branco);
+            color: var(--verde-escuro);
+        }
+        
         /* =====================================================
-           BOTÕES (reutilizando da home)
+           BOTÕES
            ===================================================== */
         .btn {
             display: inline-block;
@@ -666,7 +715,7 @@
         }
         
         /* =====================================================
-           FOOTER (idêntico ao da home)
+           FOOTER
            ===================================================== */
         .footer {
             background: #1a4f2b;
@@ -786,7 +835,7 @@
         }
         
         /* =====================================================
-           MEDIA QUERIES - RESPONSIVIDADE
+           MEDIA QUERIES
            ===================================================== */
         @media (max-width: 1024px) {
             .publicacoes-layout {
@@ -920,7 +969,7 @@
     </style>
 </head>
 <body>
-    <!-- HEADER (idêntico ao da home) -->
+    <!-- HEADER -->
     <header class="header">
         <div class="container">
             <div class="logo">
@@ -977,17 +1026,17 @@
         <section class="search-section">
             <div class="container">
                 <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="Buscar publicações..." aria-label="Buscar publicações">
+                    <input type="text" id="searchInput" placeholder="Buscar publicações por título ou conteúdo..." aria-label="Buscar publicações">
                     <button type="button" id="searchButton"><i class="fas fa-search"></i> Buscar</button>
                 </div>
                 
-                <div class="filter-tabs">
+                <div class="filter-tabs" id="filterTabs">
                     <button class="filter-tab active" data-categoria="todas">Todas</button>
-                    <button class="filter-tab" data-categoria="gastronomia">Gastronomia</button>
-                    <button class="filter-tab" data-categoria="comercio">Comércio Local</button>
-                    <button class="filter-tab" data-categoria="eventos">Eventos</button>
-                    <button class="filter-tab" data-categoria="entrevistas">Entrevistas</button>
-                    <button class="filter-tab" data-categoria="opiniao">Opinião</button>
+                    <button class="filter-tab" data-categoria="Gastronomia">Gastronomia</button>
+                    <button class="filter-tab" data-categoria="Eventos">Eventos</button>
+                    <button class="filter-tab" data-categoria="Comércio Local">Comércio Local</button>
+                    <button class="filter-tab" data-categoria="Entrevistas">Entrevistas</button>
+                    <button class="filter-tab" data-categoria="Opinião">Opinião</button>
                 </div>
             </div>
         </section>
@@ -998,6 +1047,9 @@
                 <!-- Grid de Publicações -->
                 <div class="publicacoes-grid" id="publicacoesGrid">
                     <!-- Cards serão carregados via JavaScript -->
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                    </div>
                 </div>
 
                 <!-- Sidebar -->
@@ -1005,33 +1057,33 @@
                     <!-- Categorias -->
                     <div class="sidebar-widget">
                         <h3>Categorias</h3>
-                        <ul class="categorias-list">
+                        <ul class="categorias-list" id="categoriasList">
                             <li class="categoria-item">
-                                <a href="#">
+                                <a data-categoria="Gastronomia">
                                     Gastronomia
                                     <span>12</span>
                                 </a>
                             </li>
                             <li class="categoria-item">
-                                <a href="#">
+                                <a data-categoria="Comércio Local">
                                     Comércio Local
                                     <span>8</span>
                                 </a>
                             </li>
                             <li class="categoria-item">
-                                <a href="#">
+                                <a data-categoria="Eventos">
                                     Eventos
                                     <span>15</span>
                                 </a>
                             </li>
                             <li class="categoria-item">
-                                <a href="#">
+                                <a data-categoria="Entrevistas">
                                     Entrevistas
                                     <span>6</span>
                                 </a>
                             </li>
                             <li class="categoria-item">
-                                <a href="#">
+                                <a data-categoria="Opinião">
                                     Opinião
                                     <span>9</span>
                                 </a>
@@ -1042,28 +1094,28 @@
                     <!-- Posts Recentes -->
                     <div class="sidebar-widget">
                         <h3>Posts Recentes</h3>
-                        <div class="recent-post">
+                        <div class="recent-post" data-titulo="Como fortalecer o comércio local com estratégias digitais">
                             <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=100" alt="Post" class="recent-post-image" loading="lazy">
                             <div class="recent-post-info">
-                                <h4><a href="#">Como fortalecer o comércio local</a></h4>
+                                <h4><a href="#" onclick="filtrarPorTitulo('Como fortalecer o comércio local com estratégias digitais'); return false;">Como fortalecer o comércio local</a></h4>
                                 <div class="date">
                                     <i class="far fa-calendar"></i> 15/03/2026
                                 </div>
                             </div>
                         </div>
-                        <div class="recent-post">
+                        <div class="recent-post" data-titulo="Eventos imperdíveis em março: agenda completa da região">
                             <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=100" alt="Post" class="recent-post-image" loading="lazy">
                             <div class="recent-post-info">
-                                <h4><a href="#">Eventos imperdíveis em março</a></h4>
+                                <h4><a href="#" onclick="filtrarPorTitulo('Eventos imperdíveis em março: agenda completa da região'); return false;">Eventos imperdíveis em março</a></h4>
                                 <div class="date">
                                     <i class="far fa-calendar"></i> 10/03/2026
                                 </div>
                             </div>
                         </div>
-                        <div class="recent-post">
+                        <div class="recent-post" data-titulo="Novos parceiros: conheça os comércios que chegaram">
                             <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=100" alt="Post" class="recent-post-image" loading="lazy">
                             <div class="recent-post-info">
-                                <h4><a href="#">Novos parceiros chegando</a></h4>
+                                <h4><a href="#" onclick="filtrarPorTitulo('Novos parceiros: conheça os comércios que chegaram'); return false;">Novos parceiros chegando</a></h4>
                                 <div class="date">
                                     <i class="far fa-calendar"></i> 05/03/2026
                                 </div>
@@ -1074,33 +1126,39 @@
                     <!-- Tags -->
                     <div class="sidebar-widget">
                         <h3>Tags Populares</h3>
-                        <div class="tags-cloud">
-                            <a href="#" class="tag">#gastronomia</a>
-                            <a href="#" class="tag">#comérciolocal</a>
-                            <a href="#" class="tag">#eventos</a>
-                            <a href="#" class="tag">#entrevistas</a>
-                            <a href="#" class="tag">#cultura</a>
-                            <a href="#" class="tag">#empreendedorismo</a>
-                            <a href="#" class="tag">#toledo</a>
-                            <a href="#" class="tag">#entornosul</a>
+                        <div class="tags-cloud" id="tagsCloud">
+                            <button class="tag" data-tag="gastronomia">#gastronomia</button>
+                            <button class="tag" data-tag="comércio local">#comérciolocal</button>
+                            <button class="tag" data-tag="eventos">#eventos</button>
+                            <button class="tag" data-tag="entrevistas">#entrevistas</button>
+                            <button class="tag" data-tag="cultura">#cultura</button>
+                            <button class="tag" data-tag="empreendedorismo">#empreendedorismo</button>
+                            <button class="tag" data-tag="toledo">#toledo</button>
+                            <button class="tag" data-tag="entorno sul">#entornosul</button>
                         </div>
+                    </div>
+                    
+                    <!-- Botão para limpar filtros -->
+                    <div class="sidebar-widget" style="text-align: center;">
+                        <button id="clearFilters" class="btn btn-outline btn-small" style="width: 100%;">
+                            <i class="fas fa-times"></i> Limpar filtros
+                        </button>
                     </div>
                 </aside>
             </div>
 
             <!-- PAGINAÇÃO -->
-            <div class="pagination">
-                <a href="#" class="page-link active">1</a>
-                <a href="#" class="page-link">2</a>
-                <a href="#" class="page-link">3</a>
-                <a href="#" class="page-link">4</a>
-                <a href="#" class="page-link">5</a>
-                <a href="#" class="page-link next">Próximo <i class="fas fa-chevron-right"></i></a>
+            <div class="pagination" id="pagination">
+                <button class="page-link prev disabled" id="prevPage"><i class="fas fa-chevron-left"></i></button>
+                <button class="page-link active" data-page="1">1</button>
+                <button class="page-link" data-page="2">2</button>
+                <button class="page-link" data-page="3">3</button>
+                <button class="page-link next" id="nextPage">Próximo <i class="fas fa-chevron-right"></i></button>
             </div>
         </div>
     </main>
 
-    <!-- FOOTER (idêntico ao da home) -->
+    <!-- FOOTER -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -1123,10 +1181,12 @@
                 <div class="footer-links">
                     <h3>Links Rápidos</h3>
                     <ul>
+                        <li><a href="./index.html">Início</a></li>
                         <li><a href="./publicacoes.html">Publicações</a></li>
                         <li><a href="./eventos.html">Eventos</a></li>
                         <li><a href="./colunistas.html">Colunistas</a></li>
                         <li><a href="./parceiros.html">Parceiros</a></li>
+                        <li><a href="./contato.html">Contato</a></li>
                     </ul>
                 </div>
                 
@@ -1162,7 +1222,122 @@
     <!-- Scripts -->
     <script>
         // =====================================================
-        // MENU HAMBURGUER (igual ao da home)
+        // BANCO DE DADOS DAS PUBLICAÇÕES
+        // =====================================================
+        const publicacoesDB = [
+            {
+                id: 1,
+                titulo: "Como fortalecer o comércio local com estratégias digitais",
+                categoria: "Gastronomia",
+                data: "15/03/2026",
+                visualizacoes: 234,
+                autor: "João Silva",
+                autorFoto: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50",
+                imagem: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400",
+                excerpt: "Descubra estratégias práticas para pequenos negócios se destacarem no ambiente digital e atraírem mais clientes...",
+                tags: ["gastronomia", "empreendedorismo", "digital"]
+            },
+            {
+                id: 2,
+                titulo: "Eventos imperdíveis em março: agenda completa da região",
+                categoria: "Eventos",
+                data: "10/03/2026",
+                visualizacoes: 567,
+                autor: "Maria Santos",
+                autorFoto: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50",
+                imagem: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400",
+                excerpt: "Confira a lista completa de shows, feiras, exposições e eventos culturais que acontecerão em março...",
+                tags: ["eventos", "cultura", "agenda"]
+            },
+            {
+                id: 3,
+                titulo: "Novos parceiros: conheça os comércios que chegaram",
+                categoria: "Comércio Local",
+                data: "05/03/2026",
+                visualizacoes: 189,
+                autor: "Admin",
+                autorFoto: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50",
+                imagem: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400",
+                excerpt: "Recebemos novos parceiros incríveis! Conheça as lojas, restaurantes e serviços que estão se juntando a nós...",
+                tags: ["comércio local", "parceiros", "novidades"]
+            },
+            {
+                id: 4,
+                titulo: "Entrevista: Como empreender na região e ter sucesso",
+                categoria: "Entrevistas",
+                data: "28/02/2026",
+                visualizacoes: 421,
+                autor: "Ana Oliveira",
+                autorFoto: "https://images.unsplash.com/photo-1494790108777-847ef61b5a5f?w=50",
+                imagem: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400",
+                excerpt: "Conversamos com empreendedores de sucesso da região que compartilharam dicas valiosas para quem está começando...",
+                tags: ["entrevistas", "empreendedorismo", "sucesso"]
+            },
+            {
+                id: 5,
+                titulo: "A importância de apoiar o comércio local",
+                categoria: "Opinião",
+                data: "20/02/2026",
+                visualizacoes: 312,
+                autor: "João Silva",
+                autorFoto: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50",
+                imagem: "https://images.unsplash.com/photo-1456324504439-367cee3b3c32?w=400",
+                excerpt: "Um artigo sobre como o consumo consciente e o apoio aos pequenos negócios transformam a economia local...",
+                tags: ["opinião", "economia local", "consumo consciente"]
+            },
+            {
+                id: 6,
+                titulo: "5 novos restaurantes para conhecer na região",
+                categoria: "Gastronomia",
+                data: "15/02/2026",
+                visualizacoes: 678,
+                autor: "Maria Santos",
+                autorFoto: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50",
+                imagem: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400",
+                excerpt: "Selecionamos 5 restaurantes que abriram recentemente e já estão fazendo sucesso com suas delícias...",
+                tags: ["gastronomia", "restaurantes", "novidades"]
+            },
+            {
+                id: 7,
+                titulo: "Feira de artesanato movimenta o centro da cidade",
+                categoria: "Eventos",
+                data: "10/02/2026",
+                visualizacoes: 245,
+                autor: "Admin",
+                autorFoto: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50",
+                imagem: "https://images.unsplash.com/photo-1485182708500-8d703a3e5a4b?w=400",
+                excerpt: "Feira de artesanato reúne mais de 50 expositores com produtos locais e regionais...",
+                tags: ["eventos", "artesanato", "cultura"]
+            },
+            {
+                id: 8,
+                titulo: "Dicas para abrir seu próprio negócio",
+                categoria: "Comércio Local",
+                data: "05/02/2026",
+                visualizacoes: 156,
+                autor: "Ana Oliveira",
+                autorFoto: "https://images.unsplash.com/photo-1494790108777-847ef61b5a5f?w=50",
+                imagem: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400",
+                excerpt: "Passo a passo para quem quer empreender e abrir seu próprio negócio na região...",
+                tags: ["empreendedorismo", "comércio local", "dicas"]
+            }
+        ];
+
+        // =====================================================
+        // VARIÁVEIS DE ESTADO
+        // =====================================================
+        let currentFilter = {
+            categoria: 'todas',
+            busca: '',
+            tag: '',
+            pagina: 1
+        };
+        
+        const itemsPerPage = 6;
+        let filteredPublicacoes = [...publicacoesDB];
+
+        // =====================================================
+        // MENU HAMBURGUER
         // =====================================================
         document.addEventListener('DOMContentLoaded', function() {
             const menuToggle = document.getElementById('menuToggle');
@@ -1201,236 +1376,352 @@
                 });
             }
             
-            // =====================================================
-            // CARREGAR PUBLICAÇÕES
-            // =====================================================
-            const publicacoesGrid = document.getElementById('publicacoesGrid');
+            // Inicializar a página
+            renderizarPublicacoes();
+            configurarFiltros();
+            configurarBusca();
+            configurarCategorias();
+            configurarTags();
+            configurarPaginacao();
+            configurarLimparFiltros();
+        });
+
+        // =====================================================
+        // FUNÇÃO PARA RENDERIZAR PUBLICAÇÕES
+        // =====================================================
+        function renderizarPublicacoes() {
+            const grid = document.getElementById('publicacoesGrid');
             
-            if (publicacoesGrid) {
-                // Simular carregamento
-                setTimeout(() => {
-                    publicacoesGrid.innerHTML = `
-                        <!-- Publicação 1 -->
-                        <div class="pub-card">
-                            <div class="pub-card-image">
-                                <span class="pub-category">Gastronomia</span>
-                                <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400" alt="Publicação" loading="lazy">
+            // Aplicar filtros
+            filteredPublicacoes = publicacoesDB.filter(pub => {
+                // Filtro por categoria
+                if (currentFilter.categoria !== 'todas' && pub.categoria !== currentFilter.categoria) {
+                    return false;
+                }
+                
+                // Filtro por busca
+                if (currentFilter.busca) {
+                    const termo = currentFilter.busca.toLowerCase();
+                    const tituloMatch = pub.titulo.toLowerCase().includes(termo);
+                    const excerptMatch = pub.excerpt.toLowerCase().includes(termo);
+                    const autorMatch = pub.autor.toLowerCase().includes(termo);
+                    
+                    if (!tituloMatch && !excerptMatch && !autorMatch) {
+                        return false;
+                    }
+                }
+                
+                // Filtro por tag
+                if (currentFilter.tag) {
+                    if (!pub.tags.includes(currentFilter.tag.toLowerCase())) {
+                        return false;
+                    }
+                }
+                
+                return true;
+            });
+            
+            // Calcular paginação
+            const startIndex = (currentFilter.pagina - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedPublicacoes = filteredPublicacoes.slice(startIndex, endIndex);
+            
+            // Renderizar
+            if (filteredPublicacoes.length === 0) {
+                grid.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        <h3>Nenhuma publicação encontrada</h3>
+                        <p>Tente buscar com outros termos ou limpar os filtros.</p>
+                    </div>
+                `;
+            } else {
+                grid.innerHTML = paginatedPublicacoes.map(pub => `
+                    <div class="pub-card">
+                        <div class="pub-card-image">
+                            <span class="pub-category">${pub.categoria}</span>
+                            <img src="${pub.imagem}" alt="${pub.titulo}" loading="lazy">
+                        </div>
+                        <div class="pub-card-content">
+                            <h3 class="pub-card-title">
+                                <a href="#" onclick="filtrarPorTitulo('${pub.titulo}'); return false;">${pub.titulo}</a>
+                            </h3>
+                            <div class="pub-card-meta">
+                                <span><i class="far fa-calendar"></i> ${pub.data}</span>
+                                <span><i class="far fa-eye"></i> ${pub.visualizacoes} visualizações</span>
                             </div>
-                            <div class="pub-card-content">
-                                <h3 class="pub-card-title">
-                                    <a href="#">Como fortalecer o comércio local com estratégias digitais</a>
-                                </h3>
-                                <div class="pub-card-meta">
-                                    <span><i class="far fa-calendar"></i> 15/03/2026</span>
-                                    <span><i class="far fa-eye"></i> 234 visualizações</span>
+                            <p class="pub-card-excerpt">${pub.excerpt}</p>
+                            <div class="pub-card-footer">
+                                <div class="pub-author">
+                                    <img src="${pub.autorFoto}" alt="${pub.autor}">
+                                    <span>${pub.autor}</span>
                                 </div>
-                                <p class="pub-card-excerpt">
-                                    Descubra estratégias práticas para pequenos negócios se destacarem no ambiente digital e atraírem mais clientes...
-                                </p>
-                                <div class="pub-card-footer">
-                                    <div class="pub-author">
-                                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50" alt="Autor">
-                                        <span>João Silva</span>
-                                    </div>
-                                    <a href="#" class="pub-read-more">
-                                        Ler mais <i class="fas fa-arrow-right"></i>
-                                    </a>
-                                </div>
+                                <a href="#" class="pub-read-more" onclick="filtrarPorTitulo('${pub.titulo}'); return false;">
+                                    Ler mais <i class="fas fa-arrow-right"></i>
+                                </a>
                             </div>
                         </div>
-
-                        <!-- Publicação 2 -->
-                        <div class="pub-card">
-                            <div class="pub-card-image">
-                                <span class="pub-category">Eventos</span>
-                                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400" alt="Publicação" loading="lazy">
-                            </div>
-                            <div class="pub-card-content">
-                                <h3 class="pub-card-title">
-                                    <a href="#">Eventos imperdíveis em março: agenda completa da região</a>
-                                </h3>
-                                <div class="pub-card-meta">
-                                    <span><i class="far fa-calendar"></i> 10/03/2026</span>
-                                    <span><i class="far fa-eye"></i> 567 visualizações</span>
-                                </div>
-                                <p class="pub-card-excerpt">
-                                    Confira a lista completa de shows, feiras, exposições e eventos culturais que acontecerão em março...
-                                </p>
-                                <div class="pub-card-footer">
-                                    <div class="pub-author">
-                                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50" alt="Autor">
-                                        <span>Maria Santos</span>
-                                    </div>
-                                    <a href="#" class="pub-read-more">
-                                        Ler mais <i class="fas fa-arrow-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Publicação 3 -->
-                        <div class="pub-card">
-                            <div class="pub-card-image">
-                                <span class="pub-category">Comércio Local</span>
-                                <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400" alt="Publicação" loading="lazy">
-                            </div>
-                            <div class="pub-card-content">
-                                <h3 class="pub-card-title">
-                                    <a href="#">Novos parceiros: conheça os comércios que chegaram</a>
-                                </h3>
-                                <div class="pub-card-meta">
-                                    <span><i class="far fa-calendar"></i> 05/03/2026</span>
-                                    <span><i class="far fa-eye"></i> 189 visualizações</span>
-                                </div>
-                                <p class="pub-card-excerpt">
-                                    Recebemos novos parceiros incríveis! Conheça as lojas, restaurantes e serviços que estão se juntando a nós...
-                                </p>
-                                <div class="pub-card-footer">
-                                    <div class="pub-author">
-                                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50" alt="Autor">
-                                        <span>Admin</span>
-                                    </div>
-                                    <a href="#" class="pub-read-more">
-                                        Ler mais <i class="fas fa-arrow-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Publicação 4 -->
-                        <div class="pub-card">
-                            <div class="pub-card-image">
-                                <span class="pub-category">Entrevistas</span>
-                                <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400" alt="Publicação" loading="lazy">
-                            </div>
-                            <div class="pub-card-content">
-                                <h3 class="pub-card-title">
-                                    <a href="#">Entrevista: Como empreender na região e ter sucesso</a>
-                                </h3>
-                                <div class="pub-card-meta">
-                                    <span><i class="far fa-calendar"></i> 28/02/2026</span>
-                                    <span><i class="far fa-eye"></i> 421 visualizações</span>
-                                </div>
-                                <p class="pub-card-excerpt">
-                                    Conversamos com empreendedores de sucesso da região que compartilharam dicas valiosas para quem está começando...
-                                </p>
-                                <div class="pub-card-footer">
-                                    <div class="pub-author">
-                                        <img src="https://images.unsplash.com/photo-1494790108777-847ef61b5a5f?w=50" alt="Autor">
-                                        <span>Ana Oliveira</span>
-                                    </div>
-                                    <a href="#" class="pub-read-more">
-                                        Ler mais <i class="fas fa-arrow-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Publicação 5 -->
-                        <div class="pub-card">
-                            <div class="pub-card-image">
-                                <span class="pub-category">Opinião</span>
-                                <img src="https://images.unsplash.com/photo-1456324504439-367cee3b3c32?w=400" alt="Publicação" loading="lazy">
-                            </div>
-                            <div class="pub-card-content">
-                                <h3 class="pub-card-title">
-                                    <a href="#">A importância de apoiar o comércio local</a>
-                                </h3>
-                                <div class="pub-card-meta">
-                                    <span><i class="far fa-calendar"></i> 20/02/2026</span>
-                                    <span><i class="far fa-eye"></i> 312 visualizações</span>
-                                </div>
-                                <p class="pub-card-excerpt">
-                                    Um artigo sobre como o consumo consciente e o apoio aos pequenos negócios transformam a economia local...
-                                </p>
-                                <div class="pub-card-footer">
-                                    <div class="pub-author">
-                                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50" alt="Autor">
-                                        <span>João Silva</span>
-                                    </div>
-                                    <a href="#" class="pub-read-more">
-                                        Ler mais <i class="fas fa-arrow-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Publicação 6 -->
-                        <div class="pub-card">
-                            <div class="pub-card-image">
-                                <span class="pub-category">Gastronomia</span>
-                                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" alt="Publicação" loading="lazy">
-                            </div>
-                            <div class="pub-card-content">
-                                <h3 class="pub-card-title">
-                                    <a href="#">5 novos restaurantes para conhecer na região</a>
-                                </h3>
-                                <div class="pub-card-meta">
-                                    <span><i class="far fa-calendar"></i> 15/02/2026</span>
-                                    <span><i class="far fa-eye"></i> 678 visualizações</span>
-                                </div>
-                                <p class="pub-card-excerpt">
-                                    Selecionamos 5 restaurantes que abriram recentemente e já estão fazendo sucesso com suas delícias...
-                                </p>
-                                <div class="pub-card-footer">
-                                    <div class="pub-author">
-                                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50" alt="Autor">
-                                        <span>Maria Santos</span>
-                                    </div>
-                                    <a href="#" class="pub-read-more">
-                                        Ler mais <i class="fas fa-arrow-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }, 500);
+                    </div>
+                `).join('');
             }
             
-            // =====================================================
-            // FILTROS DE CATEGORIA
-            // =====================================================
+            // Atualizar contadores nas categorias
+            atualizarContadoresCategorias();
+            
+            // Atualizar paginação
+            atualizarPaginacao();
+        }
+        
+        // =====================================================
+        // CONFIGURAR FILTROS POR CATEGORIA (TABS)
+        // =====================================================
+        function configurarFiltros() {
             const filterTabs = document.querySelectorAll('.filter-tab');
             
             filterTabs.forEach(tab => {
                 tab.addEventListener('click', function() {
+                    const categoria = this.dataset.categoria;
+                    
+                    // Remover active de todos
                     filterTabs.forEach(t => t.classList.remove('active'));
                     this.classList.add('active');
                     
-                    const categoria = this.dataset.categoria;
-                    console.log('Filtrar por:', categoria);
+                    // Atualizar filtro
+                    currentFilter.categoria = categoria;
+                    currentFilter.pagina = 1; // Voltar para primeira página
                     
-                    // Aqui você implementaria o filtro real
-                    // Por enquanto só mostra um alerta
-                    if (categoria !== 'todas') {
-                        alert(`Filtrando publicações de "${this.textContent}"`);
+                    // Renderizar
+                    renderizarPublicacoes();
+                });
+            });
+        }
+        
+        // =====================================================
+        // CONFIGURAR BUSCA
+        // =====================================================
+        function configurarBusca() {
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('searchButton');
+            
+            function realizarBusca() {
+                const termo = searchInput.value.trim();
+                currentFilter.busca = termo;
+                currentFilter.pagina = 1;
+                renderizarPublicacoes();
+            }
+            
+            searchButton.addEventListener('click', realizarBusca);
+            
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    realizarBusca();
+                }
+            });
+        }
+        
+        // =====================================================
+        // CONFIGURAR CATEGORIAS DA SIDEBAR
+        // =====================================================
+        function configurarCategorias() {
+            const categoriasItems = document.querySelectorAll('.categoria-item a');
+            
+            categoriasItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const categoria = this.dataset.categoria;
+                    
+                    // Atualizar tabs
+                    const filterTabs = document.querySelectorAll('.filter-tab');
+                    filterTabs.forEach(tab => {
+                        if (tab.dataset.categoria === categoria) {
+                            tab.classList.add('active');
+                        } else {
+                            tab.classList.remove('active');
+                        }
+                    });
+                    
+                    // Atualizar filtro
+                    currentFilter.categoria = categoria;
+                    currentFilter.pagina = 1;
+                    
+                    // Renderizar
+                    renderizarPublicacoes();
+                });
+            });
+        }
+        
+        // =====================================================
+        // CONFIGURAR TAGS
+        // =====================================================
+        function configurarTags() {
+            const tags = document.querySelectorAll('.tag');
+            
+            tags.forEach(tag => {
+                tag.addEventListener('click', function() {
+                    const tagValue = this.dataset.tag;
+                    
+                    // Toggle active
+                    tags.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Atualizar filtro
+                    currentFilter.tag = tagValue;
+                    currentFilter.pagina = 1;
+                    
+                    // Limpar busca (opcional)
+                    document.getElementById('searchInput').value = '';
+                    currentFilter.busca = '';
+                    
+                    // Renderizar
+                    renderizarPublicacoes();
+                });
+            });
+        }
+        
+        // =====================================================
+        // FUNÇÃO PARA FILTRAR POR TÍTULO (posts recentes)
+        // =====================================================
+        window.filtrarPorTitulo = function(titulo) {
+            // Limpar outros filtros
+            document.getElementById('searchInput').value = '';
+            
+            // Atualizar tabs
+            const filterTabs = document.querySelectorAll('.filter-tab');
+            filterTabs.forEach(tab => {
+                if (tab.dataset.categoria === 'todas') {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            // Limpar tags
+            document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+            
+            // Atualizar filtros
+            currentFilter = {
+                categoria: 'todas',
+                busca: titulo,
+                tag: '',
+                pagina: 1
+            };
+            
+            // Renderizar
+            renderizarPublicacoes();
+        };
+        
+        // =====================================================
+        // ATUALIZAR CONTADORES DAS CATEGORIAS
+        // =====================================================
+        function atualizarContadoresCategorias() {
+            const categorias = ['Gastronomia', 'Comércio Local', 'Eventos', 'Entrevistas', 'Opinião'];
+            
+            categorias.forEach(categoria => {
+                const count = publicacoesDB.filter(p => p.categoria === categoria).length;
+                const span = document.querySelector(`.categoria-item a[data-categoria="${categoria}"] span`);
+                if (span) {
+                    span.textContent = count;
+                }
+            });
+        }
+        
+        // =====================================================
+        // CONFIGURAR PAGINAÇÃO
+        // =====================================================
+        function configurarPaginacao() {
+            const prevBtn = document.getElementById('prevPage');
+            const nextBtn = document.getElementById('nextPage');
+            const pageButtons = document.querySelectorAll('.page-link[data-page]');
+            
+            prevBtn.addEventListener('click', function() {
+                if (!this.classList.contains('disabled') && currentFilter.pagina > 1) {
+                    currentFilter.pagina--;
+                    renderizarPublicacoes();
+                }
+            });
+            
+            nextBtn.addEventListener('click', function() {
+                const totalPages = Math.ceil(filteredPublicacoes.length / itemsPerPage);
+                if (!this.classList.contains('disabled') && currentFilter.pagina < totalPages) {
+                    currentFilter.pagina++;
+                    renderizarPublicacoes();
+                }
+            });
+            
+            pageButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const page = parseInt(this.dataset.page);
+                    if (page !== currentFilter.pagina) {
+                        currentFilter.pagina = page;
+                        renderizarPublicacoes();
                     }
                 });
             });
+        }
+        
+        // =====================================================
+        // ATUALIZAR PAGINAÇÃO
+        // =====================================================
+        function atualizarPaginacao() {
+            const totalPages = Math.ceil(filteredPublicacoes.length / itemsPerPage);
+            const prevBtn = document.getElementById('prevPage');
+            const nextBtn = document.getElementById('nextPage');
+            const pageButtons = document.querySelectorAll('.page-link[data-page]');
             
-            // =====================================================
-            // BUSCA
-            // =====================================================
-            const searchButton = document.getElementById('searchButton');
-            const searchInput = document.getElementById('searchInput');
-            
-            if (searchButton && searchInput) {
-                searchButton.addEventListener('click', function() {
-                    const termo = searchInput.value.trim();
-                    if (termo) {
-                        alert(`Buscando por: "${termo}"`);
+            // Atualizar botões de página
+            pageButtons.forEach((btn, index) => {
+                const pageNum = index + 1;
+                if (pageNum <= totalPages) {
+                    btn.style.display = 'flex';
+                    if (pageNum === currentFilter.pagina) {
+                        btn.classList.add('active');
                     } else {
-                        alert('Digite um termo para buscar');
+                        btn.classList.remove('active');
+                    }
+                } else {
+                    btn.style.display = 'none';
+                }
+            });
+            
+            // Atualizar botões anterior/próximo
+            prevBtn.classList.toggle('disabled', currentFilter.pagina === 1);
+            nextBtn.classList.toggle('disabled', currentFilter.pagina === totalPages || totalPages === 0);
+        }
+        
+        // =====================================================
+        // LIMPAR FILTROS
+        // =====================================================
+        function configurarLimparFiltros() {
+            const clearBtn = document.getElementById('clearFilters');
+            
+            clearBtn.addEventListener('click', function() {
+                // Resetar filtros
+                currentFilter = {
+                    categoria: 'todas',
+                    busca: '',
+                    tag: '',
+                    pagina: 1
+                };
+                
+                // Resetar UI
+                document.getElementById('searchInput').value = '';
+                
+                const filterTabs = document.querySelectorAll('.filter-tab');
+                filterTabs.forEach(tab => {
+                    if (tab.dataset.categoria === 'todas') {
+                        tab.classList.add('active');
+                    } else {
+                        tab.classList.remove('active');
                     }
                 });
                 
-                searchInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        searchButton.click();
-                    }
-                });
-            }
-        });
+                document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+                
+                // Renderizar
+                renderizarPublicacoes();
+            });
+        }
     </script>
 </body>
 </html>
