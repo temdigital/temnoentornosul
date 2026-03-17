@@ -1,896 +1,198 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <!-- Google tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tem no Entorno Sul - Sua fonte de notícias regional</title>
+    <title>Tem no Entorno Sul - Sua região em um só lugar</title>
     
-    <!-- Meta tags SEO -->
-    <meta name="description" content="Portal de notícias, eventos e informações do Entorno Sul. Fique por dentro das novidades regionais, comércios locais e cultura.">
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Descubra o melhor do comércio, eventos e notícias da região. Cadastre seu negócio gratuitamente e alcance mais clientes!">
+    <meta name="keywords" content="comércio local, eventos, notícias, Toledo PR, restaurantes, serviços, agenda cultural">
+    <meta name="author" content="Tem no Entorno Sul">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://www.temnoentornosul.com.br/">
     
-    <!-- Open Graph -->
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.temnoentornosul.com.br/">
-    <meta property="og:title" content="Tem no Entorno Sul - Sua fonte de notícias regional">
-    <meta property="og:description" content="Notícias, eventos e informações relevantes da nossa região.">
-    <meta property="og:image" content="https://i.imgur.com/WVSr0qr.png">
+    <meta property="og:title" content="Tem no Entorno Sul - Sua região em um só lugar">
+    <meta property="og:description" content="Descubra o melhor do comércio, eventos e notícias da região.">
+    <meta property="og:image" content="https://www.temnoentornosul.com.br/images/og-image.jpg">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://www.temnoentornosul.com.br/">
-    <meta property="twitter:title" content="Tem no Entorno Sul - Sua fonte de notícias regional">
-    <meta property="twitter:description" content="Notícias, eventos e informações relevantes da nossa região.">
-    <meta property="twitter:image" content="https://i.imgur.com/WVSr0qr.png">
+    <meta property="twitter:title" content="Tem no Entorno Sul - Sua região em um só lugar">
+    <meta property="twitter:description" content="Descubra o melhor do comércio, eventos e notícias da região.">
+    <meta property="twitter:image" content="https://www.temnoentornosul.com.br/images/og-image.jpg">
     
-    <!-- PWA -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#216b39">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
     
-    <!-- Fontes e Ícones -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <!-- CSS Principal -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Schema.org -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Tem no Entorno Sul",
-        "url": "https://www.temnoentornosul.com.br/",
-        "logo": "https://i.imgur.com/WVSr0qr.png",
-        "description": "Portal de notícias e eventos do Entorno Sul."
-    }
-    </script>
+    <!-- Nossos estilos -->
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/home.css">
     
-    <style>
-        /* Variáveis de cores e estilos */
-        :root {
-            --color-bg: #fffefd;
-            --color-primary: #216b39;
-            --color-accent: #faa011;
-            --color-highlight: #f8d22d;
-            --color-secondary-bg: #f2c585;
-            --font-main: 'Roboto', sans-serif;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --radius: 12px;
-            --transition: all 0.3s ease;
-        }
-        
-        /* Reset e estilos base */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: var(--font-main);
-            background-color: var(--color-bg);
-            color: #333;
-            line-height: 1.6;
-            padding-top: 80px;
-        }
-        
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-        
-        ul {
-            list-style: none;
-        }
-        
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        .section-title {
-            font-size: 2rem;
-            color: var(--color-primary);
-            margin-bottom: 2rem;
-            text-align: center;
-            position: relative;
-            padding-bottom: 0.5rem;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background-color: var(--color-accent);
-            border-radius: 2px;
-        }
-        
-        .btn {
-            display: inline-block;
-            background-color: var(--color-primary);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-weight: 500;
-            transition: var(--transition);
-            border: none;
-            cursor: pointer;
-            text-align: center;
-        }
-        
-        .btn:hover {
-            background-color: #1a5930;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-        
-        .btn-accent {
-            background-color: var(--color-accent);
-        }
-        
-        .btn-accent:hover {
-            background-color: #e5940a;
-        }
-        
-        .card {
-            background: white;
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-        }
-        
-        /* Navbar */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            padding: 15px 0;
-        }
-        
-        .navbar-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            height: 50px;
-        }
-        
-        .nav-menu {
-            display: flex;
-            gap: 30px;
-        }
-        
-        .nav-link {
-            font-weight: 500;
-            color: #444;
-            transition: var(--transition);
-            position: relative;
-        }
-        
-        .nav-link:hover {
-            color: var(--color-primary);
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--color-primary);
-            transition: var(--transition);
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        
-        .nav-link.active {
-            color: var(--color-primary);
-            font-weight: 700;
-        }
-        
-        .nav-link.active::after {
-            width: 100%;
-        }
-        
-        .hamburger {
-            display: none;
-            cursor: pointer;
-            font-size: 1.5rem;
-            color: var(--color-primary);
-        }
-        
-        /* Banner Hero */
-        .hero {
-            background: linear-gradient(rgba(15, 20, 11, 0.5), rgba(15, 20, 11, 0.5)), url('https://images.pexels.com/photos/38271/ipad-map-tablet-internet-38271.jpeg') center/cover no-repeat;
-            color: white;
-            text-align: center;
-            padding: 80px 20px;
-            border-radius: var(--radius);
-            margin-bottom: 60px;
-        }
-        
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .hero-title {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-        
-        .hero-subtitle {
-            font-size: 1.2rem;
-            font-weight: 300;
-            margin-bottom: 30px;
-            opacity: 0.9;
-        }
-        
-        /* Seções */
-        .section {
-            padding: 60px 0;
-        }
-        
-        .section-light {
-            background-color: white;
-        }
-        
-        .section-colored {
-            background-color: var(--color-secondary-bg);
-        }
-        
-        /* Grid de cards */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
-        }
-        
-        .post-card .card-img {
-            height: 200px;
-            object-fit: cover;
-            width: 100%;
-        }
-        
-        .post-card .card-content {
-            padding: 20px;
-        }
-        
-        .post-card .card-category {
-            display: inline-block;
-            background-color: var(--color-secondary-bg);
-            color: #333;
-            padding: 4px 12px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            margin-bottom: 12px;
-        }
-        
-        .post-card .card-title {
-            font-size: 1.2rem;
-            margin-bottom: 12px;
-            color: var(--color-primary);
-        }
-        
-        .post-card .card-excerpt {
-            color: #666;
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-        }
-        
-        /* Eventos */
-        .event-card {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        
-        .event-card .card-content {
-            padding: 20px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .event-date {
-            display: flex;
-            align-items: center;
-            color: var(--color-accent);
-            margin-bottom: 10px;
-            font-weight: 500;
-        }
-        
-        .event-date i {
-            margin-right: 8px;
-        }
-        
-        .event-location {
-            display: flex;
-            align-items: center;
-            color: #666;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-        }
-        
-        .event-location i {
-            margin-right: 8px;
-        }
-        
-        .event-card .card-title {
-            margin-bottom: 15px;
-            color: var(--color-primary);
-        }
-        
-        .event-card .btn {
-            margin-top: auto;
-            align-self: flex-start;
-        }
-        
-        .event-past {
-            opacity: 0.7;
-        }
-        
-        /* Features */
-        .features {
-            padding: 80px 0;
-            background-color: #f9f9f9;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        
-        .feature-card {
-            text-align: center;
-            padding: 40px 25px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-        }
-        
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--color-accent), var(--color-highlight));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 25px;
-            color: white;
-            font-size: 2rem;
-        }
-        
-        /* Missão */
-        .mission {
-            background-color: white;
-            padding: 80px 0;
-        }
-        
-        .mission-content {
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
-        }
-        
-        .mission-text {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin-bottom: 30px;
-            padding: 30px;
-            background: rgba(242, 197, 133, 0.1);
-            border-radius: 15px;
-            position: relative;
-        }
-        
-        .mission-text::before {
-            content: '"';
-            font-size: 5rem;
-            position: absolute;
-            top: -30px;
-            left: 20px;
-            color: rgba(250, 160, 17, 0.2);
-            font-family: Georgia, serif;
-        }
-        
-        .highlight {
-            background-color: var(--color-accent);
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-            font-weight: 500;
-        }
-        
-        /* Footer */
-        .footer {
-            background-color: var(--color-primary);
-            color: white;
-            padding: 60px 0 30px;
-        }
-        
-        .footer-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-        
-        .footer-logo {
-            height: 60px;
-            margin-bottom: 20px;
-        }
-        
-        .footer-description {
-            margin-bottom: 20px;
-            opacity: 0.8;
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .social-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            transition: var(--transition);
-            color: white;
-        }
-        
-        .social-link:hover {
-            background-color: var(--color-accent);
-            transform: translateY(-3px);
-        }
-        
-        .footer-title {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            position: relative;
-            padding-bottom: 10px;
-        }
-        
-        .footer-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 40px;
-            height: 2px;
-            background-color: var(--color-accent);
-        }
-        
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-        
-        .footer-links a {
-            color: white;
-            opacity: 0.8;
-            transition: var(--transition);
-        }
-        
-        .footer-links a:hover {
-            opacity: 1;
-            color: var(--color-highlight);
-        }
-        
-        .footer-bottom {
-            text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.9rem;
-            opacity: 0.7;
-        }
-        
-        /* Loading e Error States */
-        .loading-spinner {
-            text-align: center;
-            padding: 40px;
-            color: var(--color-primary);
-        }
-        
-        .loading-spinner i {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-        
-        .error-message {
-            text-align: center;
-            padding: 40px;
-            color: #dc3545;
-        }
-        
-        .error-message i {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: #666;
-        }
-        
-        .empty-state i {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            color: var(--color-primary);
-        }
-        
-        .verpublicacao-div {
-            margin-top: 20px;
-            margin-bottom: 65px;
-        }
-        
-        /* Responsividade */
-        @media (max-width: 992px) {
-            .nav-menu {
-                position: fixed;
-                top: 80px;
-                left: -100%;
-                background-color: white;
-                width: 100%;
-                flex-direction: column;
-                gap: 0;
-                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-                padding: 30px;
-                transition: var(--transition);
-            }
-            
-            .nav-menu.active {
-                left: 0;
-            }
-            
-            .nav-link {
-                padding: 15px 0;
-                display: block;
-                border-bottom: 1px solid #eee;
-            }
-            
-            .hamburger {
-                display: block;
-            }
-            
-            .hero-title {
-                font-size: 2rem;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .section-title {
-                font-size: 1.8rem;
-            }
-            
-            .hero {
-                padding: 60px 20px;
-            }
-            
-            .hero-title {
-                font-size: 1.8rem;
-            }
-            
-            .cards-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-container {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-            
-            .footer-title::after {
-                left: 50%;
-                transform: translateX(-50%);
-            }
-            
-            .social-links {
-                justify-content: center;
-            }
-        }
-        
-        /* Animações */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.6s ease forwards;
-        }
-        
-        .delay-1 {
-            animation-delay: 0.2s;
-        }
-        
-        .delay-2 {
-            animation-delay: 0.4s;
-        }
-        
-        .delay-3 {
-            animation-delay: 0.6s;
-        }
-    </style>
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="container navbar-container">
-            <a href="https://sites.google.com/view/temnoentornosul/inicio" class="logo-link">
-                <img src="https://i.imgur.com/WVSr0qr.png" alt="Tem no Entorno Sul" class="logo">
-            </a>
-            
-            <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link active">Home</a></li>
-                <li><a href="publicacoes.html" class="nav-link">Publicações</a></li>
-                <li><a href="eventos.html" class="nav-link">Eventos</a></li>
-                <li><a href="colunistas.html" class="nav-link">Colunistas</a></li>
-                <li><a href="contato.html" class="nav-link">Contato</a></li>
-            </ul>
-            
-            <div class="hamburger">
-                <i class="fas fa-bars"></i>
+    <!-- HEADER será carregado via JavaScript -->
+    <div id="header-placeholder"></div>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <div class="container">
+                <h1>Descubra o melhor da sua região</h1>
+                <p>Encontre comércios, eventos e notícias do Entorno Sul em um só lugar</p>
+                <div class="hero-buttons">
+                    <a href="/parceiros.html" class="btn btn-primary">Explorar Comércios</a>
+                    <a href="/cadastro.html" class="btn btn-secondary">Cadastrar Meu Negócio</a>
+                </div>
             </div>
-        </div>
-    </nav>
+        </section>
 
-    <!-- Banner Hero -->
-    <section class="hero">
-        <div class="container hero-content">
-            <h1 class="hero-title">O que acontece no Entorno Sul</h1>
-            <p class="hero-subtitle">Notícias, eventos e informações relevantes da nossa região</p>
-        </div>
-    </section>
+        <!-- SEÇÃO DESTAQUES (Publicações) -->
+        <section class="destaques">
+            <div class="container">
+                <h2>Últimas Publicações</h2>
+                <div id="publicacoes-destaque" class="destaque-grid">
+                    <!-- Cards serão carregados via JavaScript -->
+                </div>
+                <div class="text-center mt-3">
+                    <a href="/publicacoes.html" class="btn btn-outline">Ver todas as publicações</a>
+                </div>
+            </div>
+        </section>
 
-    <!-- Como Funciona -->
-    <section class="features">
-        <div class="container">
-            <h2 class="section-title">Como Funciona</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-user"></i>
+        <!-- SEÇÃO PARCEIROS EM DESTAQUE -->
+        <section class="parceiros-destaque">
+            <div class="container">
+                <div class="parceiros-header">
+                    <h2>Parceiros em Destaque</h2>
+                    <a href="/parceiros.html" class="btn btn-outline">Ver todos</a>
+                </div>
+                <div id="parceiros-destaque" class="parceiros-grid">
+                    <!-- Cards serão carregados via JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO PRÓXIMOS EVENTOS -->
+        <section class="eventos-home">
+            <div class="container">
+                <h2>Próximos Eventos</h2>
+                <div id="eventos-lista" class="eventos-lista">
+                    <!-- Eventos serão carregados via JavaScript -->
+                </div>
+                <div class="text-center mt-3">
+                    <a href="/eventos.html" class="btn btn-outline">Ver agenda completa</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO PLANOS -->
+        <section class="planos">
+            <div class="container">
+                <h2 class="text-center">Escolha o plano ideal para seu negócio</h2>
+                <div class="planos-grid">
+                    <!-- Plano Grátis -->
+                    <div class="plano-card gratis">
+                        <h3>Plano Grátis</h3>
+                        <div class="plano-preco">
+                            R$ 0 <small>/mês</small>
+                        </div>
+                        <ul class="plano-recursos">
+                            <li><i class="fas fa-check"></i> Página de perfil básica</li>
+                            <li><i class="fas fa-check"></i> Listagem no diretório</li>
+                            <li><i class="fas fa-check"></i> Informações de contato</li>
+                            <li><i class="fas fa-check"></i> Horário de funcionamento</li>
+                            <li class="disabled"><i class="fas fa-times"></i> Sistema de agendamentos</li>
+                            <li class="disabled"><i class="fas fa-times"></i> Destaque nas buscas</li>
+                            <li class="disabled"><i class="fas fa-times"></i> Estatísticas</li>
+                        </ul>
+                        <a href="/cadastro.html" class="btn btn-outline">Começar grátis</a>
                     </div>
-                    <h3>Para Usuários</h3>
-                    <p>Encontre comércios e serviços próximos de você, avalie estabelecimentos, participe de eventos locais e receba ofertas exclusivas.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-store"></i>
-                    </div>
-                    <h3>Para Comércios</h3>
-                    <p>Divulgue seu negócio gratuitamente, promova eventos e ofertas, conecte-se com clientes locais e fortaleça sua presença digital.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3>Para a Comunidade</h3>
-                    <p>Fortalecimento da economia regional, geração de empregos, desenvolvimento comunitário e valorização da identidade local.</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Publicações -->
-    <section class="section section-light">
-        <div class="container">
-            <h2 class="section-title">Publicações Recentes</h2>
-            
-            <div class="loading-spinner" id="publicacoesLoading">
-                <i class="fas fa-spinner fa-spin"></i>
-                <p>Carregando publicações...</p>
-            </div>
-            
-            <div class="cards-grid" id="publicacoesGrid"></div>
-            
-            <div class="verpublicacao-div" style="text-align: center; margin-top: 40px;">
-                <a href="https://www.temnoentornosul.com.br/publicacao" class="btn btn-accent">Ver Todas as Publicações</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Nossa Missão -->
-    <section class="mission">
-        <div class="container">
-            <div class="mission-content">
-                <h2 class="section-title">Nossa Missão</h2>
-                <div class="mission-text">
-                    <p>Comercio e serviços locais. Cultura também é negócio! Valorizamos o crescimento da nossa região e o fortalecimento da economia nacional. Por isso, convidamos você a conhecer nosso site Tem no Entorno sul!. Através de informações atualizadas e soluções inovadoras, estamos comprometidos em impulsionar o desenvolvimento dos comércios locais. Os pequenos negócios são a espinha dorsal da nossa cidade, gerando empregos e promovendo prosperidade. Junte-se a nós nesse movimento em prol do progresso. Siga nossas redes sociais para ficar por dentro das novidades e fazer parte dessa jornada transformadora.</p>
-                    <div class="highlight">Apoiar os comércios locais é fundamental para o desenvolvimento da região e para a economia do país.</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Eventos -->
-    <section class="section section-colored">
-        <div class="container">
-            <h2 class="section-title">Eventos em Destaque</h2>
-            
-            <div class="loading-spinner" id="eventosLoading">
-                <i class="fas fa-spinner fa-spin"></i>
-                <p>Carregando eventos...</p>
-            </div>
-            
-            <div class="cards-grid" id="eventosGrid"></div>
-            
-            <div style="text-align: center; margin-top: 40px; margin-bottom: 60px">
-                <a href="https://www.temnoentornosul.com.br/eventos" class="btn btn-accent">Ver Todos os Eventos</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Empresas -->
-    <section class="section section-light">
-        <div class="container">
-            <h2 class="section-title">Empresas Parceiras</h2>
-            
-            <div class="loading-spinner" id="empresasLoading">
-                <i class="fas fa-spinner fa-spin"></i>
-                <p>Carregando empresas...</p>
-            </div>
-            
-            <div class="cards-grid" id="empresasGrid"></div>
-            
-            <div style="text-align: center; margin-top: 40px;">
-                <a href="https://www.temnoentornosul.com.br/empresas" class="btn btn-accent">Ver Todas as Empresas</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Schema Evento -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Event",
-        "name": "Carnaval 2026",
-        "startDate": "2026-02-13",
-        "endDate": "2026-02-17",
-        "location": {
-            "@type": "Place",
-            "name": "Prefeitura Municipal"
-        },
-        "description": "Durante fevereiro de 2026, com foco na semana do carnaval."
-    }
-    </script>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-container">
-                <div class="footer-col">
-                    <img src="https://i.imgur.com/lD6krRL.png" alt="Tem no Entorno Sul" class="footer-logo" loading="lazy">
-                    <p class="footer-description">O seu portal de notícias e eventos do Entorno Sul. Trazendo informação relevante e de qualidade para toda a região.</p>
-                    <div class="social-links">
-                        <a href="https://www.facebook.com/temnoentornosul" class="social-link" rel="noopener noreferrer" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://www.instagram.com/temnoentornosul" class="social-link" rel="noopener noreferrer" target="_blank"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.youtube.com/@temnoentornosul" class="social-link" rel="noopener noreferrer" target="_blank"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                
-                <div class="footer-col">
-                    <h3 class="footer-title">Links Rápidos</h3>
-                    <ul class="footer-links">
-                        <li><a href="https://www.temnoentornosul.com.br/inicio">Home</a></li>
-                        <li><a href="https://www.temnoentornosul.com.br/publicacao">Publicações</a></li>
-                        <li><a href="https://www.temnoentornosul.com.br/eventos">Eventos</a></li>
-                        <li><a href="https://www.temnoentornosul.com.br/colunistas">Colunistas</a></li>
-                        <li><a href="https://www.temnoentornosul.com.br/parceiros">Parceiros</a></li>
-                        <li><a href="https://www.temnoentornosul.com.br/contato">Contato</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-col">
-                    <h3 class="footer-title">Newsletter</h3>
-                    <p class="footer-description">Junte-se ao nosso grupo do WhatsApp para receber as novidades do Entorno Sul em tempo real.</p>
-                    <div class="footer-form">
-                        <button id="whatsapp-group-btn" class="btn btn-accent" style="margin-top: 10px; width: 100%;">
-                            <i class="fab fa-whatsapp"></i> Entrar no Grupo
-                        </button>
+                    <!-- Plano Premium -->
+                    <div class="plano-card premium">
+                        <h3>Plano Premium</h3>
+                        <div class="plano-preco">
+                            R$ 29,90 <small>/mês</small>
+                        </div>
+                        <ul class="plano-recursos">
+                            <li><i class="fas fa-check"></i> Tudo do plano grátis</li>
+                            <li><i class="fas fa-check"></i> Página personalizada completa</li>
+                            <li><i class="fas fa-check"></i> Sistema de agendamentos</li>
+                            <li><i class="fas fa-check"></i> Destaque nas buscas</li>
+                            <li><i class="fas fa-check"></i> Selo "Premium"</li>
+                            <li><i class="fas fa-check"></i> Estatísticas de visualizações</li>
+                            <li><i class="fas fa-check"></i> Múltiplas fotos</li>
+                        </ul>
+                        <a href="/cadastro.html?plano=premium" class="btn btn-primary">Assinar agora</a>
                     </div>
                 </div>
             </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2026 Tem no Entorno Sul. Todos os direitos reservados.</p>
-            </div>
-        </div>
-    </footer>
+        </section>
 
-    <!-- SCRIPTS - ORDEM CORRETA (CDN PRIMEIRO) -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="assets/js/supabase.js"></script>
-    <script src="assets/js/main.js"></script>
-    
-    <script>
-        // Menu mobile toggle (fallback)
-        document.addEventListener('DOMContentLoaded', function() {
-            const hamburger = document.querySelector('.hamburger');
-            const navMenu = document.querySelector('.nav-menu');
-            
-            if (hamburger && navMenu) {
-                hamburger.addEventListener('click', function() {
-                    navMenu.classList.toggle('active');
-                    const icon = hamburger.querySelector('i');
-                    if (icon) {
-                        icon.className = navMenu.classList.contains('active') 
-                            ? 'fas fa-times' 
-                            : 'fas fa-bars';
-                    }
-                });
-            }
-            
-            // WhatsApp button
-            const whatsappBtn = document.getElementById('whatsapp-group-btn');
-            if (whatsappBtn) {
-                whatsappBtn.addEventListener('click', function() {
-                    window.open('https://chat.whatsapp.com/DvTQra8rDQp01NqUCmwa8N', '_blank');
-                });
-            }
-            
-            // Highlight active menu item
-            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-            document.querySelectorAll('.nav-link').forEach(link => {
-                const linkPage = link.getAttribute('href');
-                if (linkPage === currentPage) {
-                    link.classList.add('active');
-                }
-            });
-        });
-    </script>
+        <!-- SEÇÃO SOBRE -->
+        <section class="sobre">
+            <div class="container">
+                <div class="sobre-content">
+                    <div class="sobre-texto">
+                        <h2>Sobre o Tem no Entorno Sul</h2>
+                        <p>Somos uma plataforma que conecta moradores aos melhores comércios, serviços e eventos da região do Entorno Sul. Nosso objetivo é fortalecer o comércio local e facilitar o acesso da comunidade a tudo que nossa região oferece.</p>
+                        <p>Acreditamos no poder do comércio local para gerar emprego, renda e desenvolvimento. Por isso, oferecemos uma plataforma acessível para pequenos negócios se destacarem e alcançarem novos clientes.</p>
+                        <p><strong>Junte-se a nós e faça parte dessa comunidade!</strong></p>
+                    </div>
+                    <div class="sobre-imagem">
+                        <img src="/images/sobre-nos.jpg" alt="Sobre o Tem no Entorno Sul">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEWSLETTER -->
+        <section class="newsletter">
+            <div class="container">
+                <h2>Fique por dentro das novidades</h2>
+                <p>Receba em primeira mão os eventos e promoções da região</p>
+                <form id="newsletter-form" class="newsletter-form">
+                    <input type="email" placeholder="Seu melhor e-mail" required>
+                    <button type="submit" class="btn btn-primary">Inscrever-se</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER será carregado via JavaScript -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/supabase-config.js"></script>
+    <script src="/js/api/publicacoes.js"></script>
+    <script src="/js/api/parceiros.js"></script>
+    <script src="/js/api/eventos.js"></script>
+    <script src="/js/utils/formatadores.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/pages/home.js"></script>
 </body>
 </html>
