@@ -1,193 +1,222 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <!-- Google tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-XXXXXXXXXX');
-    </script>
-    
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Tem no Entorno Sul - Sua região em um só lugar</title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Descubra o melhor do comércio, eventos e notícias da região do Entorno Sul. Cadastre seu negócio gratuitamente e alcance mais clientes!">
-    <meta name="keywords" content="comércio local, eventos, notícias, Toledo PR, restaurantes, serviços, agenda cultural, Entorno Sul">
+    <meta name="description" content="Descubra o melhor do comércio, eventos e notícias da região do Entorno Sul.">
+    <meta name="keywords" content="comércio local, eventos, notícias, Toledo PR">
     <meta name="author" content="Tem no Entorno Sul">
-    <meta name="robots" content="index, follow">
     
-    <!-- Open Graph / Facebook -->
+    <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.temnoentornosul.com.br/">
-    <meta property="og:title" content="Tem no Entorno Sul - Sua região em um só lugar">
-    <meta property="og:description" content="Descubra o melhor do comércio, eventos e notícias da região do Entorno Sul.">
+    <meta property="og:title" content="Tem no Entorno Sul">
     <meta property="og:image" content="https://i.imgur.com/9eZarki.png">
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://www.temnoentornosul.com.br/">
-    <meta property="twitter:title" content="Tem no Entorno Sul - Sua região em um só lugar">
-    <meta property="twitter:description" content="Descubra o melhor do comércio, eventos e notícias da região do Entorno Sul.">
-    <meta property="twitter:image" content="https://i.imgur.com/9eZarki.png">
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://i.imgur.com/9eZarki.png">
     
-    <!-- Font Awesome Icons -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Google Fonts - Roboto -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
-    <!-- NOSSOS ESTILOS - CAMINHOS CORRIGIDOS -->
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/home.css">
-    
-    <!-- Supabase JS -->
+    <!-- Supabase JS (carregar primeiro) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
-        /* Estilos inline para garantir que a página apareça mesmo sem os CSS carregarem */
+        /* RESET E VARIÁVEIS */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         
+        :root {
+            --verde-escuro: #256d3c;
+            --amarelo: #f8d236;
+            --laranja: #faa115;
+            --verde-claro: #91b69d;
+            --branco: #ffffff;
+            --marrom-verde: #928a27;
+            --cinza-claro: #f5f5f5;
+            --cinza-medio: #e0e0e0;
+            --cinza-escuro: #333333;
+        }
+        
         body {
             font-family: 'Roboto', sans-serif;
-            color: #333;
+            color: var(--cinza-escuro);
             line-height: 1.6;
-        }
-        
-        .header {
-            background: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        
-        .header .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .logo img {
-            height: 50px;
-            width: auto;
-        }
-        
-        .menu-desktop {
-            display: flex;
-            gap: 30px;
-            align-items: center;
-        }
-        
-        .menu-desktop a {
-            color: #256d3c;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
-        .menu-desktop a:hover,
-        .menu-desktop a.active {
-            color: #faa115;
-        }
-        
-        .btn-login {
-            background: #256d3c;
-            color: white !important;
-            padding: 8px 20px;
-            border-radius: 5px;
-        }
-        
-        .btn-login:hover {
-            background: #1a4f2b;
-            color: white !important;
-        }
-        
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-        }
-        
-        .menu-toggle span {
-            width: 25px;
-            height: 3px;
-            background: #256d3c;
-            margin: 2px 0;
-            transition: 0.3s;
-        }
-        
-        .menu-mobile {
-            display: none;
+            overflow-x: hidden;
             width: 100%;
-            background: white;
-            padding: 15px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
-        .menu-mobile a {
-            display: block;
-            padding: 10px 0;
-            color: #256d3c;
-            text-decoration: none;
-            border-bottom: 1px solid #eee;
-        }
-        
-        @media (max-width: 768px) {
-            .menu-desktop {
-                display: none;
-            }
-            
-            .menu-toggle {
-                display: flex;
-            }
-            
-            .menu-mobile.active {
-                display: block;
-            }
-            
-            .logo img {
-                height: 40px;
-            }
-        }
-        
-        .hero {
-            background: linear-gradient(135deg, rgba(37, 109, 60, 0.95) 0%, rgba(145, 182, 157, 0.9) 100%), 
-                        url('https://images.unsplash.com/photo-1556742044-3c52d6e88c62?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            padding: 80px 0;
-            min-height: 500px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .hero .container {
+        .container {
+            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 15px;
         }
         
+        /* HEADER */
+        .header {
+            background: var(--branco);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+        
+        .header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+            padding: 0 15px;
+        }
+        
+        .logo img {
+            height: 45px;
+            width: auto;
+            display: block;
+        }
+        
+        /* MENU DESKTOP */
+        .menu-desktop {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .menu-desktop a {
+            color: var(--verde-escuro);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .menu-desktop a:hover,
+        .menu-desktop a.active {
+            color: var(--laranja);
+        }
+        
+        .btn-login {
+            background: var(--verde-escuro);
+            color: var(--branco) !important;
+            padding: 8px 20px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        
+        .btn-login:hover {
+            background: #1a4f2b;
+        }
+        
+        /* MENU HAMBURGUER */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        .menu-toggle span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: var(--verde-escuro);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-toggle.active span:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+        }
+        
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .menu-toggle.active span:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+        }
+        
+        /* MENU MOBILE */
+        .menu-mobile {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 70px);
+            background: var(--branco);
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            overflow-y: auto;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .menu-mobile.active {
+            transform: translateX(0);
+            display: block;
+        }
+        
+        .menu-mobile a {
+            display: block;
+            padding: 15px 0;
+            color: var(--verde-escuro);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            border-bottom: 1px solid var(--cinza-claro);
+        }
+        
+        .menu-mobile a:last-child {
+            border-bottom: none;
+        }
+        
+        .menu-mobile .btn-login {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 30px;
+            background: var(--verde-escuro);
+            color: var(--branco) !important;
+            border-radius: 5px;
+            text-align: center;
+            border-bottom: none;
+        }
+        
+        /* HERO SECTION */
+        .hero {
+            background: linear-gradient(135deg, rgba(37, 109, 60, 0.95) 0%, rgba(145, 182, 157, 0.9) 100%), 
+                        url('https://images.unsplash.com/photo-1556742044-3c52d6e88c62?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--branco);
+            padding: 60px 0;
+            min-height: auto;
+        }
+        
         .hero-content {
             display: flex;
             align-items: center;
-            gap: 50px;
+            gap: 40px;
         }
         
         .hero-text {
@@ -197,7 +226,8 @@
         .hero-text h1 {
             font-size: 2.5rem;
             margin-bottom: 20px;
-            color: white;
+            color: var(--branco);
+            line-height: 1.2;
         }
         
         .hero-text p {
@@ -217,6 +247,13 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
         
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        /* BOTÕES */
         .btn {
             display: inline-block;
             padding: 12px 30px;
@@ -224,22 +261,25 @@
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
-            margin-right: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            text-align: center;
         }
         
         .btn-primary {
-            background: #256d3c;
-            color: white;
+            background: var(--verde-escuro);
+            color: var(--branco);
         }
         
         .btn-primary:hover {
             background: #1a4f2b;
-            color: white;
+            color: var(--branco);
         }
         
         .btn-secondary {
-            background: #f8d236;
-            color: #333;
+            background: var(--amarelo);
+            color: var(--cinza-escuro);
         }
         
         .btn-secondary:hover {
@@ -247,17 +287,549 @@
         }
         
         .btn-outline {
-            border: 2px solid #256d3c;
-            color: #256d3c;
+            border: 2px solid var(--verde-escuro);
+            color: var(--verde-escuro);
             background: transparent;
         }
         
         .btn-outline:hover {
-            background: #256d3c;
-            color: white;
+            background: var(--verde-escuro);
+            color: var(--branco);
         }
         
-        @media (max-width: 992px) {
+        .btn-small {
+            padding: 8px 20px;
+            font-size: 0.9rem;
+        }
+        
+        .btn-success {
+            background: #25D366;
+            color: var(--branco);
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+        
+        /* SEÇÕES */
+        section {
+            padding: 60px 0;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        h2 {
+            color: var(--verde-escuro);
+            margin-bottom: 30px;
+            font-size: 2rem;
+            line-height: 1.2;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        /* GRIDS */
+        .destaque-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+        
+        .parceiros-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        .funciona-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+        
+        .planos-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        /* CARDS */
+        .card {
+            background: var(--branco);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .card-content {
+            padding: 20px;
+            flex: 1;
+        }
+        
+        .card-title {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .card-title a {
+            color: var(--verde-escuro);
+            text-decoration: none;
+        }
+        
+        .card-meta {
+            color: #666;
+            font-size: 0.9rem;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        /* PARCEIRO CARD */
+        .parceiro-card {
+            background: var(--branco);
+            border-radius: 10px;
+            padding: 20px 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .parceiro-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .parceiro-card.premium {
+            border: 2px solid var(--laranja);
+        }
+        
+        .badge-premium {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--laranja);
+            color: var(--branco);
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        
+        .parceiro-logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 15px;
+            border: 3px solid var(--verde-claro);
+        }
+        
+        .parceiro-nome {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        
+        .parceiro-nome a {
+            color: var(--verde-escuro);
+            text-decoration: none;
+        }
+        
+        .parceiro-descricao {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 10px 0;
+            flex: 1;
+        }
+        
+        .parceiro-contato {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        /* EVENTO CARD */
+        .evento-card {
+            background: var(--branco);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .evento-data {
+            background: var(--verde-escuro);
+            color: var(--branco);
+            padding: 20px;
+            text-align: center;
+            min-width: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .evento-data .dia {
+            font-size: 2rem;
+            font-weight: bold;
+            line-height: 1;
+        }
+        
+        .evento-data .mes {
+            font-size: 1rem;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+        
+        .evento-info {
+            padding: 20px;
+            flex: 1;
+        }
+        
+        .evento-info h3 {
+            color: var(--verde-escuro);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .evento-meta {
+            display: flex;
+            gap: 20px;
+            margin: 15px 0;
+            color: #666;
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+        
+        /* FUNCIONA CARD */
+        .funciona-card {
+            background: var(--branco);
+            padding: 40px 25px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .funciona-icon {
+            width: 100px;
+            height: 100px;
+            background: var(--verde-escuro);
+            color: var(--branco);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 40px;
+        }
+        
+        /* PLANO CARD */
+        .plano-card {
+            background: var(--branco);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .plano-card.premium {
+            border: 3px solid var(--laranja);
+        }
+        
+        .plano-header {
+            padding: 30px 20px;
+            text-align: center;
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+        }
+        
+        .plano-preco {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: var(--verde-escuro);
+            line-height: 1.2;
+        }
+        
+        .plano-preco span {
+            font-size: 1rem;
+            font-weight: normal;
+            color: #666;
+        }
+        
+        .plano-recursos {
+            padding: 30px 20px;
+            list-style: none;
+            flex: 1;
+        }
+        
+        .plano-recursos li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .plano-recursos li .fa-check {
+            color: #28a745;
+        }
+        
+        .plano-recursos li .fa-times {
+            color: #dc3545;
+        }
+        
+        .plano-recursos li.disabled {
+            color: #999;
+        }
+        
+        /* SOBRE */
+        .sobre-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        
+        .sobre-imagem img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        /* NEWSLETTER */
+        .newsletter {
+            background: linear-gradient(135deg, var(--laranja), var(--amarelo));
+        }
+        
+        .newsletter-content {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .newsletter h2 {
+            color: var(--verde-escuro);
+        }
+        
+        .newsletter-form .form-group {
+            display: flex;
+            gap: 10px;
+            background: var(--branco);
+            padding: 5px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .newsletter-form input {
+            flex: 1;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 50px;
+            font-size: 1rem;
+            width: 100%;
+        }
+        
+        .newsletter-form input:focus {
+            outline: none;
+        }
+        
+        .newsletter-form button {
+            padding: 15px 30px;
+            border-radius: 50px;
+            white-space: nowrap;
+        }
+        
+        /* FOOTER */
+        .footer {
+            background: #1a4f2b;
+            color: var(--branco);
+            padding: 60px 0 20px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            height: 45px;
+            margin-bottom: 20px;
+            filter: brightness(0) invert(1);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--branco);
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+        
+        .social-link:hover {
+            transform: translateY(-5px);
+        }
+        
+        .social-link.facebook { background: #3b5998; }
+        .social-link.instagram { background: linear-gradient(45deg, #f09433, #d62976, #962fbf); }
+        .social-link.youtube { background: #ff0000; }
+        
+        .footer h3 {
+            color: var(--branco);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--amarelo);
+            display: inline-block;
+        }
+        
+        .footer-links ul,
+        .footer-contato ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li,
+        .footer-contato li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--amarelo);
+        }
+        
+        .footer-contato li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .footer-contato i {
+            width: 20px;
+            color: var(--amarelo);
+        }
+        
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .footer-extra {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-extra a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+        }
+        
+        /* LOADING */
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--verde-claro);
+            border-top-color: var(--verde-escuro);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* MISSÃO */
+        .missao {
+            background: var(--verde-escuro);
+            color: var(--branco);
+        }
+        
+        .missao h2 {
+            color: var(--branco);
+        }
+        
+        .missao-destaque {
+            font-size: 1.3rem;
+            color: var(--amarelo);
+            margin-bottom: 20px;
+        }
+        
+        .missao-citacao {
+            background: rgba(255,255,255,0.1);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+        
+        /* MEDIA QUERIES */
+        @media (max-width: 1024px) {
+            .parceiros-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-desktop {
+                display: none;
+            }
+            
+            .menu-toggle {
+                display: flex;
+            }
+            
             .hero-content {
                 flex-direction: column;
                 text-align: center;
@@ -271,124 +843,107 @@
                 max-width: 80%;
             }
             
-            .hero-text h1 {
-                font-size: 2rem;
+            .hero-buttons {
+                justify-content: center;
             }
-        }
-        
-        .loading {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 200px;
-            grid-column: 1 / -1;
-        }
-        
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #91b69d;
-            border-top-color: #256d3c;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .destaques,
-        .como-funciona,
-        .missao,
-        .parceiros-destaque,
-        .eventos-home,
-        .planos,
-        .sobre,
-        .newsletter {
-            padding: 60px 0;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-        
-        h2 {
-            color: #256d3c;
-            margin-bottom: 30px;
-            font-size: 2rem;
-        }
-        
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        
-        .destaque-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-        }
-        
-        @media (max-width: 768px) {
-            .destaque-grid {
+            
+            .destaque-grid,
+            .parceiros-grid,
+            .funciona-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .planos-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .sobre-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
         
-        .card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .card-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-        
-        .card-content {
-            padding: 20px;
-        }
-        
-        .card-title {
-            margin-bottom: 10px;
-        }
-        
-        .card-title a {
-            color: #256d3c;
-            text-decoration: none;
-        }
-        
-        .card-meta {
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        .card-meta small {
-            margin-right: 15px;
+        @media (max-width: 576px) {
+            .hero {
+                padding: 40px 0;
+            }
+            
+            .hero-text h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero-text p {
+                font-size: 1rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+            }
+            
+            .hero-buttons .btn {
+                width: 100%;
+            }
+            
+            .destaque-grid,
+            .parceiros-grid,
+            .funciona-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .evento-card {
+                flex-direction: column;
+            }
+            
+            .evento-data {
+                flex-direction: row;
+                justify-content: center;
+                gap: 15px;
+                min-width: auto;
+            }
+            
+            .evento-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .newsletter-form .form-group {
+                flex-direction: column;
+                background: transparent;
+                padding: 0;
+                border-radius: 0;
+            }
+            
+            .newsletter-form input,
+            .newsletter-form button {
+                width: 100%;
+                border-radius: 50px;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-extra {
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- HEADER com logo e menu -->
+    <!-- HEADER -->
     <header class="header">
         <div class="container">
             <div class="logo">
                 <a href="./index.html">
-                    <img src="https://i.imgur.com/9eZarki.png" alt="Tem no Entorno Sul">
+                    <img src="https://i.imgur.com/9eZarki.png" alt="Tem no Entorno Sul" loading="eager">
                 </a>
             </div>
             
@@ -405,15 +960,15 @@
                 </a>
             </nav>
             
-            <!-- Menu Mobile Toggle -->
-            <div class="menu-toggle" id="menu-toggle">
+            <!-- Menu Hamburguer -->
+            <div class="menu-toggle" id="menuToggle">
                 <span></span>
                 <span></span>
                 <span></span>
             </div>
             
             <!-- Menu Mobile -->
-            <div class="menu-mobile" id="menu-mobile">
+            <div class="menu-mobile" id="menuMobile">
                 <a href="./index.html">Início</a>
                 <a href="./publicacoes.html">Publicações</a>
                 <a href="./eventos.html">Eventos</a>
@@ -449,189 +1004,168 @@
             </div>
         </section>
 
-        <!-- SEÇÃO PUBLICAÇÕES RECENTES -->
+        <!-- PUBLICAÇÕES RECENTES -->
         <section class="destaques">
             <div class="container">
                 <div class="section-header">
                     <h2>Publicações Recentes</h2>
-                    <a href="./publicacoes.html" class="btn btn-outline">Ver Todas as Publicações <i class="fas fa-arrow-right"></i></a>
+                    <a href="./publicacoes.html" class="btn btn-outline">Ver Todas</a>
                 </div>
                 <div id="publicacoes-destaque" class="destaque-grid">
-                    <div class="loading">
-                        <div class="loading-spinner"></div>
-                    </div>
+                    <!-- Cards serão carregados via JavaScript -->
                 </div>
             </div>
         </section>
 
-        <!-- SEÇÃO COMO FUNCIONA -->
-        <section class="como-funciona" style="background: #f8f9fa;">
+        <!-- COMO FUNCIONA -->
+        <section style="background: #f8f9fa; padding: 60px 0;">
             <div class="container">
                 <h2 style="text-align: center;">Como Funciona</h2>
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 40px;">
-                    <div style="background: white; padding: 40px 30px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-                        <div style="width: 100px; height: 100px; background: #256d3c; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; font-size: 40px;">
+                <div class="funciona-grid">
+                    <div class="funciona-card">
+                        <div class="funciona-icon">
                             <i class="fas fa-user"></i>
                         </div>
-                        <h3 style="color: #256d3c; margin-bottom: 15px;">Para Usuários</h3>
-                        <p style="color: #666;">Encontre comércios e serviços próximos de você, avalie estabelecimentos, participe de eventos locais e receba ofertas exclusivas.</p>
+                        <h3>Para Usuários</h3>
+                        <p>Encontre comércios e serviços próximos de você, participe de eventos locais e receba ofertas exclusivas.</p>
                     </div>
                     
-                    <div style="background: white; padding: 40px 30px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-                        <div style="width: 100px; height: 100px; background: #256d3c; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; font-size: 40px;">
+                    <div class="funciona-card">
+                        <div class="funciona-icon">
                             <i class="fas fa-store"></i>
                         </div>
-                        <h3 style="color: #256d3c; margin-bottom: 15px;">Para Comércios</h3>
-                        <p style="color: #666;">Divulgue seu negócio gratuitamente, promova eventos e ofertas, conecte-se com clientes locais e fortaleça sua presença digital.</p>
+                        <h3>Para Comércios</h3>
+                        <p>Divulgue seu negócio gratuitamente, promova eventos e ofertas, conecte-se com clientes locais.</p>
                     </div>
                     
-                    <div style="background: white; padding: 40px 30px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-                        <div style="width: 100px; height: 100px; background: #256d3c; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; font-size: 40px;">
+                    <div class="funciona-card">
+                        <div class="funciona-icon">
                             <i class="fas fa-users"></i>
                         </div>
-                        <h3 style="color: #256d3c; margin-bottom: 15px;">Para a Comunidade</h3>
-                        <p style="color: #666;">Fortalecimento da economia regional, geração de empregos, desenvolvimento comunitário e valorização da identidade local.</p>
+                        <h3>Para a Comunidade</h3>
+                        <p>Fortalecimento da economia regional, geração de empregos e valorização da identidade local.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SEÇÃO NOSSA MISSÃO -->
-        <section class="missao" style="background: #256d3c; color: white;">
+        <!-- NOSSA MISSÃO -->
+        <section class="missao">
             <div class="container">
-                <div style="max-width: 900px; margin: 0 auto; text-align: center;">
-                    <h2 style="color: white;">Nossa Missão</h2>
-                    <p style="font-size: 1.5rem; color: #f8d236; margin-bottom: 30px;">Comercio e serviços locais. Cultura também é negócio!</p>
-                    <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 20px;">Valorizamos o crescimento da nossa região e o fortalecimento da economia nacional. Por isso, convidamos você a conhecer nosso site <strong>Tem no Entorno Sul</strong>. Através de informações atualizadas e soluções inovadoras, estamos comprometidos em impulsionar o desenvolvimento dos comércios locais.</p>
-                    <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 20px;">Os pequenos negócios são a espinha dorsal da nossa cidade, gerando empregos e promovendo prosperidade. Junte-se a nós nesse movimento em prol do progresso. Siga nossas redes sociais para ficar por dentro das novidades e fazer parte dessa jornada transformadora.</p>
-                    <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 15px; margin: 40px 0;">
-                        <i class="fas fa-quote-left" style="font-size: 30px; color: #f8d236; margin-bottom: 15px;"></i>
-                        <p style="font-size: 1.2rem; font-style: italic;">Apoiar os comércios locais é fundamental para o desenvolvimento da região e para a economia do país.</p>
-                    </div>
-                    <div style="display: flex; justify-content: center; gap: 20px; margin-top: 40px;">
-                        <a href="https://www.facebook.com/temnoentornosul" target="_blank" style="width: 50px; height: 50px; border-radius: 50%; background: #3b5998; color: white; display: flex; align-items: center; justify-content: center; text-decoration: none;">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="https://www.instagram.com/temnoentornosul" target="_blank" style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(45deg, #f09433, #d62976, #962fbf); color: white; display: flex; align-items: center; justify-content: center; text-decoration: none;">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://www.youtube.com/@temnoentornosul" target="_blank" style="width: 50px; height: 50px; border-radius: 50%; background: #ff0000; color: white; display: flex; align-items: center; justify-content: center; text-decoration: none;">
-                            <i class="fab fa-youtube"></i>
-                        </a>
+                <div style="max-width: 900px; margin: 0 auto;">
+                    <h2 style="text-align: center;">Nossa Missão</h2>
+                    <p class="missao-destaque" style="text-align: center;">Comercio e serviços locais. Cultura também é negócio!</p>
+                    <p>Valorizamos o crescimento da nossa região e o fortalecimento da economia nacional. Através de informações atualizadas e soluções inovadoras, estamos comprometidos em impulsionar o desenvolvimento dos comércios locais.</p>
+                    <p>Os pequenos negócios são a espinha dorsal da nossa cidade, gerando empregos e promovendo prosperidade.</p>
+                    <div class="missao-citacao">
+                        <i class="fas fa-quote-left" style="font-size: 24px; color: var(--amarelo);"></i>
+                        <p style="font-style: italic;">Apoiar os comércios locais é fundamental para o desenvolvimento da região.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SEÇÃO PARCEIROS EM DESTAQUE -->
+        <!-- PARCEIROS EM DESTAQUE -->
         <section class="parceiros-destaque">
             <div class="container">
                 <div class="section-header">
                     <h2>Parceiros em Destaque</h2>
-                    <a href="./parceiros.html" class="btn btn-outline">Ver todos <i class="fas fa-arrow-right"></i></a>
+                    <a href="./parceiros.html" class="btn btn-outline">Ver todos</a>
                 </div>
-                <div id="parceiros-destaque" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
-                    <div class="loading">
-                        <div class="loading-spinner"></div>
-                    </div>
+                <div id="parceiros-destaque" class="parceiros-grid">
+                    <!-- Cards serão carregados via JavaScript -->
                 </div>
             </div>
         </section>
 
-        <!-- SEÇÃO PRÓXIMOS EVENTOS -->
-        <section class="eventos-home" style="background: #f8f9fa;">
+        <!-- PRÓXIMOS EVENTOS -->
+        <section style="background: #f8f9fa; padding: 60px 0;">
             <div class="container">
                 <div class="section-header">
                     <h2>Próximos Eventos</h2>
-                    <a href="./eventos.html" class="btn btn-outline">Ver agenda completa <i class="fas fa-arrow-right"></i></a>
+                    <a href="./eventos.html" class="btn btn-outline">Ver agenda</a>
                 </div>
                 <div id="eventos-lista">
-                    <div class="loading">
-                        <div class="loading-spinner"></div>
-                    </div>
+                    <!-- Eventos serão carregados via JavaScript -->
                 </div>
             </div>
         </section>
 
-        <!-- SEÇÃO PLANOS -->
+        <!-- PLANOS -->
         <section class="planos">
             <div class="container">
                 <h2 style="text-align: center;">Escolha o plano ideal para seu negócio</h2>
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; max-width: 1000px; margin: 40px auto 0;">
+                <div class="planos-grid">
                     <!-- Plano Grátis -->
-                    <div style="background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.1);">
-                        <div style="padding: 30px; text-align: center; background: linear-gradient(135deg, #f8f9fa, #ffffff);">
-                            <h3 style="color: #256d3c;">Plano Grátis</h3>
-                            <div style="font-size: 2.5rem; font-weight: bold; color: #256d3c; margin: 15px 0;">
-                                R$ 0 <span style="font-size: 1rem; color: #666;">/mês</span>
+                    <div class="plano-card">
+                        <div class="plano-header">
+                            <h3>Plano Grátis</h3>
+                            <div class="plano-preco">
+                                R$ 0 <span>/mês</span>
                             </div>
                         </div>
-                        <ul style="padding: 30px; list-style: none;">
-                            <li style="padding: 10px 0; border-bottom: 1px solid #eee;"><i class="fas fa-check" style="color: #28a745; margin-right: 10px;"></i> Página de perfil básica</li>
-                            <li style="padding: 10px 0; border-bottom: 1px solid #eee;"><i class="fas fa-check" style="color: #28a745; margin-right: 10px;"></i> Listagem no diretório</li>
-                            <li style="padding: 10px 0; border-bottom: 1px solid #eee;"><i class="fas fa-check" style="color: #28a745; margin-right: 10px;"></i> Informações de contato</li>
-                            <li style="padding: 10px 0; border-bottom: 1px solid #eee;"><i class="fas fa-check" style="color: #28a745; margin-right: 10px;"></i> Horário de funcionamento</li>
-                            <li style="padding: 10px 0; border-bottom: 1px solid #eee; color: #999;"><i class="fas fa-times" style="color: #dc3545; margin-right: 10px;"></i> Sistema de agendamentos</li>
-                            <li style="padding: 10px 0; border-bottom: 1px solid #eee; color: #999;"><i class="fas fa-times" style="color: #dc3545; margin-right: 10px;"></i> Destaque nas buscas</li>
-                            <li style="padding: 10px 0; color: #999;"><i class="fas fa-times" style="color: #dc3545; margin-right: 10px;"></i> Estatísticas</li>
+                        <ul class="plano-recursos">
+                            <li><i class="fas fa-check"></i> Página de perfil básica</li>
+                            <li><i class="fas fa-check"></i> Listagem no diretório</li>
+                            <li><i class="fas fa-check"></i> Informações de contato</li>
+                            <li><i class="fas fa-check"></i> Horário de funcionamento</li>
+                            <li class="disabled"><i class="fas fa-times"></i> Sistema de agendamentos</li>
+                            <li class="disabled"><i class="fas fa-times"></i> Destaque nas buscas</li>
                         </ul>
-                        <a href="./cadastro.html" class="btn btn-outline" style="display: block; width: 90%; margin: 0 auto 30px; text-align: center;">Começar grátis</a>
+                        <a href="./cadastro.html" class="btn btn-outline btn-block" style="margin: 0 20px 30px;">Começar grátis</a>
                     </div>
 
                     <!-- Plano Premium -->
-                    <div style="background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.1); border: 3px solid #faa115; position: relative;">
-                        <div style="position: absolute; top: 20px; right: 20px; background: #faa115; color: white; padding: 5px 15px; border-radius: 25px; font-size: 0.85rem; font-weight: bold;">MAIS VENDIDO</div>
-                        <div style="padding: 30px; text-align: center; background: linear-gradient(135deg, #f8f9fa, #ffffff);">
-                            <h3 style="color: #256d3c;">Plano Premium</h3>
-                            <div style="font-size: 2.5rem; font-weight: bold; color: #256d3c; margin: 15px 0;">
-                                R$ 29,90 <span style="font-size: 1rem; color: #666;">/mês</span>
+                    <div class="plano-card premium">
+                        <span class="badge-premium">MAIS VENDIDO</span>
+                        <div class="plano-header">
+                            <h3>Plano Premium</h3>
+                            <div class="plano-preco">
+                                R$ 29,90 <span>/mês</span>
                             </div>
                         </div>
-                        <ul style="padding: 30px; list-style: none;">
-                            <li style="padding: 10px 0; border-bottom: 1px solid #eee;"><i class="fas fa-check" style="color: #28a745; margin-right: 10px;"></i> Tudo do plano grátis</li>
-                            <li style="padding: 10px 0; border-bottom: 1px solid #eee;"><i class="fas fa-check" style="color: #28a745; margin-right: 10px;"></i> Página personalizada completa</li>
-                            <li style="padding: 10px 0; border-bottom: 1px solid #eee;"><i class="fas fa-check" style="color: #28a745; margin-right: 10px;"></i> Sistema de agendamentos</li>
-                            <li style="padding: 10px 0; border-bottom: 1px solid #eee;"><i class="fas fa-check" style="color: #28a745; margin-right: 10px;"></i> Destaque nas buscas</li>
-                            <li style="padding: 10px 0; border-bottom: 1px solid #eee;"><i class="fas fa-check" style="color: #28a745; margin-right: 10px;"></i> Selo "Premium"</li>
-                            <li style="padding: 10px 0; border-bottom: 1px solid #eee;"><i class="fas fa-check" style="color: #28a745; margin-right: 10px;"></i> Estatísticas de visualizações</li>
-                            <li style="padding: 10px 0;"><i class="fas fa-check" style="color: #28a745; margin-right: 10px;"></i> Múltiplas fotos</li>
+                        <ul class="plano-recursos">
+                            <li><i class="fas fa-check"></i> Tudo do plano grátis</li>
+                            <li><i class="fas fa-check"></i> Página personalizada</li>
+                            <li><i class="fas fa-check"></i> Sistema de agendamentos</li>
+                            <li><i class="fas fa-check"></i> Destaque nas buscas</li>
+                            <li><i class="fas fa-check"></i> Selo "Premium"</li>
+                            <li><i class="fas fa-check"></i> Estatísticas</li>
                         </ul>
-                        <a href="./cadastro.html?plano=premium" class="btn btn-primary" style="display: block; width: 90%; margin: 0 auto 30px; text-align: center;">Assinar agora</a>
+                        <a href="./cadastro.html?plano=premium" class="btn btn-primary btn-block" style="margin: 0 20px 30px;">Assinar agora</a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SEÇÃO SOBRE -->
-        <section class="sobre" style="background: #f8f9fa;">
+        <!-- SOBRE -->
+        <section style="background: #f8f9fa; padding: 60px 0;">
             <div class="container">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center;">
+                <div class="sobre-content">
                     <div>
                         <h2>Sobre o Tem no Entorno Sul</h2>
-                        <p style="font-size: 1.1rem; line-height: 1.8; color: #555; margin-bottom: 20px;">Somos uma plataforma que conecta moradores aos melhores comércios, serviços e eventos da região do Entorno Sul. Nosso objetivo é fortalecer o comércio local e facilitar o acesso da comunidade a tudo que nossa região oferece.</p>
-                        <p style="font-size: 1.1rem; line-height: 1.8; color: #555; margin-bottom: 20px;">Acreditamos no poder do comércio local para gerar emprego, renda e desenvolvimento. Por isso, oferecemos uma plataforma acessível para pequenos negócios se destacarem e alcançarem novos clientes.</p>
-                        <p style="font-size: 1.2rem; color: #256d3c; font-weight: bold;">Junte-se a nós e faça parte dessa comunidade!</p>
+                        <p>Somos uma plataforma que conecta moradores aos melhores comércios, serviços e eventos da região do Entorno Sul.</p>
+                        <p>Acreditamos no poder do comércio local para gerar emprego, renda e desenvolvimento.</p>
+                        <p style="font-weight: bold; color: var(--verde-escuro);">Junte-se a nós e faça parte dessa comunidade!</p>
                     </div>
-                    <div>
+                    <div class="sobre-imagem">
                         <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
-                             alt="Equipe Tem no Entorno Sul"
-                             style="width: 100%; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.15);"
-                             loading="lazy">
+                             alt="Equipe" loading="lazy">
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- NEWSLETTER -->
-        <section class="newsletter" style="background: linear-gradient(135deg, #faa115, #f8d236);">
+        <section class="newsletter">
             <div class="container">
-                <div style="text-align: center; max-width: 600px; margin: 0 auto;">
-                    <h2 style="color: #256d3c;">Fique por dentro das novidades</h2>
-                    <p style="color: #333; font-size: 1.1rem; margin-bottom: 30px;">Receba em primeira mão os eventos e promoções da região</p>
-                    <form id="newsletter-form">
-                        <div style="display: flex; gap: 10px; background: white; padding: 5px; border-radius: 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-                            <input type="email" placeholder="Seu melhor e-mail" required style="flex: 1; border: none; padding: 15px 25px; border-radius: 50px; font-size: 1rem;">
-                            <button type="submit" class="btn btn-primary" style="padding: 15px 40px; border-radius: 50px; font-weight: bold;">Inscrever-se</button>
+                <div class="newsletter-content">
+                    <h2>Fique por dentro das novidades</h2>
+                    <p>Receba em primeira mão os eventos e promoções da região</p>
+                    <form id="newsletterForm" class="newsletter-form">
+                        <div class="form-group">
+                            <input type="email" placeholder="Seu melhor e-mail" required>
+                            <button type="submit" class="btn btn-primary">Inscrever-se</button>
                         </div>
                     </form>
                 </div>
@@ -640,404 +1174,267 @@
     </main>
 
     <!-- FOOTER -->
-    <footer style="background: #1a4f2b; color: white; padding: 60px 0 20px;">
+    <footer class="footer">
         <div class="container">
-            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 40px; margin-bottom: 40px;">
+            <div class="footer-grid">
                 <div>
-                    <img src="https://i.imgur.com/9eZarki.png" alt="Tem no Entorno Sul" style="height: 50px; margin-bottom: 20px; filter: brightness(0) invert(1);">
-                    <p style="opacity: 0.8; line-height: 1.6;">Conectando moradores aos melhores comércios, serviços e eventos da região do Entorno Sul.</p>
-                    <div style="display: flex; gap: 15px; margin-top: 20px;">
-                        <a href="https://www.facebook.com/temnoentornosul" target="_blank" style="width: 40px; height: 40px; border-radius: 50%; background: #3b5998; color: white; display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                    <img src="https://i.imgur.com/9eZarki.png" alt="Logo" class="footer-logo">
+                    <p>Conectando moradores aos melhores comércios, serviços e eventos da região.</p>
+                    <div class="social-links">
+                        <a href="https://facebook.com/temnoentornosul" target="_blank" class="social-link facebook">
                             <i class="fab fa-facebook-f"></i>
                         </a>
-                        <a href="https://www.instagram.com/temnoentornosul" target="_blank" style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(45deg, #f09433, #d62976, #962fbf); color: white; display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                        <a href="https://instagram.com/temnoentornosul" target="_blank" class="social-link instagram">
                             <i class="fab fa-instagram"></i>
                         </a>
-                        <a href="https://www.youtube.com/@temnoentornosul" target="_blank" style="width: 40px; height: 40px; border-radius: 50%; background: #ff0000; color: white; display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                        <a href="https://youtube.com/@temnoentornosul" target="_blank" class="social-link youtube">
                             <i class="fab fa-youtube"></i>
                         </a>
                     </div>
                 </div>
                 
-                <div>
-                    <h3 style="color: white; margin-bottom: 20px;">Links Rápidos</h3>
-                    <ul style="list-style: none; padding: 0;">
-                        <li style="margin-bottom: 10px;"><a href="./publicacoes.html" style="color: rgba(255,255,255,0.8); text-decoration: none;">Publicações</a></li>
-                        <li style="margin-bottom: 10px;"><a href="./eventos.html" style="color: rgba(255,255,255,0.8); text-decoration: none;">Eventos</a></li>
-                        <li style="margin-bottom: 10px;"><a href="./colunistas.html" style="color: rgba(255,255,255,0.8); text-decoration: none;">Colunistas</a></li>
-                        <li style="margin-bottom: 10px;"><a href="./parceiros.html" style="color: rgba(255,255,255,0.8); text-decoration: none;">Parceiros</a></li>
-                        <li style="margin-bottom: 10px;"><a href="./contato.html" style="color: rgba(255,255,255,0.8); text-decoration: none;">Contato</a></li>
+                <div class="footer-links">
+                    <h3>Links</h3>
+                    <ul>
+                        <li><a href="./publicacoes.html">Publicações</a></li>
+                        <li><a href="./eventos.html">Eventos</a></li>
+                        <li><a href="./colunistas.html">Colunistas</a></li>
+                        <li><a href="./parceiros.html">Parceiros</a></li>
                     </ul>
                 </div>
                 
-                <div>
-                    <h3 style="color: white; margin-bottom: 20px;">Para Comércios</h3>
-                    <ul style="list-style: none; padding: 0;">
-                        <li style="margin-bottom: 10px;"><a href="./cadastro.html" style="color: rgba(255,255,255,0.8); text-decoration: none;">Cadastrar grátis</a></li>
-                        <li style="margin-bottom: 10px;"><a href="./planos.html" style="color: rgba(255,255,255,0.8); text-decoration: none;">Planos premium</a></li>
-                        <li style="margin-bottom: 10px;"><a href="./admin/login.html" style="color: rgba(255,255,255,0.8); text-decoration: none;">Área do parceiro</a></li>
-                        <li style="margin-bottom: 10px;"><a href="./como-funciona.html" style="color: rgba(255,255,255,0.8); text-decoration: none;">Como funciona</a></li>
+                <div class="footer-links">
+                    <h3>Comércios</h3>
+                    <ul>
+                        <li><a href="./cadastro.html">Cadastrar grátis</a></li>
+                        <li><a href="./planos.html">Planos premium</a></li>
+                        <li><a href="./admin/login.html">Área do parceiro</a></li>
                     </ul>
                 </div>
                 
-                <div>
-                    <h3 style="color: white; margin-bottom: 20px;">Contato</h3>
-                    <ul style="list-style: none; padding: 0;">
-                        <li style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;"><i class="fas fa-phone" style="color: #f8d236; width: 20px;"></i> (45) 99999-9999</li>
-                        <li style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;"><i class="fas fa-envelope" style="color: #f8d236; width: 20px;"></i> contato@temnoentornosul.com.br</li>
-                        <li style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;"><i class="fas fa-map-marker-alt" style="color: #f8d236; width: 20px;"></i> Toledo - PR</li>
+                <div class="footer-contato">
+                    <h3>Contato</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> (45) 99999-9999</li>
+                        <li><i class="fas fa-envelope"></i> contato@temnoentornosul.com.br</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Toledo - PR</li>
                     </ul>
                 </div>
             </div>
             
-            <div style="text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
-                <p>&copy; 2026 Tem no Entorno Sul. Todos os direitos reservados.</p>
-                <div style="display: flex; gap: 20px;">
-                    <a href="./termos.html" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem;">Termos de uso</a>
-                    <a href="./privacidade.html" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem;">Política de privacidade</a>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Tem no Entorno Sul</p>
+                <div class="footer-extra">
+                    <a href="./termos.html">Termos</a>
+                    <a href="./privacidade.html">Privacidade</a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- SCRIPTS - CAMINHOS CORRIGIDOS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="./js/supabase-config.js"></script>
-    <script src="./js/api/publicacoes.js"></script>
-    <script src="./js/api/parceiros.js"></script>
-    <script src="./js/api/eventos.js"></script>
-    <script src="./js/utils/formatadores.js"></script>
-    <script src="./js/main.js"></script>
-    <script src="./js/pages/home.js"></script>
-    
+    <!-- Scripts -->
     <script>
-        // Menu mobile
+        // =====================================================
+        // CONFIGURAÇÃO DO SUPABASE (feita antes de tudo)
+        // =====================================================
+        const SUPABASE_URL = 'https://seu-projeto.supabase.co'; // Substitua pela URL do seu projeto
+        const SUPABASE_ANON_KEY = 'sua-chave-anonima'; // Substitua pela sua chave
+        
+        // Criar cliente Supabase global
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+            auth: {
+                autoRefreshToken: true,
+                persistSession: true
+            }
+        });
+
+        // =====================================================
+        // MENU HAMBURGUER - CORRIGIDO
+        // =====================================================
         document.addEventListener('DOMContentLoaded', function() {
-            const menuToggle = document.getElementById('menu-toggle');
-            const menuMobile = document.getElementById('menu-mobile');
+            console.log('DOM carregado - inicializando menu');
+            
+            const menuToggle = document.getElementById('menuToggle');
+            const menuMobile = document.getElementById('menuMobile');
             
             if (menuToggle && menuMobile) {
-                menuToggle.addEventListener('click', function() {
+                console.log('Elementos do menu encontrados');
+                
+                // Toggle do menu ao clicar no hamburguer
+                menuToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    console.log('Menu toggle clicado');
+                    
                     this.classList.toggle('active');
                     menuMobile.classList.toggle('active');
                     
-                    const spans = this.querySelectorAll('span');
-                    if (this.classList.contains('active')) {
-                        spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-                        spans[1].style.opacity = '0';
-                        spans[2].style.transform = 'rotate(-45deg) translate(7px, -7px)';
+                    // Impedir scroll do body
+                    if (menuMobile.classList.contains('active')) {
+                        document.body.style.overflow = 'hidden';
                     } else {
-                        spans[0].style.transform = 'none';
-                        spans[1].style.opacity = '1';
-                        spans[2].style.transform = 'none';
+                        document.body.style.overflow = '';
                     }
                 });
+                
+                // Fechar ao clicar em links
+                const menuLinks = menuMobile.querySelectorAll('a');
+                menuLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        menuToggle.classList.remove('active');
+                        menuMobile.classList.remove('active');
+                        document.body.style.overflow = '';
+                    });
+                });
+                
+                // Fechar ao clicar fora
+                document.addEventListener('click', function(e) {
+                    if (!menuToggle.contains(e.target) && !menuMobile.contains(e.target)) {
+                        menuToggle.classList.remove('active');
+                        menuMobile.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            } else {
+                console.error('Elementos do menu NÃO encontrados');
             }
             
-            // Carregar publicações
-            carregarPublicacoes();
-            carregarParceiros();
-            carregarEventos();
+            // =====================================================
+            // CARREGAR DADOS DE EXEMPLO
+            // =====================================================
+            
+            // Publicações
+            const pubContainer = document.getElementById('publicacoes-destaque');
+            if (pubContainer) {
+                pubContainer.innerHTML = `
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400" alt="Publicação" class="card-image" loading="lazy">
+                        <div class="card-content">
+                            <h3 class="card-title"><a href="#">Como fortalecer o comércio local</a></h3>
+                            <p class="card-text">Dicas práticas para pequenos negócios se destacarem...</p>
+                            <div class="card-meta">
+                                <small><i class="far fa-calendar"></i> 15/03/2026</small>
+                                <small><i class="far fa-user"></i> João Silva</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400" alt="Publicação" class="card-image" loading="lazy">
+                        <div class="card-content">
+                            <h3 class="card-title"><a href="#">Eventos imperdíveis em março</a></h3>
+                            <p class="card-text">Confira a agenda completa de eventos na região...</p>
+                            <div class="card-meta">
+                                <small><i class="far fa-calendar"></i> 10/03/2026</small>
+                                <small><i class="far fa-user"></i> Maria Santos</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400" alt="Publicação" class="card-image" loading="lazy">
+                        <div class="card-content">
+                            <h3 class="card-title"><a href="#">Novos parceiros chegando</a></h3>
+                            <p class="card-text">Conheça os novos comércios que estão se juntando...</p>
+                            <div class="card-meta">
+                                <small><i class="far fa-calendar"></i> 05/03/2026</small>
+                                <small><i class="far fa-user"></i> Admin</small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Parceiros
+            const parcContainer = document.getElementById('parceiros-destaque');
+            if (parcContainer) {
+                parcContainer.innerHTML = `
+                    <div class="parceiro-card premium">
+                        <span class="badge-premium">Premium</span>
+                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200" alt="Restaurante" class="parceiro-logo" loading="lazy">
+                        <h3 class="parceiro-nome"><a href="#">Restaurante Sabor Caseiro</a></h3>
+                        <p class="parceiro-descricao">Comida caseira com qualidade</p>
+                        <div class="parceiro-contato">
+                            <a href="#" class="btn btn-small btn-success"><i class="fab fa-whatsapp"></i></a>
+                            <a href="#" class="btn btn-small btn-outline">Perfil</a>
+                        </div>
+                    </div>
+                    <div class="parceiro-card">
+                        <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=200" alt="Barbearia" class="parceiro-logo" loading="lazy">
+                        <h3 class="parceiro-nome"><a href="#">Barbearia Estilo</a></h3>
+                        <p class="parceiro-descricao">Corte e barba com estilo</p>
+                        <div class="parceiro-contato">
+                            <a href="#" class="btn btn-small btn-success"><i class="fab fa-whatsapp"></i></a>
+                            <a href="#" class="btn btn-small btn-outline">Perfil</a>
+                        </div>
+                    </div>
+                    <div class="parceiro-card">
+                        <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=200" alt="Padaria" class="parceiro-logo" loading="lazy">
+                        <h3 class="parceiro-nome"><a href="#">Padaria Pão Quente</a></h3>
+                        <p class="parceiro-descricao">Pães e doces fresquinhos</p>
+                        <div class="parceiro-contato">
+                            <a href="#" class="btn btn-small btn-success"><i class="fab fa-whatsapp"></i></a>
+                            <a href="#" class="btn btn-small btn-outline">Perfil</a>
+                        </div>
+                    </div>
+                    <div class="parceiro-card">
+                        <img src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=200" alt="Academia" class="parceiro-logo" loading="lazy">
+                        <h3 class="parceiro-nome"><a href="#">Academia Corpo em Ação</a></h3>
+                        <p class="parceiro-descricao">Saúde e bem-estar</p>
+                        <div class="parceiro-contato">
+                            <a href="#" class="btn btn-small btn-success"><i class="fab fa-whatsapp"></i></a>
+                            <a href="#" class="btn btn-small btn-outline">Perfil</a>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Eventos
+            const evContainer = document.getElementById('eventos-lista');
+            if (evContainer) {
+                evContainer.innerHTML = `
+                    <div class="evento-card">
+                        <div class="evento-data">
+                            <span class="dia">20</span>
+                            <span class="mes">MAR</span>
+                        </div>
+                        <div class="evento-info">
+                            <h3>Feira Gastronômica</h3>
+                            <p>Evento com os melhores food trucks da região...</p>
+                            <div class="evento-meta">
+                                <span><i class="fas fa-map-marker-alt"></i> Praça Central</span>
+                                <span><i class="far fa-clock"></i> 18:00</span>
+                            </div>
+                            <a href="#" class="btn btn-outline btn-small">Saiba mais</a>
+                        </div>
+                    </div>
+                    <div class="evento-card">
+                        <div class="evento-data">
+                            <span class="dia">25</span>
+                            <span class="mes">MAR</span>
+                        </div>
+                        <div class="evento-info">
+                            <h3>Show Sertanejo</h3>
+                            <p>Show com artistas locais...</p>
+                            <div class="evento-meta">
+                                <span><i class="fas fa-map-marker-alt"></i> Parque</span>
+                                <span><i class="far fa-clock"></i> 21:00</span>
+                            </div>
+                            <a href="#" class="btn btn-outline btn-small">Saiba mais</a>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Newsletter
+            const newsletterForm = document.getElementById('newsletterForm');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Inscrição realizada com sucesso!');
+                    this.reset();
+                });
+            }
         });
-        
-        async function carregarPublicacoes() {
-            try {
-                // Simulação enquanto os arquivos não existem
-                const container = document.getElementById('publicacoes-destaque');
-                if (container) {
-                    container.innerHTML = `
-                        <div class="card">
-                            <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400" alt="Publicação" class="card-image">
-                            <div class="card-content">
-                                <h3 class="card-title"><a href="#">Como fortalecer o comércio local</a></h3>
-                                <p class="card-text">Dicas práticas para pequenos negócios se destacarem na região...</p>
-                                <div class="card-meta">
-                                    <small><i class="far fa-calendar"></i> 15/03/2026</small>
-                                    <small><i class="far fa-user"></i> João Silva</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400" alt="Publicação" class="card-image">
-                            <div class="card-content">
-                                <h3 class="card-title"><a href="#">Eventos imperdíveis em março</a></h3>
-                                <p class="card-text">Confira a agenda completa de eventos na região do Entorno Sul...</p>
-                                <div class="card-meta">
-                                    <small><i class="far fa-calendar"></i> 10/03/2026</small>
-                                    <small><i class="far fa-user"></i> Maria Santos</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400" alt="Publicação" class="card-image">
-                            <div class="card-content">
-                                <h3 class="card-title"><a href="#">Novos parceiros chegando</a></h3>
-                                <p class="card-text">Conheça os novos comércios que estão se juntando à nossa plataforma...</p>
-                                <div class="card-meta">
-                                    <small><i class="far fa-calendar"></i> 05/03/2026</small>
-                                    <small><i class="far fa-user"></i> Administrador</small>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }
-            } catch (error) {
-                console.error('Erro:', error);
-            }
-        }
-        
-        async function carregarParceiros() {
-            try {
-                const container = document.getElementById('parceiros-destaque');
-                if (container) {
-                    container.innerHTML = `
-                        <div class="parceiro-card premium">
-                            <span class="badge badge-premium">Premium</span>
-                            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200" alt="Restaurante" class="parceiro-logo">
-                            <h3 class="parceiro-nome"><a href="#">Restaurante Sabor Caseiro</a></h3>
-                            <p class="parceiro-descricao">Comida caseira com qualidade</p>
-                            <div class="parceiro-contato">
-                                <a href="#" class="btn btn-small btn-success"><i class="fab fa-whatsapp"></i></a>
-                                <a href="#" class="btn btn-small btn-outline">Ver perfil</a>
-                            </div>
-                        </div>
-                        <div class="parceiro-card">
-                            <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=200" alt="Barbearia" class="parceiro-logo">
-                            <h3 class="parceiro-nome"><a href="#">Barbearia Estilo</a></h3>
-                            <p class="parceiro-descricao">Corte e barba com estilo</p>
-                            <div class="parceiro-contato">
-                                <a href="#" class="btn btn-small btn-success"><i class="fab fa-whatsapp"></i></a>
-                                <a href="#" class="btn btn-small btn-outline">Ver perfil</a>
-                            </div>
-                        </div>
-                        <div class="parceiro-card">
-                            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=200" alt="Padaria" class="parceiro-logo">
-                            <h3 class="parceiro-nome"><a href="#">Padaria Pão Quente</a></h3>
-                            <p class="parceiro-descricao">Pães e doces fresquinhos</p>
-                            <div class="parceiro-contato">
-                                <a href="#" class="btn btn-small btn-success"><i class="fab fa-whatsapp"></i></a>
-                                <a href="#" class="btn btn-small btn-outline">Ver perfil</a>
-                            </div>
-                        </div>
-                        <div class="parceiro-card">
-                            <img src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=200" alt="Academia" class="parceiro-logo">
-                            <h3 class="parceiro-nome"><a href="#">Academia Corpo em Ação</a></h3>
-                            <p class="parceiro-descricao">Saúde e bem-estar</p>
-                            <div class="parceiro-contato">
-                                <a href="#" class="btn btn-small btn-success"><i class="fab fa-whatsapp"></i></a>
-                                <a href="#" class="btn btn-small btn-outline">Ver perfil</a>
-                            </div>
-                        </div>
-                    `;
-                }
-            } catch (error) {
-                console.error('Erro:', error);
-            }
-        }
-        
-        async function carregarEventos() {
-            try {
-                const container = document.getElementById('eventos-lista');
-                if (container) {
-                    container.innerHTML = `
-                        <div class="evento-card">
-                            <div class="evento-data">
-                                <span class="dia">20</span>
-                                <span class="mes">MAR</span>
-                            </div>
-                            <div class="evento-info">
-                                <h3>Feira Gastronômica</h3>
-                                <p>Evento com os melhores food trucks da região...</p>
-                                <div class="evento-meta">
-                                    <span class="evento-local"><i class="fas fa-map-marker-alt"></i> Praça Central</span>
-                                    <span class="evento-horario"><i class="far fa-clock"></i> 18:00 - 23:00</span>
-                                </div>
-                                <a href="#" class="btn btn-outline btn-small">Saiba mais <i class="fas fa-arrow-right"></i></a>
-                            </div>
-                        </div>
-                        <div class="evento-card">
-                            <div class="evento-data">
-                                <span class="dia">25</span>
-                                <span class="mes">MAR</span>
-                            </div>
-                            <div class="evento-info">
-                                <h3>Show Sertanejo</h3>
-                                <p>Show com artistas locais e regionais...</p>
-                                <div class="evento-meta">
-                                    <span class="evento-local"><i class="fas fa-map-marker-alt"></i> Parque de Exposições</span>
-                                    <span class="evento-horario"><i class="far fa-clock"></i> 21:00</span>
-                                </div>
-                                <a href="#" class="btn btn-outline btn-small">Saiba mais <i class="fas fa-arrow-right"></i></a>
-                            </div>
-                        </div>
-                        <div class="evento-card">
-                            <div class="evento-data">
-                                <span class="dia">30</span>
-                                <span class="mes">MAR</span>
-                            </div>
-                            <div class="evento-info">
-                                <h3>Oficina de Empreendedorismo</h3>
-                                <p>Aprenda a alavancar seu negócio...</p>
-                                <div class="evento-meta">
-                                    <span class="evento-local"><i class="fas fa-map-marker-alt"></i> SEBRAE Toledo</span>
-                                    <span class="evento-horario"><i class="far fa-clock"></i> 19:00</span>
-                                </div>
-                                <a href="#" class="btn btn-outline btn-small">Saiba mais <i class="fas fa-arrow-right"></i></a>
-                            </div>
-                        </div>
-                    `;
-                }
-            } catch (error) {
-                console.error('Erro:', error);
-            }
-        }
     </script>
-    
-    <style>
-        .parceiros-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
-        
-        .parceiro-card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-            position: relative;
-        }
-        
-        .parceiro-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .parceiro-card.premium {
-            border: 2px solid #faa115;
-        }
-        
-        .badge-premium {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #faa115;
-            color: white;
-            padding: 3px 10px;
-            border-radius: 15px;
-            font-size: 0.75rem;
-        }
-        
-        .parceiro-logo {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 15px;
-        }
-        
-        .parceiro-nome a {
-            color: #256d3c;
-            text-decoration: none;
-        }
-        
-        .parceiro-descricao {
-            color: #666;
-            font-size: 0.9rem;
-            margin: 10px 0;
-        }
-        
-        .parceiro-contato {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
-        
-        .btn-small {
-            padding: 8px 15px;
-            font-size: 0.9rem;
-        }
-        
-        .btn-success {
-            background: #25D366;
-            color: white;
-        }
-        
-        .btn-success:hover {
-            background: #128C7E;
-            color: white;
-        }
-        
-        .evento-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            display: flex;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .evento-data {
-            background: #256d3c;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            min-width: 100px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        
-        .evento-data .dia {
-            font-size: 2rem;
-            font-weight: bold;
-            line-height: 1;
-        }
-        
-        .evento-data .mes {
-            font-size: 1rem;
-            text-transform: uppercase;
-        }
-        
-        .evento-info {
-            padding: 20px;
-            flex: 1;
-        }
-        
-        .evento-info h3 {
-            color: #256d3c;
-            margin-bottom: 10px;
-        }
-        
-        .evento-meta {
-            display: flex;
-            gap: 20px;
-            margin: 15px 0;
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        @media (max-width: 768px) {
-            .parceiros-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .evento-card {
-                flex-direction: column;
-            }
-            
-            .evento-data {
-                flex-direction: row;
-                justify-content: center;
-                gap: 10px;
-                min-width: auto;
-            }
-            
-            .footer-grid {
-                grid-template-columns: 1fr !important;
-            }
-        }
-    </style>
 </body>
 </html>
