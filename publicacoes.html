@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Publicações - Tem no Entorno Sul</title>
     
-    <!-- SEO Meta Tags -->
+    <!-- SEO -->
     <meta name="description" content="Fique por dentro das últimas notícias, artigos e informações relevantes da região do Entorno Sul.">
     <meta name="keywords" content="notícias, artigos, blog, informações, Entorno Sul, Toledo PR">
     <meta name="author" content="Tem no Entorno Sul">
@@ -23,24 +23,15 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
-    <!-- Supabase JS (carregado uma única vez) -->
+    <!-- Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
-        /* =====================================================
-           RESET E VARIÁVEIS
-           ===================================================== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* ==================== VARIÁVEIS ==================== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
             --verde-escuro: #256d3c;
@@ -60,27 +51,22 @@
             color: var(--cinza-escuro);
             line-height: 1.6;
             overflow-x: hidden;
-            width: 100%;
             background: var(--cinza-claro);
         }
         
         .container {
-            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 15px;
         }
         
-        /* =====================================================
-           HEADER
-           ===================================================== */
+        /* ==================== HEADER ==================== */
         .header {
             background: var(--branco);
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
             z-index: 1000;
-            width: 100%;
         }
         
         .header .container {
@@ -88,14 +74,9 @@
             align-items: center;
             justify-content: space-between;
             height: 70px;
-            padding: 0 15px;
         }
         
-        .logo img {
-            height: 45px;
-            width: auto;
-            display: block;
-        }
+        .logo img { height: 45px; width: auto; }
         
         /* Menu Desktop */
         .menu-desktop {
@@ -108,27 +89,21 @@
             color: var(--verde-escuro);
             text-decoration: none;
             font-weight: 500;
-            font-size: 1rem;
-            transition: color 0.3s ease;
+            transition: color 0.3s;
             white-space: nowrap;
         }
         
         .menu-desktop a:hover,
-        .menu-desktop a.active {
-            color: var(--laranja);
-        }
+        .menu-desktop a.active { color: var(--laranja); }
         
         .btn-login {
             background: var(--verde-escuro);
             color: var(--branco) !important;
             padding: 8px 20px;
             border-radius: 5px;
-            transition: background 0.3s ease;
         }
         
-        .btn-login:hover {
-            background: #1a4f2b;
-        }
+        .btn-login:hover { background: #1a4f2b; }
         
         /* Menu Hamburguer */
         .menu-toggle {
@@ -147,16 +122,14 @@
             height: 3px;
             background: var(--verde-escuro);
             border-radius: 3px;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
         
         .menu-toggle.active span:nth-child(1) {
             transform: translateY(9px) rotate(45deg);
         }
         
-        .menu-toggle.active span:nth-child(2) {
-            opacity: 0;
-        }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
         
         .menu-toggle.active span:nth-child(3) {
             transform: translateY(-9px) rotate(-45deg);
@@ -172,11 +145,10 @@
             height: calc(100vh - 70px);
             background: var(--branco);
             padding: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
             z-index: 1000;
-            overflow-y: auto;
             transform: translateX(-100%);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s;
+            overflow-y: auto;
         }
         
         .menu-mobile.active {
@@ -190,51 +162,28 @@
             color: var(--verde-escuro);
             text-decoration: none;
             font-size: 1.1rem;
-            font-weight: 500;
             border-bottom: 1px solid var(--cinza-claro);
-        }
-        
-        .menu-mobile a:last-child {
-            border-bottom: none;
         }
         
         .menu-mobile .btn-login {
             display: inline-block;
             margin-top: 15px;
             padding: 12px 30px;
-            background: var(--verde-escuro);
-            color: var(--branco) !important;
-            border-radius: 5px;
             text-align: center;
-            border-bottom: none;
         }
         
-        /* =====================================================
-           HERO DA PÁGINA DE PUBLICAÇÕES
-           ===================================================== */
+        /* ==================== HERO ==================== */
         .page-hero {
-            background: linear-gradient(135deg, var(--verde-escuro) 0%, var(--verde-claro) 100%);
+            background: linear-gradient(135deg, var(--verde-escuro), var(--verde-claro));
             color: var(--branco);
             padding: 60px 0;
             text-align: center;
         }
         
-        .page-hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            color: var(--branco);
-        }
+        .page-hero h1 { font-size: 2.5rem; margin-bottom: 15px; color: var(--branco); }
+        .page-hero p { font-size: 1.2rem; max-width: 600px; margin: 0 auto; opacity: 0.95; }
         
-        .page-hero p {
-            font-size: 1.2rem;
-            max-width: 600px;
-            margin: 0 auto;
-            opacity: 0.95;
-        }
-        
-        /* =====================================================
-           BARRA DE BUSCA E FILTROS
-           ===================================================== */
+        /* ==================== BUSCA ==================== */
         .search-section {
             background: var(--branco);
             padding: 30px 0;
@@ -247,16 +196,13 @@
             gap: 15px;
             max-width: 600px;
             margin: 0 auto;
-            background: var(--branco);
             border: 2px solid var(--cinza-medio);
             border-radius: 50px;
             padding: 5px;
-            transition: border-color 0.3s ease;
+            transition: border-color 0.3s;
         }
         
-        .search-box:focus-within {
-            border-color: var(--verde-escuro);
-        }
+        .search-box:focus-within { border-color: var(--verde-escuro); }
         
         .search-box input {
             flex: 1;
@@ -275,13 +221,11 @@
             border-radius: 50px;
             cursor: pointer;
             font-weight: 500;
-            transition: background 0.3s ease;
+            transition: background 0.3s;
             white-space: nowrap;
         }
         
-        .search-box button:hover {
-            background: #1a4f2b;
-        }
+        .search-box button:hover { background: #1a4f2b; }
         
         .filter-tabs {
             display: flex;
@@ -296,11 +240,10 @@
             border: 2px solid var(--verde-escuro);
             border-radius: 30px;
             color: var(--verde-escuro);
-            text-decoration: none;
             font-weight: 500;
-            transition: all 0.3s ease;
             cursor: pointer;
             background: transparent;
+            transition: all 0.3s;
         }
         
         .filter-tab:hover,
@@ -309,9 +252,7 @@
             color: var(--branco);
         }
         
-        /* =====================================================
-           LAYOUT PRINCIPAL
-           ===================================================== */
+        /* ==================== LAYOUT ==================== */
         .publicacoes-layout {
             display: grid;
             grid-template-columns: 1fr 300px;
@@ -319,45 +260,19 @@
             margin-bottom: 60px;
         }
         
-        /* Grid de Publicações */
         .publicacoes-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 25px;
         }
         
-        /* Mensagem quando não encontra resultados */
-        .no-results {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 60px 20px;
-            background: var(--branco);
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .no-results i {
-            font-size: 4rem;
-            color: var(--cinza-medio);
-            margin-bottom: 20px;
-        }
-        
-        .no-results h3 {
-            color: var(--cinza-escuro);
-            margin-bottom: 10px;
-        }
-        
-        .no-results p {
-            color: var(--cinza-texto);
-        }
-        
-        /* Card de Publicação */
+        /* Card */
         .pub-card {
             background: var(--branco);
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+            transition: all 0.3s;
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -378,12 +293,10 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s;
         }
         
-        .pub-card:hover .pub-card-image img {
-            transform: scale(1.05);
-        }
+        .pub-card:hover .pub-card-image img { transform: scale(1.05); }
         
         .pub-category {
             position: absolute;
@@ -408,18 +321,14 @@
         .pub-card-title {
             font-size: 1.3rem;
             margin-bottom: 10px;
-            line-height: 1.3;
         }
         
         .pub-card-title a {
             color: var(--verde-escuro);
             text-decoration: none;
-            transition: color 0.3s ease;
         }
         
-        .pub-card-title a:hover {
-            color: var(--laranja);
-        }
+        .pub-card-title a:hover { color: var(--laranja); }
         
         .pub-card-meta {
             display: flex;
@@ -430,10 +339,7 @@
             flex-wrap: wrap;
         }
         
-        .pub-card-meta i {
-            margin-right: 5px;
-            color: var(--laranja);
-        }
+        .pub-card-meta i { margin-right: 5px; color: var(--laranja); }
         
         .pub-card-excerpt {
             color: var(--cinza-texto);
@@ -463,35 +369,18 @@
             object-fit: cover;
         }
         
-        .pub-author span {
-            font-size: 0.9rem;
-            color: var(--cinza-texto);
-        }
+        .pub-author span { font-size: 0.9rem; color: var(--cinza-texto); }
         
         .pub-read-more {
             color: var(--verde-escuro);
             text-decoration: none;
             font-weight: 500;
-            font-size: 0.9rem;
-            transition: color 0.3s ease;
         }
         
-        .pub-read-more:hover {
-            color: var(--laranja);
-        }
+        .pub-read-more i { margin-left: 5px; transition: transform 0.3s; }
+        .pub-read-more:hover i { transform: translateX(5px); }
         
-        .pub-read-more i {
-            margin-left: 5px;
-            transition: transform 0.3s ease;
-        }
-        
-        .pub-read-more:hover i {
-            transform: translateX(5px);
-        }
-        
-        /* =====================================================
-           SIDEBAR
-           ===================================================== */
+        /* ==================== SIDEBAR ==================== */
         .sidebar {
             background: var(--branco);
             border-radius: 15px;
@@ -500,13 +389,8 @@
             height: fit-content;
         }
         
-        .sidebar-widget {
-            margin-bottom: 35px;
-        }
-        
-        .sidebar-widget:last-child {
-            margin-bottom: 0;
-        }
+        .sidebar-widget { margin-bottom: 35px; }
+        .sidebar-widget:last-child { margin-bottom: 0; }
         
         .sidebar-widget h3 {
             color: var(--verde-escuro);
@@ -518,13 +402,8 @@
         }
         
         /* Categorias */
-        .categorias-list {
-            list-style: none;
-        }
-        
-        .categoria-item {
-            margin-bottom: 12px;
-        }
+        .categorias-list { list-style: none; }
+        .categoria-item { margin-bottom: 12px; }
         
         .categoria-item a {
             display: flex;
@@ -533,39 +412,24 @@
             color: var(--cinza-texto);
             text-decoration: none;
             padding: 8px 0;
-            transition: color 0.3s ease;
             border-bottom: 1px dashed var(--cinza-medio);
             cursor: pointer;
         }
         
-        .categoria-item a:hover,
-        .categoria-item a.active {
-            color: var(--laranja);
-        }
-        
+        .categoria-item a:hover { color: var(--laranja); }
         .categoria-item span {
             background: var(--cinza-claro);
             padding: 3px 10px;
             border-radius: 15px;
             font-size: 0.85rem;
-            color: var(--cinza-escuro);
         }
         
-        /* Posts Mais Vistos */
+        /* Mais Vistos */
         .mais-vistos-item {
             display: flex;
             gap: 15px;
             margin-bottom: 20px;
             cursor: pointer;
-            transition: opacity 0.3s ease;
-        }
-        
-        .mais-vistos-item:hover {
-            opacity: 0.8;
-        }
-        
-        .mais-vistos-item:last-child {
-            margin-bottom: 0;
         }
         
         .mais-vistos-image {
@@ -575,26 +439,8 @@
             object-fit: cover;
         }
         
-        .mais-vistos-info {
-            flex: 1;
-        }
-        
-        .mais-vistos-info h4 {
-            font-size: 1rem;
-            margin-bottom: 5px;
-            line-height: 1.3;
-        }
-        
-        .mais-vistos-info h4 a {
-            color: var(--verde-escuro);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        .mais-vistos-info h4 a:hover {
-            color: var(--laranja);
-        }
-        
+        .mais-vistos-info h4 { font-size: 1rem; margin-bottom: 5px; }
+        .mais-vistos-info h4 a { color: var(--verde-escuro); text-decoration: none; }
         .mais-vistos-stats {
             display: flex;
             gap: 10px;
@@ -602,10 +448,7 @@
             color: var(--cinza-texto);
         }
         
-        .mais-vistos-stats i {
-            margin-right: 3px;
-            color: var(--laranja);
-        }
+        .mais-vistos-stats i { color: var(--laranja); }
         
         /* Tags */
         .tags-cloud {
@@ -619,22 +462,14 @@
             color: var(--cinza-escuro);
             padding: 6px 15px;
             border-radius: 25px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
             cursor: pointer;
             border: none;
+            transition: all 0.3s;
         }
         
-        .tag:hover,
-        .tag.active {
-            background: var(--verde-escuro);
-            color: var(--branco);
-        }
+        .tag:hover { background: var(--verde-escuro); color: var(--branco); }
         
-        /* =====================================================
-           PAGINAÇÃO
-           ===================================================== */
+        /* ==================== PAGINAÇÃO ==================== */
         .pagination {
             display: flex;
             justify-content: center;
@@ -653,13 +488,11 @@
             padding: 0 15px;
             background: var(--branco);
             color: var(--verde-escuro);
-            text-decoration: none;
             border-radius: 10px;
             font-weight: 500;
-            transition: all 0.3s ease;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
             cursor: pointer;
             border: none;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
         }
         
         .page-link:hover,
@@ -673,41 +506,21 @@
             cursor: not-allowed;
         }
         
-        .page-link.disabled:hover {
-            background: var(--branco);
-            color: var(--verde-escuro);
-        }
+        #pageNumbers { display: flex; gap: 10px; flex-wrap: wrap; }
         
-        #pageNumbers {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        
-        /* =====================================================
-           BOTÕES
-           ===================================================== */
+        /* ==================== BOTÕES ==================== */
         .btn {
             display: inline-block;
             padding: 12px 30px;
             border-radius: 5px;
             text-decoration: none;
             font-weight: 500;
-            transition: all 0.3s ease;
             border: none;
             cursor: pointer;
-            font-size: 1rem;
-            text-align: center;
         }
         
         .btn-primary {
             background: var(--verde-escuro);
-            color: var(--branco);
-        }
-        
-        .btn-primary:hover {
-            background: #1a4f2b;
             color: var(--branco);
         }
         
@@ -722,14 +535,7 @@
             color: var(--branco);
         }
         
-        .btn-small {
-            padding: 8px 20px;
-            font-size: 0.9rem;
-        }
-        
-        /* =====================================================
-           FOOTER
-           ===================================================== */
+        /* ==================== FOOTER ==================== */
         .footer {
             background: #1a4f2b;
             color: var(--branco);
@@ -749,16 +555,7 @@
             filter: brightness(0) invert(1);
         }
         
-        .footer-info p {
-            opacity: 0.8;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 15px;
-        }
+        .social-links { display: flex; gap: 15px; }
         
         .social-link {
             width: 40px;
@@ -769,11 +566,6 @@
             justify-content: center;
             color: var(--branco);
             text-decoration: none;
-            transition: transform 0.3s ease;
-        }
-        
-        .social-link:hover {
-            transform: translateY(-5px);
         }
         
         .social-link.facebook { background: #3b5998; }
@@ -790,25 +582,16 @@
         }
         
         .footer-links ul,
-        .footer-contato ul {
-            list-style: none;
-            padding: 0;
-        }
-        
+        .footer-contato ul { list-style: none; padding: 0; }
         .footer-links li,
-        .footer-contato li {
-            margin-bottom: 12px;
-        }
+        .footer-contato li { margin-bottom: 12px; }
         
         .footer-links a {
             color: rgba(255,255,255,0.8);
             text-decoration: none;
-            transition: color 0.3s ease;
         }
         
-        .footer-links a:hover {
-            color: var(--amarelo);
-        }
+        .footer-links a:hover { color: var(--amarelo); }
         
         .footer-contato li {
             display: flex;
@@ -817,10 +600,7 @@
             color: rgba(255,255,255,0.8);
         }
         
-        .footer-contato i {
-            width: 20px;
-            color: var(--amarelo);
-        }
+        .footer-contato i { color: var(--amarelo); }
         
         .footer-bottom {
             display: flex;
@@ -832,124 +612,11 @@
             gap: 15px;
         }
         
-        .footer-extra {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
+        .footer-extra { display: flex; gap: 20px; flex-wrap: wrap; }
+        .footer-extra a { color: rgba(255,255,255,0.8); text-decoration: none; }
+        .footer-extra a:hover { color: var(--amarelo); }
         
-        .footer-extra a {
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-        }
-        
-        .footer-extra a:hover {
-            color: var(--amarelo);
-        }
-        
-        /* =====================================================
-           MEDIA QUERIES
-           ===================================================== */
-        @media (max-width: 1024px) {
-            .publicacoes-layout {
-                grid-template-columns: 1fr;
-            }
-            
-            .publicacoes-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .menu-desktop {
-                display: none;
-            }
-            
-            .menu-toggle {
-                display: flex;
-            }
-            
-            .page-hero h1 {
-                font-size: 2rem;
-            }
-            
-            .page-hero p {
-                font-size: 1rem;
-            }
-            
-            .search-box {
-                flex-direction: column;
-                background: transparent;
-                border: none;
-                gap: 10px;
-            }
-            
-            .search-box input {
-                border: 2px solid var(--cinza-medio);
-            }
-            
-            .search-box button {
-                width: 100%;
-                padding: 15px;
-            }
-            
-            .filter-tabs {
-                gap: 10px;
-            }
-            
-            .filter-tab {
-                padding: 6px 15px;
-                font-size: 0.9rem;
-            }
-            
-            .publicacoes-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .page-hero {
-                padding: 40px 0;
-            }
-            
-            .page-hero h1 {
-                font-size: 1.8rem;
-            }
-            
-            .pub-card-title {
-                font-size: 1.2rem;
-            }
-            
-            .pub-card-meta {
-                flex-direction: column;
-                gap: 5px;
-            }
-            
-            .pub-card-footer {
-                flex-direction: column;
-                gap: 15px;
-                align-items: flex-start;
-            }
-            
-            .footer-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-bottom {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .footer-extra {
-                justify-content: center;
-            }
-        }
-        
-        /* Loading State */
+        /* ==================== LOADING E ERROS ==================== */
         .loading {
             display: flex;
             justify-content: center;
@@ -967,12 +634,9 @@
             animation: spin 1s linear infinite;
         }
         
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
         
-        /* Erro */
-        .error-message {
+        .no-results, .error-message {
             grid-column: 1 / -1;
             text-align: center;
             padding: 60px 20px;
@@ -981,23 +645,44 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         
-        .error-message i {
-            font-size: 4rem;
-            color: #dc3545;
-            margin-bottom: 20px;
+        .no-results i, .error-message i { font-size: 4rem; margin-bottom: 20px; }
+        .no-results i { color: var(--cinza-medio); }
+        .error-message i { color: #dc3545; }
+        
+        /* ==================== MEDIA QUERIES ==================== */
+        @media (max-width: 1024px) {
+            .publicacoes-layout { grid-template-columns: 1fr; }
+            .publicacoes-grid { grid-template-columns: repeat(2, 1fr); }
         }
         
-        .error-message h3 {
-            color: var(--cinza-escuro);
-            margin-bottom: 10px;
+        @media (max-width: 768px) {
+            .menu-desktop { display: none; }
+            .menu-toggle { display: flex; }
+            
+            .page-hero h1 { font-size: 2rem; }
+            .page-hero p { font-size: 1rem; }
+            
+            .search-box {
+                flex-direction: column;
+                background: transparent;
+                border: none;
+                gap: 10px;
+            }
+            
+            .search-box input { border: 2px solid var(--cinza-medio); }
+            .search-box button { width: 100%; padding: 15px; }
+            
+            .publicacoes-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
         }
         
-        .error-message p {
-            color: var(--cinza-texto);
-        }
-        
-        .error-message button {
-            margin-top: 20px;
+        @media (max-width: 576px) {
+            .page-hero h1 { font-size: 1.8rem; }
+            .pub-card-title { font-size: 1.2rem; }
+            .pub-card-meta { flex-direction: column; gap: 5px; }
+            .pub-card-footer { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
@@ -1007,11 +692,10 @@
         <div class="container">
             <div class="logo">
                 <a href="./index.html">
-                    <img src="https://i.imgur.com/9eZarki.png" alt="Tem no Entorno Sul" loading="eager">
+                    <img src="https://i.imgur.com/9eZarki.png" alt="Tem no Entorno Sul">
                 </a>
             </div>
             
-            <!-- Menu Desktop -->
             <nav class="menu-desktop">
                 <a href="./index.html">Início</a>
                 <a href="./publicacoes.html" class="active">Publicações</a>
@@ -1019,19 +703,13 @@
                 <a href="./colunistas.html">Colunistas</a>
                 <a href="./parceiros.html">Parceiros</a>
                 <a href="./contato.html">Contato</a>
-                <a href="./admin/login.html" class="btn-login">
-                    <i class="fas fa-user"></i> Login
-                </a>
+                <a href="./admin/login.html" class="btn-login"><i class="fas fa-user"></i> Login</a>
             </nav>
             
-            <!-- Menu Hamburguer -->
             <div class="menu-toggle" id="menuToggle">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span></span><span></span><span></span>
             </div>
             
-            <!-- Menu Mobile -->
             <div class="menu-mobile" id="menuMobile">
                 <a href="./index.html">Início</a>
                 <a href="./publicacoes.html">Publicações</a>
@@ -1039,15 +717,12 @@
                 <a href="./colunistas.html">Colunistas</a>
                 <a href="./parceiros.html">Parceiros</a>
                 <a href="./contato.html">Contato</a>
-                <a href="./admin/login.html" class="btn-login">
-                    <i class="fas fa-user"></i> Login
-                </a>
+                <a href="./admin/login.html" class="btn-login"><i class="fas fa-user"></i> Login</a>
             </div>
         </div>
     </header>
 
     <main>
-        <!-- HERO DA PÁGINA DE PUBLICAÇÕES -->
         <section class="page-hero">
             <div class="container">
                 <h1>Publicações</h1>
@@ -1055,74 +730,56 @@
             </div>
         </section>
 
-        <!-- BARRA DE BUSCA E FILTROS -->
         <section class="search-section">
             <div class="container">
                 <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="Buscar publicações por título ou conteúdo..." aria-label="Buscar publicações">
+                    <input type="text" id="searchInput" placeholder="Buscar publicações...">
                     <button type="button" id="searchButton"><i class="fas fa-search"></i> Buscar</button>
                 </div>
                 
                 <div class="filter-tabs" id="filterTabs">
                     <button class="filter-tab active" data-categoria="todas">Todas</button>
-                    <!-- Categorias serão carregadas do banco -->
                 </div>
             </div>
         </section>
 
-        <!-- CONTEÚDO PRINCIPAL -->
         <div class="container">
             <div class="publicacoes-layout">
-                <!-- Grid de Publicações -->
                 <div class="publicacoes-grid" id="publicacoesGrid">
-                    <div class="loading">
-                        <div class="loading-spinner"></div>
-                    </div>
+                    <div class="loading"><div class="loading-spinner"></div></div>
                 </div>
 
-                <!-- Sidebar -->
                 <aside class="sidebar">
-                    <!-- Categorias -->
                     <div class="sidebar-widget">
                         <h3>Categorias</h3>
                         <ul class="categorias-list" id="categoriasList">
-                            <li class="loading">
-                                <div class="loading-spinner" style="width: 30px; height: 30px;"></div>
-                            </li>
+                            <li class="loading"><div class="loading-spinner" style="width:30px;height:30px;"></div></li>
                         </ul>
                     </div>
 
-                    <!-- Posts Mais Vistos -->
                     <div class="sidebar-widget">
                         <h3>Mais Vistos</h3>
                         <div id="maisVistosContainer">
-                            <div class="loading">
-                                <div class="loading-spinner" style="width: 30px; height: 30px;"></div>
-                            </div>
+                            <div class="loading"><div class="loading-spinner" style="width:30px;height:30px;"></div></div>
                         </div>
                     </div>
 
-                    <!-- Tags Populares -->
                     <div class="sidebar-widget">
                         <h3>Tags Populares</h3>
                         <div class="tags-cloud" id="tagsCloud">
-                            <div class="loading">
-                                <div class="loading-spinner" style="width: 30px; height: 30px;"></div>
-                            </div>
+                            <div class="loading"><div class="loading-spinner" style="width:30px;height:30px;"></div></div>
                         </div>
                     </div>
                     
-                    <!-- Botão para limpar filtros -->
-                    <div class="sidebar-widget" style="text-align: center;">
-                        <button id="clearFilters" class="btn btn-outline btn-small" style="width: 100%;">
+                    <div class="sidebar-widget" style="text-align:center;">
+                        <button id="clearFilters" class="btn btn-outline" style="width:100%;">
                             <i class="fas fa-times"></i> Limpar filtros
                         </button>
                     </div>
                 </aside>
             </div>
 
-            <!-- PAGINAÇÃO -->
-            <div class="pagination" id="pagination">
+            <div class="pagination">
                 <button class="page-link prev disabled" id="prevPage"><i class="fas fa-chevron-left"></i></button>
                 <div id="pageNumbers"></div>
                 <button class="page-link next" id="nextPage">Próximo <i class="fas fa-chevron-right"></i></button>
@@ -1130,7 +787,6 @@
         </div>
     </main>
 
-    <!-- FOOTER -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -1138,15 +794,9 @@
                     <img src="https://i.imgur.com/9eZarki.png" alt="Tem no Entorno Sul" class="footer-logo">
                     <p>Conectando moradores aos melhores comércios, serviços e eventos da região do Entorno Sul.</p>
                     <div class="social-links">
-                        <a href="https://facebook.com/temnoentornosul" target="_blank" class="social-link facebook">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="https://instagram.com/temnoentornosul" target="_blank" class="social-link instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://youtube.com/@temnoentornosul" target="_blank" class="social-link youtube">
-                            <i class="fab fa-youtube"></i>
-                        </a>
+                        <a href="https://facebook.com/temnoentornosul" target="_blank" class="social-link facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://instagram.com/temnoentornosul" target="_blank" class="social-link instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://youtube.com/@temnoentornosul" target="_blank" class="social-link youtube"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
                 
@@ -1191,26 +841,32 @@
         </div>
     </footer>
 
-    <!-- Script principal - UMA ÚNICA DECLARAÇÃO -->
     <script>
         (function() {
-            // =====================================================
-            // CONFIGURAÇÃO DO SUPABASE
-            // =====================================================
-            const SUPABASE_URL = 'https://flidbkfrfosuahgphiza.supabase.co'; // Substitua pela URL do seu projeto
-            const SUPABASE_ANON_KEY = 'sb_publishable_mCBYSpZc45Pw345wZ1coEA_rYL61Ea8'; // Substitua pela sua chave
+            // ==================== CONFIGURAÇÕES ====================
+            // 🔴 ATENÇÃO: SUBSTITUA PELOS SEUS DADOS REAIS DO SUPABASE
+            const SUPABASE_URL = 'https://flidbkfrfosuahgphiza.supabase.co';  // COLE SUA URL AQUI
+            const SUPABASE_ANON_KEY = 'sb_publishable_mCBYSpZc45Pw345wZ1coEA_rYL61Ea8';          // COLE SUA CHAVE ANÔNIMA AQUI
             
-            // Criar cliente Supabase (única instância)
-            const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-                auth: {
-                    autoRefreshToken: true,
-                    persistSession: true
-                }
-            });
-
-            // =====================================================
-            // VARIÁVEIS DE ESTADO
-            // =====================================================
+            // Validação rápida
+            if (SUPABASE_URL.includes('seu-projeto') || SUPABASE_ANON_KEY.includes('sua-chave')) {
+                console.error('⚠️ Configure as credenciais do Supabase no código!');
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.getElementById('publicacoesGrid').innerHTML = `
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>Configuração necessária</h3>
+                            <p>As credenciais do Supabase não foram configuradas.</p>
+                            <p style="font-size:0.9rem; color:#666;">Edite o arquivo e substitua SUPABASE_URL e SUPABASE_ANON_KEY.</p>
+                        </div>
+                    `;
+                });
+                return;
+            }
+            
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            
+            // ==================== ESTADO GLOBAL ====================
             let publicacoes = [];
             let categorias = [];
             let todasTags = [];
@@ -1220,106 +876,79 @@
                 tag: '',
                 pagina: 1
             };
-            
             const itemsPerPage = 6;
             let filteredPublicacoes = [];
 
-            // =====================================================
-            // MENU HAMBURGUER
-            // =====================================================
+            // ==================== MENU HAMBURGUER ====================
             function initMenu() {
-                const menuToggle = document.getElementById('menuToggle');
-                const menuMobile = document.getElementById('menuMobile');
+                const toggle = document.getElementById('menuToggle');
+                const mobile = document.getElementById('menuMobile');
+                if (!toggle || !mobile) return;
                 
-                if (menuToggle && menuMobile) {
-                    menuToggle.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        
-                        this.classList.toggle('active');
-                        menuMobile.classList.toggle('active');
-                        
-                        if (menuMobile.classList.contains('active')) {
-                            document.body.style.overflow = 'hidden';
-                        } else {
-                            document.body.style.overflow = '';
-                        }
+                toggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    this.classList.toggle('active');
+                    mobile.classList.toggle('active');
+                    document.body.style.overflow = mobile.classList.contains('active') ? 'hidden' : '';
+                });
+                
+                mobile.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        toggle.classList.remove('active');
+                        mobile.classList.remove('active');
+                        document.body.style.overflow = '';
                     });
-                    
-                    const menuLinks = menuMobile.querySelectorAll('a');
-                    menuLinks.forEach(link => {
-                        link.addEventListener('click', function() {
-                            menuToggle.classList.remove('active');
-                            menuMobile.classList.remove('active');
-                            document.body.style.overflow = '';
-                        });
-                    });
-                    
-                    document.addEventListener('click', function(e) {
-                        if (!menuToggle.contains(e.target) && !menuMobile.contains(e.target)) {
-                            menuToggle.classList.remove('active');
-                            menuMobile.classList.remove('active');
-                            document.body.style.overflow = '';
-                        }
-                    });
-                }
+                });
+                
+                document.addEventListener('click', (e) => {
+                    if (!toggle.contains(e.target) && !mobile.contains(e.target)) {
+                        toggle.classList.remove('active');
+                        mobile.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
             }
 
-            // =====================================================
-            // CARREGAR DADOS DO SUPABASE
-            // =====================================================
+            // ==================== CARREGAR DADOS ====================
             async function carregarDados() {
                 try {
-                    console.log('Carregando dados do Supabase...');
+                    console.log('🔍 Carregando dados do Supabase...');
                     
-                    // Carregar publicações com dados do colunista e categoria
-                    const { data: publicacoesData, error: pubError } = await supabaseClient
+                    // 1. Buscar publicações
+                    const { data: pubs, error: pubError } = await supabase
                         .from('publicacoes')
                         .select(`
                             *,
-                            colunistas (
-                                nome,
-                                foto_url
-                            ),
-                            categorias (
-                                id,
-                                nome,
-                                cor_fundo
-                            )
+                            colunistas ( nome, foto_url ),
+                            categorias ( id, nome, cor_fundo )
                         `)
                         .eq('status', 'publicado')
                         .order('published_at', { ascending: false });
                     
                     if (pubError) throw pubError;
                     
-                    console.log('Publicações carregadas:', publicacoesData?.length || 0);
-                    
-                    publicacoes = publicacoesData || [];
+                    publicacoes = pubs || [];
                     filteredPublicacoes = [...publicacoes];
                     
-                    // Extrair categorias únicas
-                    const categoriasMap = new Map();
-                    publicacoes.forEach(pub => {
-                        if (pub.categorias && !categoriasMap.has(pub.categorias.id)) {
-                            categoriasMap.set(pub.categorias.id, {
-                                id: pub.categorias.id,
-                                nome: pub.categorias.nome,
-                                cor: pub.categorias.cor_fundo
-                            });
+                    // 2. Extrair categorias
+                    const cats = new Map();
+                    publicacoes.forEach(p => {
+                        if (p.categorias && !cats.has(p.categorias.id)) {
+                            cats.set(p.categorias.id, p.categorias);
                         }
                     });
-                    categorias = Array.from(categoriasMap.values());
+                    categorias = Array.from(cats.values());
                     
-                    // Extrair todas as tags
+                    // 3. Extrair tags
                     const tagsSet = new Set();
-                    publicacoes.forEach(pub => {
-                        if (pub.palavras_chave && Array.isArray(pub.palavras_chave)) {
-                            pub.palavras_chave.forEach(tag => tagsSet.add(tag));
+                    publicacoes.forEach(p => {
+                        if (p.palavras_chave) {
+                            p.palavras_chave.forEach(tag => tagsSet.add(tag));
                         }
                     });
                     todasTags = Array.from(tagsSet);
                     
-                    // Renderizar tudo
+                    // Renderizar
                     renderizarCategorias();
                     renderizarTabs();
                     renderizarPublicacoes();
@@ -1327,184 +956,121 @@
                     renderizarTags();
                     
                 } catch (error) {
-                    console.error('Erro detalhado ao carregar dados:', error);
-                    mostrarErro('Erro ao carregar publicações. Verifique sua conexão e tente novamente.');
+                    console.error('❌ Erro detalhado:', error);
+                    mostrarErro('Erro ao carregar publicações. Verifique sua conexão.');
                 }
             }
 
-            // =====================================================
-            // CARREGAR MAIS VISTOS
-            // =====================================================
+            // ==================== CARREGAR MAIS VISTOS ====================
             async function carregarMaisVistos() {
                 try {
-                    const { data, error } = await supabaseClient
+                    const { data, error } = await supabase
                         .from('publicacoes')
-                        .select(`
-                            id,
-                            titulo,
-                            views,
-                            imagem_destaque,
-                            published_at,
-                            colunistas (
-                                nome
-                            )
-                        `)
+                        .select('id, titulo, views, imagem_destaque, published_at, colunistas(nome)')
                         .eq('status', 'publicado')
                         .order('views', { ascending: false })
                         .limit(3);
                     
                     if (error) throw error;
                     
-                    const maisVistosContainer = document.getElementById('maisVistosContainer');
-                    
-                    if (data && data.length > 0) {
-                        maisVistosContainer.innerHTML = data.map(pub => `
-                            <div class="mais-vistos-item" onclick="window.filtrarPorId(${pub.id})">
-                                <img src="${pub.imagem_destaque || 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=100'}" 
-                                     alt="${pub.titulo}" 
-                                     class="mais-vistos-image"
-                                     loading="lazy"
+                    const container = document.getElementById('maisVistosContainer');
+                    if (data?.length) {
+                        container.innerHTML = data.map(p => `
+                            <div class="mais-vistos-item" onclick="window.filtrarPorId(${p.id})">
+                                <img src="${p.imagem_destaque || 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=100'}" 
+                                     class="mais-vistos-image" loading="lazy"
                                      onerror="this.src='https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=100'">
                                 <div class="mais-vistos-info">
-                                    <h4><a href="#" onclick="window.filtrarPorId(${pub.id}); return false;">${pub.titulo.substring(0, 40)}${pub.titulo.length > 40 ? '...' : ''}</a></h4>
+                                    <h4><a href="#" onclick="window.filtrarPorId(${p.id}); return false;">${p.titulo.substring(0,40)}${p.titulo.length>40?'...':''}</a></h4>
                                     <div class="mais-vistos-stats">
-                                        <span><i class="far fa-eye"></i> ${pub.views || 0}</span>
-                                        <span><i class="far fa-calendar"></i> ${formatarData(pub.published_at)}</span>
+                                        <span><i class="far fa-eye"></i> ${p.views||0}</span>
+                                        <span><i class="far fa-calendar"></i> ${new Date(p.published_at).toLocaleDateString('pt-BR')}</span>
                                     </div>
                                 </div>
                             </div>
                         `).join('');
                     } else {
-                        maisVistosContainer.innerHTML = '<p style="color: var(--cinza-texto); text-align: center;">Nenhuma publicação encontrada.</p>';
+                        container.innerHTML = '<p style="color: var(--cinza-texto);">Nenhum mais visto.</p>';
                     }
                 } catch (error) {
-                    console.error('Erro ao carregar mais vistos:', error);
-                    document.getElementById('maisVistosContainer').innerHTML = '<p style="color: var(--cinza-texto); text-align: center;">Erro ao carregar.</p>';
+                    document.getElementById('maisVistosContainer').innerHTML = '<p style="color: var(--cinza-texto);">Erro ao carregar.</p>';
                 }
             }
 
-            // =====================================================
-            // RENDERIZAR CATEGORIAS NA SIDEBAR
-            // =====================================================
+            // ==================== RENDERIZAR CATEGORIAS ====================
             function renderizarCategorias() {
-                const categoriasList = document.getElementById('categoriasList');
-                
-                if (categorias.length === 0) {
-                    categoriasList.innerHTML = '<p style="color: var(--cinza-texto);">Nenhuma categoria encontrada.</p>';
+                const list = document.getElementById('categoriasList');
+                if (!categorias.length) {
+                    list.innerHTML = '<p style="color: var(--cinza-texto);">Sem categorias.</p>';
                     return;
                 }
                 
-                categoriasList.innerHTML = categorias.map(cat => {
-                    const count = publicacoes.filter(p => p.categorias && p.categorias.id === cat.id).length;
-                    return `
-                        <li class="categoria-item">
-                            <a data-categoria="${cat.nome}">
-                                ${cat.nome}
-                                <span>${count}</span>
-                            </a>
-                        </li>
-                    `;
+                list.innerHTML = categorias.map(cat => {
+                    const count = publicacoes.filter(p => p.categorias?.id === cat.id).length;
+                    return `<li class="categoria-item"><a data-categoria="${cat.nome}">${cat.nome} <span>${count}</span></a></li>`;
                 }).join('');
                 
-                // Adicionar eventos
                 document.querySelectorAll('.categoria-item a').forEach(item => {
-                    item.addEventListener('click', function(e) {
+                    item.addEventListener('click', (e) => {
                         e.preventDefault();
-                        const categoria = this.dataset.categoria;
-                        
-                        // Atualizar tabs
-                        document.querySelectorAll('.filter-tab').forEach(tab => {
-                            if (tab.dataset.categoria === categoria) {
-                                tab.classList.add('active');
-                            } else if (tab.dataset.categoria === 'todas') {
-                                tab.classList.remove('active');
-                            } else {
-                                tab.classList.remove('active');
-                            }
+                        const cat = item.dataset.categoria;
+                        document.querySelectorAll('.filter-tab').forEach(t => {
+                            t.classList.toggle('active', t.dataset.categoria === cat);
+                            if (t.dataset.categoria === 'todas') t.classList.remove('active');
                         });
-                        
-                        currentFilter.categoria = categoria;
+                        currentFilter.categoria = cat;
                         currentFilter.pagina = 1;
                         aplicarFiltros();
                     });
                 });
             }
 
-            // =====================================================
-            // RENDERIZAR TABS DE CATEGORIA
-            // =====================================================
+            // ==================== RENDERIZAR TABS ====================
             function renderizarTabs() {
-                const filterTabs = document.getElementById('filterTabs');
+                const tabs = document.getElementById('filterTabs');
+                const todas = tabs.querySelector('[data-categoria="todas"]');
+                tabs.innerHTML = '';
+                tabs.appendChild(todas);
                 
-                // Manter a tab "Todas"
-                const todasTab = filterTabs.querySelector('[data-categoria="todas"]');
-                filterTabs.innerHTML = '';
-                filterTabs.appendChild(todasTab);
-                
-                // Adicionar categorias
                 categorias.forEach(cat => {
-                    const tab = document.createElement('button');
-                    tab.className = 'filter-tab';
-                    tab.dataset.categoria = cat.nome;
-                    tab.textContent = cat.nome;
-                    filterTabs.appendChild(tab);
+                    const btn = document.createElement('button');
+                    btn.className = 'filter-tab';
+                    btn.dataset.categoria = cat.nome;
+                    btn.textContent = cat.nome;
+                    tabs.appendChild(btn);
                 });
                 
-                // Adicionar eventos
-                document.querySelectorAll('.filter-tab').forEach(tab => {
-                    tab.addEventListener('click', function() {
-                        const categoria = this.dataset.categoria;
-                        
-                        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-                        this.classList.add('active');
-                        
-                        currentFilter.categoria = categoria;
+                tabs.querySelectorAll('.filter-tab').forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        tabs.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        currentFilter.categoria = tab.dataset.categoria;
                         currentFilter.pagina = 1;
                         aplicarFiltros();
                     });
                 });
             }
 
-            // =====================================================
-            // RENDERIZAR TAGS
-            // =====================================================
+            // ==================== RENDERIZAR TAGS ====================
             function renderizarTags() {
-                const tagsCloud = document.getElementById('tagsCloud');
-                
-                if (todasTags.length === 0) {
-                    tagsCloud.innerHTML = '<p style="color: var(--cinza-texto);">Nenhuma tag encontrada.</p>';
+                const cloud = document.getElementById('tagsCloud');
+                if (!todasTags.length) {
+                    cloud.innerHTML = '<p style="color: var(--cinza-texto);">Sem tags.</p>';
                     return;
                 }
                 
-                // Contar frequência das tags
-                const tagCount = {};
-                publicacoes.forEach(pub => {
-                    if (pub.palavras_chave && Array.isArray(pub.palavras_chave)) {
-                        pub.palavras_chave.forEach(tag => {
-                            tagCount[tag] = (tagCount[tag] || 0) + 1;
-                        });
-                    }
-                });
+                // Contar frequência e pegar top 15
+                const freq = {};
+                publicacoes.forEach(p => p.palavras_chave?.forEach(t => freq[t] = (freq[t]||0)+1));
+                const topTags = Object.entries(freq).sort((a,b) => b[1]-a[1]).slice(0,15).map(([t]) => t);
                 
-                // Pegar tags mais frequentes (top 15)
-                const tagsMaisFrequentes = Object.entries(tagCount)
-                    .sort((a, b) => b[1] - a[1])
-                    .slice(0, 15)
-                    .map(([tag]) => tag);
+                cloud.innerHTML = topTags.map(t => `<button class="tag" data-tag="${t}">#${t}</button>`).join('');
                 
-                tagsCloud.innerHTML = tagsMaisFrequentes.map(tag => `
-                    <button class="tag" data-tag="${tag}">#${tag}</button>
-                `).join('');
-                
-                // Adicionar eventos
-                document.querySelectorAll('.tag').forEach(tag => {
-                    tag.addEventListener('click', function() {
-                        const tagValue = this.dataset.tag;
-                        
-                        document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
-                        this.classList.add('active');
-                        
-                        currentFilter.tag = tagValue;
+                cloud.querySelectorAll('.tag').forEach(tag => {
+                    tag.addEventListener('click', () => {
+                        cloud.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+                        tag.classList.add('active');
+                        currentFilter.tag = tag.dataset.tag;
                         currentFilter.pagina = 1;
                         document.getElementById('searchInput').value = '';
                         currentFilter.busca = '';
@@ -1513,37 +1079,20 @@
                 });
             }
 
-            // =====================================================
-            // APLICAR FILTROS
-            // =====================================================
+            // ==================== APLICAR FILTROS ====================
             function aplicarFiltros() {
                 filteredPublicacoes = publicacoes.filter(pub => {
-                    // Filtro por categoria
-                    if (currentFilter.categoria !== 'todas') {
-                        if (!pub.categorias || pub.categorias.nome !== currentFilter.categoria) {
-                            return false;
-                        }
-                    }
+                    if (currentFilter.categoria !== 'todas' && pub.categorias?.nome !== currentFilter.categoria) return false;
                     
-                    // Filtro por busca
                     if (currentFilter.busca) {
                         const termo = currentFilter.busca.toLowerCase();
-                        const tituloMatch = pub.titulo ? pub.titulo.toLowerCase().includes(termo) : false;
-                        const conteudoMatch = pub.conteudo ? pub.conteudo.toLowerCase().includes(termo) : false;
-                        const autorMatch = pub.colunistas && pub.colunistas.nome ? 
-                                         pub.colunistas.nome.toLowerCase().includes(termo) : false;
-                        
-                        if (!tituloMatch && !conteudoMatch && !autorMatch) {
-                            return false;
-                        }
+                        const titulo = pub.titulo?.toLowerCase().includes(termo) || false;
+                        const conteudo = pub.conteudo?.toLowerCase().includes(termo) || false;
+                        const autor = pub.colunistas?.nome?.toLowerCase().includes(termo) || false;
+                        if (!titulo && !conteudo && !autor) return false;
                     }
                     
-                    // Filtro por tag
-                    if (currentFilter.tag) {
-                        if (!pub.palavras_chave || !pub.palavras_chave.includes(currentFilter.tag)) {
-                            return false;
-                        }
-                    }
+                    if (currentFilter.tag && (!pub.palavras_chave || !pub.palavras_chave.includes(currentFilter.tag))) return false;
                     
                     return true;
                 });
@@ -1551,59 +1100,41 @@
                 renderizarPublicacoes();
             }
 
-            // =====================================================
-            // RENDERIZAR PUBLICAÇÕES
-            // =====================================================
+            // ==================== RENDERIZAR PUBLICAÇÕES ====================
             function renderizarPublicacoes() {
                 const grid = document.getElementById('publicacoesGrid');
                 
-                if (filteredPublicacoes.length === 0) {
-                    grid.innerHTML = `
-                        <div class="no-results">
-                            <i class="fas fa-search"></i>
-                            <h3>Nenhuma publicação encontrada</h3>
-                            <p>Tente buscar com outros termos ou limpar os filtros.</p>
-                        </div>
-                    `;
+                if (!filteredPublicacoes.length) {
+                    grid.innerHTML = '<div class="no-results"><i class="fas fa-search"></i><h3>Nenhuma publicação encontrada</h3><p>Tente outros termos ou limpe os filtros.</p></div>';
                     atualizarPaginacao();
                     return;
                 }
                 
-                // Calcular paginação
-                const startIndex = (currentFilter.pagina - 1) * itemsPerPage;
-                const endIndex = startIndex + itemsPerPage;
-                const paginatedPublicacoes = filteredPublicacoes.slice(startIndex, endIndex);
+                const start = (currentFilter.pagina - 1) * itemsPerPage;
+                const end = start + itemsPerPage;
+                const pageItems = filteredPublicacoes.slice(start, end);
                 
-                grid.innerHTML = paginatedPublicacoes.map(pub => `
+                grid.innerHTML = pageItems.map(p => `
                     <div class="pub-card">
                         <div class="pub-card-image">
-                            <span class="pub-category" style="background-color: ${pub.categorias?.cor_fundo || '#faa115'}">
-                                ${pub.categorias?.nome || 'Sem categoria'}
-                            </span>
-                            <img src="${pub.imagem_destaque || 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400'}" 
-                                 alt="${pub.titulo}" 
-                                 loading="lazy"
-                                 onerror="this.src='https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400'">
+                            <span class="pub-category" style="background-color: ${p.categorias?.cor_fundo || '#faa115'}">${p.categorias?.nome || 'Sem categoria'}</span>
+                            <img src="${p.imagem_destaque || 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400'}" 
+                                 loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400'">
                         </div>
                         <div class="pub-card-content">
-                            <h3 class="pub-card-title">
-                                <a href="#" onclick="window.abrirPublicacao(${pub.id}); return false;">${pub.titulo}</a>
-                            </h3>
+                            <h3 class="pub-card-title"><a href="#" onclick="window.abrirPublicacao(${p.id}); return false;">${p.titulo}</a></h3>
                             <div class="pub-card-meta">
-                                <span><i class="far fa-calendar"></i> ${formatarData(pub.published_at || pub.created_at)}</span>
-                                <span><i class="far fa-eye"></i> ${pub.views || 0} visualizações</span>
+                                <span><i class="far fa-calendar"></i> ${new Date(p.published_at||p.created_at).toLocaleDateString('pt-BR')}</span>
+                                <span><i class="far fa-eye"></i> ${p.views||0} visualizações</span>
                             </div>
-                            <p class="pub-card-excerpt">${pub.subtitulo || (pub.conteudo ? pub.conteudo.substring(0, 100) + '...' : '')}</p>
+                            <p class="pub-card-excerpt">${p.subtitulo || (p.conteudo?.substring(0,100)+'...') || ''}</p>
                             <div class="pub-card-footer">
                                 <div class="pub-author">
-                                    <img src="${pub.colunistas?.foto_url || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50'}" 
-                                         alt="${pub.colunistas?.nome || 'Autor'}"
+                                    <img src="${p.colunistas?.foto_url || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50'}" 
                                          onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50'">
-                                    <span>${pub.colunistas?.nome || 'Autor'}</span>
+                                    <span>${p.colunistas?.nome || 'Autor'}</span>
                                 </div>
-                                <a href="#" class="pub-read-more" onclick="window.abrirPublicacao(${pub.id}); return false;">
-                                    Ler mais <i class="fas fa-arrow-right"></i>
-                                </a>
+                                <a href="#" class="pub-read-more" onclick="window.abrirPublicacao(${p.id}); return false;">Ler mais <i class="fas fa-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -1612,33 +1143,29 @@
                 atualizarPaginacao();
             }
 
-            // =====================================================
-            // ATUALIZAR PAGINAÇÃO
-            // =====================================================
+            // ==================== PAGINAÇÃO ====================
             function atualizarPaginacao() {
-                const totalPages = Math.ceil(filteredPublicacoes.length / itemsPerPage);
-                const prevBtn = document.getElementById('prevPage');
-                const nextBtn = document.getElementById('nextPage');
-                const pageNumbers = document.getElementById('pageNumbers');
+                const total = Math.ceil(filteredPublicacoes.length / itemsPerPage);
+                const prev = document.getElementById('prevPage');
+                const next = document.getElementById('nextPage');
+                const numbers = document.getElementById('pageNumbers');
                 
-                if (totalPages <= 1) {
-                    pageNumbers.innerHTML = '';
-                    prevBtn.classList.add('disabled');
-                    nextBtn.classList.add('disabled');
+                if (total <= 1) {
+                    numbers.innerHTML = '';
+                    prev.classList.add('disabled');
+                    next.classList.add('disabled');
                     return;
                 }
                 
-                // Gerar números das páginas
-                let pagesHtml = '';
-                for (let i = 1; i <= totalPages; i++) {
-                    pagesHtml += `<button class="page-link ${i === currentFilter.pagina ? 'active' : ''}" data-page="${i}">${i}</button>`;
+                let html = '';
+                for (let i = 1; i <= total; i++) {
+                    html += `<button class="page-link ${i === currentFilter.pagina ? 'active' : ''}" data-page="${i}">${i}</button>`;
                 }
-                pageNumbers.innerHTML = pagesHtml;
+                numbers.innerHTML = html;
                 
-                // Adicionar eventos aos botões de página
-                document.querySelectorAll('.page-link[data-page]').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const page = parseInt(this.dataset.page);
+                numbers.querySelectorAll('.page-link').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const page = parseInt(btn.dataset.page);
                         if (page !== currentFilter.pagina) {
                             currentFilter.pagina = page;
                             renderizarPublicacoes();
@@ -1646,127 +1173,70 @@
                     });
                 });
                 
-                // Atualizar botões anterior/próximo
-                prevBtn.classList.toggle('disabled', currentFilter.pagina === 1);
-                nextBtn.classList.toggle('disabled', currentFilter.pagina === totalPages || totalPages === 0);
+                prev.classList.toggle('disabled', currentFilter.pagina === 1);
+                next.classList.toggle('disabled', currentFilter.pagina === total);
             }
 
-            // =====================================================
-            // CONFIGURAR BUSCA
-            // =====================================================
+            // ==================== BUSCA ====================
             function configurarBusca() {
-                const searchInput = document.getElementById('searchInput');
-                const searchButton = document.getElementById('searchButton');
+                const input = document.getElementById('searchInput');
+                const btn = document.getElementById('searchButton');
                 
-                function realizarBusca() {
-                    const termo = searchInput.value.trim();
-                    currentFilter.busca = termo;
+                const buscar = () => {
+                    currentFilter.busca = input.value.trim();
                     currentFilter.pagina = 1;
                     aplicarFiltros();
-                }
+                };
                 
-                searchButton.addEventListener('click', realizarBusca);
-                
-                searchInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        realizarBusca();
-                    }
-                });
+                btn.addEventListener('click', buscar);
+                input.addEventListener('keypress', e => e.key === 'Enter' && buscar());
             }
 
-            // =====================================================
-            // LIMPAR FILTROS
-            // =====================================================
+            // ==================== LIMPAR FILTROS ====================
             function configurarLimparFiltros() {
-                const clearBtn = document.getElementById('clearFilters');
-                
-                clearBtn.addEventListener('click', function() {
-                    // Resetar filtros
-                    currentFilter = {
-                        categoria: 'todas',
-                        busca: '',
-                        tag: '',
-                        pagina: 1
-                    };
-                    
-                    // Resetar UI
+                document.getElementById('clearFilters').addEventListener('click', () => {
+                    currentFilter = { categoria: 'todas', busca: '', tag: '', pagina: 1 };
                     document.getElementById('searchInput').value = '';
-                    
-                    document.querySelectorAll('.filter-tab').forEach(tab => {
-                        if (tab.dataset.categoria === 'todas') {
-                            tab.classList.add('active');
-                        } else {
-                            tab.classList.remove('active');
-                        }
+                    document.querySelectorAll('.filter-tab').forEach(t => {
+                        t.classList.toggle('active', t.dataset.categoria === 'todas');
                     });
-                    
                     document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
-                    
-                    // Aplicar
                     filteredPublicacoes = [...publicacoes];
                     renderizarPublicacoes();
                 });
             }
 
-            // =====================================================
-            // FUNÇÕES AUXILIARES
-            // =====================================================
-            function formatarData(data) {
-                if (!data) return '';
-                const d = new Date(data);
-                if (isNaN(d.getTime())) return '';
-                return d.toLocaleDateString('pt-BR');
-            }
-
-            function mostrarErro(mensagem) {
-                const grid = document.getElementById('publicacoesGrid');
-                grid.innerHTML = `
-                    <div class="error-message">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <h3>Ops! Algo deu errado</h3>
-                        <p>${mensagem}</p>
-                        <button class="btn btn-primary" onclick="location.reload()">
-                            <i class="fas fa-redo"></i> Tentar novamente
-                        </button>
-                    </div>
-                `;
-            }
-
-            // =====================================================
-            // EXPOR FUNÇÕES GLOBAIS
-            // =====================================================
-            window.filtrarPorId = function(id) {
-                const publicacao = publicacoes.find(p => p.id === id);
-                if (publicacao) {
-                    currentFilter.busca = publicacao.titulo;
-                    document.getElementById('searchInput').value = publicacao.titulo;
+            // ==================== FUNÇÕES GLOBAIS ====================
+            window.filtrarPorId = (id) => {
+                const pub = publicacoes.find(p => p.id === id);
+                if (pub) {
+                    currentFilter.busca = pub.titulo;
+                    document.getElementById('searchInput').value = pub.titulo;
                     aplicarFiltros();
                 }
             };
 
-            window.abrirPublicacao = function(id) {
-                // Aqui você pode redirecionar para a página individual da publicação
-                alert(`Abrir publicação ID: ${id} - Em breve página individual`);
-                
-                // Incrementar visualizações
-                supabaseClient
-                    .rpc('increment_visualizacoes', {
-                        table_name: 'publicacoes',
-                        record_id: id
-                    })
-                    .then(() => {
-                        console.log('Visualização incrementada');
-                    })
-                    .catch(err => {
-                        console.error('Erro ao incrementar visualização:', err);
-                    });
+            window.abrirPublicacao = (id) => {
+                alert(`📰 Abrir publicação ID: ${id} - Página individual em breve!`);
+                supabase.rpc('increment_visualizacoes', { table_name: 'publicacoes', record_id: id })
+                    .catch(err => console.warn('Erro ao incrementar view:', err));
             };
 
-            // =====================================================
-            // INICIALIZAÇÃO
-            // =====================================================
-            document.addEventListener('DOMContentLoaded', function() {
-                console.log('Página carregada, inicializando...');
+            // ==================== MOSTRAR ERRO ====================
+            function mostrarErro(msg) {
+                document.getElementById('publicacoesGrid').innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Ops! Algo deu errado</h3>
+                        <p>${msg}</p>
+                        <button class="btn btn-primary" onclick="location.reload()"><i class="fas fa-redo"></i> Tentar novamente</button>
+                    </div>
+                `;
+            }
+
+            // ==================== INICIALIZAÇÃO ====================
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('🚀 Inicializando...');
                 initMenu();
                 configurarBusca();
                 configurarLimparFiltros();
