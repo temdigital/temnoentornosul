@@ -29,12 +29,12 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
-    <!-- Supabase JS -->
+    <!-- Supabase JS (carregado uma única vez) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
         /* =====================================================
-           RESET E VARIÁVEIS (mantido igual)
+           RESET E VARIÁVEIS
            ===================================================== */
         * {
             margin: 0;
@@ -72,7 +72,7 @@
         }
         
         /* =====================================================
-           HEADER (mantido igual)
+           HEADER
            ===================================================== */
         .header {
             background: var(--branco);
@@ -638,6 +638,7 @@
         .pagination {
             display: flex;
             justify-content: center;
+            align-items: center;
             gap: 10px;
             margin: 40px 0 60px;
             flex-wrap: wrap;
@@ -647,8 +648,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 45px;
+            min-width: 45px;
             height: 45px;
+            padding: 0 15px;
             background: var(--branco);
             color: var(--verde-escuro);
             text-decoration: none;
@@ -666,11 +668,6 @@
             color: var(--branco);
         }
         
-        .page-link.next {
-            width: auto;
-            padding: 0 20px;
-        }
-        
         .page-link.disabled {
             opacity: 0.5;
             cursor: not-allowed;
@@ -679,6 +676,13 @@
         .page-link.disabled:hover {
             background: var(--branco);
             color: var(--verde-escuro);
+        }
+        
+        #pageNumbers {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
         
         /* =====================================================
@@ -943,15 +947,6 @@
             .footer-extra {
                 justify-content: center;
             }
-            
-            .pagination {
-                gap: 5px;
-            }
-            
-            .page-link {
-                width: 40px;
-                height: 40px;
-            }
         }
         
         /* Loading State */
@@ -974,6 +969,35 @@
         
         @keyframes spin {
             to { transform: rotate(360deg); }
+        }
+        
+        /* Erro */
+        .error-message {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--branco);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .error-message i {
+            font-size: 4rem;
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+        
+        .error-message h3 {
+            color: var(--cinza-escuro);
+            margin-bottom: 10px;
+        }
+        
+        .error-message p {
+            color: var(--cinza-texto);
+        }
+        
+        .error-message button {
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -1062,7 +1086,6 @@
                     <div class="sidebar-widget">
                         <h3>Categorias</h3>
                         <ul class="categorias-list" id="categoriasList">
-                            <!-- Categorias serão carregadas do banco -->
                             <li class="loading">
                                 <div class="loading-spinner" style="width: 30px; height: 30px;"></div>
                             </li>
@@ -1073,7 +1096,6 @@
                     <div class="sidebar-widget">
                         <h3>Mais Vistos</h3>
                         <div id="maisVistosContainer">
-                            <!-- Posts mais vistos serão carregados do banco -->
                             <div class="loading">
                                 <div class="loading-spinner" style="width: 30px; height: 30px;"></div>
                             </div>
@@ -1084,7 +1106,6 @@
                     <div class="sidebar-widget">
                         <h3>Tags Populares</h3>
                         <div class="tags-cloud" id="tagsCloud">
-                            <!-- Tags serão carregadas do banco -->
                             <div class="loading">
                                 <div class="loading-spinner" style="width: 30px; height: 30px;"></div>
                             </div>
@@ -1103,9 +1124,7 @@
             <!-- PAGINAÇÃO -->
             <div class="pagination" id="pagination">
                 <button class="page-link prev disabled" id="prevPage"><i class="fas fa-chevron-left"></i></button>
-                <div id="pageNumbers">
-                    <!-- Números das páginas serão gerados dinamicamente -->
-                </div>
+                <div id="pageNumbers"></div>
                 <button class="page-link next" id="nextPage">Próximo <i class="fas fa-chevron-right"></i></button>
             </div>
         </div>
@@ -1172,553 +1191,589 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
+    <!-- Script principal - UMA ÚNICA DECLARAÇÃO -->
     <script>
-        // =====================================================
-        // CONFIGURAÇÃO DO SUPABASE
-        // =====================================================
-        const SUPABASE_URL = 'https://seu-projeto.supabase.co'; // Substitua pela URL do seu projeto
-        const SUPABASE_ANON_KEY = 'sua-chave-anonima'; // Substitua pela sua chave
-        
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-            auth: {
-                autoRefreshToken: true,
-                persistSession: true
-            }
-        });
-
-        // =====================================================
-        // VARIÁVEIS DE ESTADO
-        // =====================================================
-        let publicacoes = [];
-        let categorias = [];
-        let todasTags = [];
-        let currentFilter = {
-            categoria: 'todas',
-            busca: '',
-            tag: '',
-            pagina: 1
-        };
-        
-        const itemsPerPage = 6;
-        let filteredPublicacoes = [];
-
-        // =====================================================
-        // MENU HAMBURGUER
-        // =====================================================
-        document.addEventListener('DOMContentLoaded', function() {
-            const menuToggle = document.getElementById('menuToggle');
-            const menuMobile = document.getElementById('menuMobile');
+        (function() {
+            // =====================================================
+            // CONFIGURAÇÃO DO SUPABASE
+            // =====================================================
+            const SUPABASE_URL = 'https://seu-projeto.supabase.co'; // Substitua pela URL do seu projeto
+            const SUPABASE_ANON_KEY = 'sua-chave-anonima'; // Substitua pela sua chave
             
-            if (menuToggle && menuMobile) {
-                menuToggle.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    this.classList.toggle('active');
-                    menuMobile.classList.toggle('active');
-                    
-                    if (menuMobile.classList.contains('active')) {
-                        document.body.style.overflow = 'hidden';
-                    } else {
-                        document.body.style.overflow = '';
-                    }
-                });
+            // Criar cliente Supabase (única instância)
+            const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+                auth: {
+                    autoRefreshToken: true,
+                    persistSession: true
+                }
+            });
+
+            // =====================================================
+            // VARIÁVEIS DE ESTADO
+            // =====================================================
+            let publicacoes = [];
+            let categorias = [];
+            let todasTags = [];
+            let currentFilter = {
+                categoria: 'todas',
+                busca: '',
+                tag: '',
+                pagina: 1
+            };
+            
+            const itemsPerPage = 6;
+            let filteredPublicacoes = [];
+
+            // =====================================================
+            // MENU HAMBURGUER
+            // =====================================================
+            function initMenu() {
+                const menuToggle = document.getElementById('menuToggle');
+                const menuMobile = document.getElementById('menuMobile');
                 
-                const menuLinks = menuMobile.querySelectorAll('a');
-                menuLinks.forEach(link => {
-                    link.addEventListener('click', function() {
-                        menuToggle.classList.remove('active');
-                        menuMobile.classList.remove('active');
-                        document.body.style.overflow = '';
+                if (menuToggle && menuMobile) {
+                    menuToggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        this.classList.toggle('active');
+                        menuMobile.classList.toggle('active');
+                        
+                        if (menuMobile.classList.contains('active')) {
+                            document.body.style.overflow = 'hidden';
+                        } else {
+                            document.body.style.overflow = '';
+                        }
+                    });
+                    
+                    const menuLinks = menuMobile.querySelectorAll('a');
+                    menuLinks.forEach(link => {
+                        link.addEventListener('click', function() {
+                            menuToggle.classList.remove('active');
+                            menuMobile.classList.remove('active');
+                            document.body.style.overflow = '';
+                        });
+                    });
+                    
+                    document.addEventListener('click', function(e) {
+                        if (!menuToggle.contains(e.target) && !menuMobile.contains(e.target)) {
+                            menuToggle.classList.remove('active');
+                            menuMobile.classList.remove('active');
+                            document.body.style.overflow = '';
+                        }
+                    });
+                }
+            }
+
+            // =====================================================
+            // CARREGAR DADOS DO SUPABASE
+            // =====================================================
+            async function carregarDados() {
+                try {
+                    console.log('Carregando dados do Supabase...');
+                    
+                    // Carregar publicações com dados do colunista e categoria
+                    const { data: publicacoesData, error: pubError } = await supabaseClient
+                        .from('publicacoes')
+                        .select(`
+                            *,
+                            colunistas (
+                                nome,
+                                foto_url
+                            ),
+                            categorias (
+                                id,
+                                nome,
+                                cor_fundo
+                            )
+                        `)
+                        .eq('status', 'publicado')
+                        .order('published_at', { ascending: false });
+                    
+                    if (pubError) throw pubError;
+                    
+                    console.log('Publicações carregadas:', publicacoesData?.length || 0);
+                    
+                    publicacoes = publicacoesData || [];
+                    filteredPublicacoes = [...publicacoes];
+                    
+                    // Extrair categorias únicas
+                    const categoriasMap = new Map();
+                    publicacoes.forEach(pub => {
+                        if (pub.categorias && !categoriasMap.has(pub.categorias.id)) {
+                            categoriasMap.set(pub.categorias.id, {
+                                id: pub.categorias.id,
+                                nome: pub.categorias.nome,
+                                cor: pub.categorias.cor_fundo
+                            });
+                        }
+                    });
+                    categorias = Array.from(categoriasMap.values());
+                    
+                    // Extrair todas as tags
+                    const tagsSet = new Set();
+                    publicacoes.forEach(pub => {
+                        if (pub.palavras_chave && Array.isArray(pub.palavras_chave)) {
+                            pub.palavras_chave.forEach(tag => tagsSet.add(tag));
+                        }
+                    });
+                    todasTags = Array.from(tagsSet);
+                    
+                    // Renderizar tudo
+                    renderizarCategorias();
+                    renderizarTabs();
+                    renderizarPublicacoes();
+                    await carregarMaisVistos();
+                    renderizarTags();
+                    
+                } catch (error) {
+                    console.error('Erro detalhado ao carregar dados:', error);
+                    mostrarErro('Erro ao carregar publicações. Verifique sua conexão e tente novamente.');
+                }
+            }
+
+            // =====================================================
+            // CARREGAR MAIS VISTOS
+            // =====================================================
+            async function carregarMaisVistos() {
+                try {
+                    const { data, error } = await supabaseClient
+                        .from('publicacoes')
+                        .select(`
+                            id,
+                            titulo,
+                            views,
+                            imagem_destaque,
+                            published_at,
+                            colunistas (
+                                nome
+                            )
+                        `)
+                        .eq('status', 'publicado')
+                        .order('views', { ascending: false })
+                        .limit(3);
+                    
+                    if (error) throw error;
+                    
+                    const maisVistosContainer = document.getElementById('maisVistosContainer');
+                    
+                    if (data && data.length > 0) {
+                        maisVistosContainer.innerHTML = data.map(pub => `
+                            <div class="mais-vistos-item" onclick="window.filtrarPorId(${pub.id})">
+                                <img src="${pub.imagem_destaque || 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=100'}" 
+                                     alt="${pub.titulo}" 
+                                     class="mais-vistos-image"
+                                     loading="lazy"
+                                     onerror="this.src='https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=100'">
+                                <div class="mais-vistos-info">
+                                    <h4><a href="#" onclick="window.filtrarPorId(${pub.id}); return false;">${pub.titulo.substring(0, 40)}${pub.titulo.length > 40 ? '...' : ''}</a></h4>
+                                    <div class="mais-vistos-stats">
+                                        <span><i class="far fa-eye"></i> ${pub.views || 0}</span>
+                                        <span><i class="far fa-calendar"></i> ${formatarData(pub.published_at)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('');
+                    } else {
+                        maisVistosContainer.innerHTML = '<p style="color: var(--cinza-texto); text-align: center;">Nenhuma publicação encontrada.</p>';
+                    }
+                } catch (error) {
+                    console.error('Erro ao carregar mais vistos:', error);
+                    document.getElementById('maisVistosContainer').innerHTML = '<p style="color: var(--cinza-texto); text-align: center;">Erro ao carregar.</p>';
+                }
+            }
+
+            // =====================================================
+            // RENDERIZAR CATEGORIAS NA SIDEBAR
+            // =====================================================
+            function renderizarCategorias() {
+                const categoriasList = document.getElementById('categoriasList');
+                
+                if (categorias.length === 0) {
+                    categoriasList.innerHTML = '<p style="color: var(--cinza-texto);">Nenhuma categoria encontrada.</p>';
+                    return;
+                }
+                
+                categoriasList.innerHTML = categorias.map(cat => {
+                    const count = publicacoes.filter(p => p.categorias && p.categorias.id === cat.id).length;
+                    return `
+                        <li class="categoria-item">
+                            <a data-categoria="${cat.nome}">
+                                ${cat.nome}
+                                <span>${count}</span>
+                            </a>
+                        </li>
+                    `;
+                }).join('');
+                
+                // Adicionar eventos
+                document.querySelectorAll('.categoria-item a').forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const categoria = this.dataset.categoria;
+                        
+                        // Atualizar tabs
+                        document.querySelectorAll('.filter-tab').forEach(tab => {
+                            if (tab.dataset.categoria === categoria) {
+                                tab.classList.add('active');
+                            } else if (tab.dataset.categoria === 'todas') {
+                                tab.classList.remove('active');
+                            } else {
+                                tab.classList.remove('active');
+                            }
+                        });
+                        
+                        currentFilter.categoria = categoria;
+                        currentFilter.pagina = 1;
+                        aplicarFiltros();
                     });
                 });
+            }
+
+            // =====================================================
+            // RENDERIZAR TABS DE CATEGORIA
+            // =====================================================
+            function renderizarTabs() {
+                const filterTabs = document.getElementById('filterTabs');
                 
-                document.addEventListener('click', function(e) {
-                    if (!menuToggle.contains(e.target) && !menuMobile.contains(e.target)) {
-                        menuToggle.classList.remove('active');
-                        menuMobile.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
+                // Manter a tab "Todas"
+                const todasTab = filterTabs.querySelector('[data-categoria="todas"]');
+                filterTabs.innerHTML = '';
+                filterTabs.appendChild(todasTab);
+                
+                // Adicionar categorias
+                categorias.forEach(cat => {
+                    const tab = document.createElement('button');
+                    tab.className = 'filter-tab';
+                    tab.dataset.categoria = cat.nome;
+                    tab.textContent = cat.nome;
+                    filterTabs.appendChild(tab);
+                });
+                
+                // Adicionar eventos
+                document.querySelectorAll('.filter-tab').forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        const categoria = this.dataset.categoria;
+                        
+                        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        currentFilter.categoria = categoria;
+                        currentFilter.pagina = 1;
+                        aplicarFiltros();
+                    });
                 });
             }
-            
-            // Carregar dados do Supabase
-            carregarDados();
-        });
 
-        // =====================================================
-        // CARREGAR DADOS DO SUPABASE
-        // =====================================================
-        async function carregarDados() {
-            try {
-                // Carregar publicações com dados do colunista
-                const { data: publicacoesData, error: pubError } = await supabase
-                    .from('publicacoes')
-                    .select(`
-                        *,
-                        colunistas (
-                            nome,
-                            foto_url
-                        ),
-                        categorias (
-                            id,
-                            nome,
-                            cor_fundo
-                        )
-                    `)
-                    .eq('status', 'publicado')
-                    .order('published_at', { ascending: false });
+            // =====================================================
+            // RENDERIZAR TAGS
+            // =====================================================
+            function renderizarTags() {
+                const tagsCloud = document.getElementById('tagsCloud');
                 
-                if (pubError) throw pubError;
+                if (todasTags.length === 0) {
+                    tagsCloud.innerHTML = '<p style="color: var(--cinza-texto);">Nenhuma tag encontrada.</p>';
+                    return;
+                }
                 
-                publicacoes = publicacoesData || [];
-                filteredPublicacoes = [...publicacoes];
-                
-                // Extrair categorias únicas
-                const categoriasMap = new Map();
+                // Contar frequência das tags
+                const tagCount = {};
                 publicacoes.forEach(pub => {
-                    if (pub.categorias && !categoriasMap.has(pub.categorias.id)) {
-                        categoriasMap.set(pub.categorias.id, {
-                            id: pub.categorias.id,
-                            nome: pub.categorias.nome,
-                            cor: pub.categorias.cor_fundo
+                    if (pub.palavras_chave && Array.isArray(pub.palavras_chave)) {
+                        pub.palavras_chave.forEach(tag => {
+                            tagCount[tag] = (tagCount[tag] || 0) + 1;
                         });
                     }
                 });
-                categorias = Array.from(categoriasMap.values());
                 
-                // Extrair todas as tags
-                const tagsSet = new Set();
-                publicacoes.forEach(pub => {
-                    if (pub.palavras_chave) {
-                        pub.palavras_chave.forEach(tag => tagsSet.add(tag));
-                    }
+                // Pegar tags mais frequentes (top 15)
+                const tagsMaisFrequentes = Object.entries(tagCount)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 15)
+                    .map(([tag]) => tag);
+                
+                tagsCloud.innerHTML = tagsMaisFrequentes.map(tag => `
+                    <button class="tag" data-tag="${tag}">#${tag}</button>
+                `).join('');
+                
+                // Adicionar eventos
+                document.querySelectorAll('.tag').forEach(tag => {
+                    tag.addEventListener('click', function() {
+                        const tagValue = this.dataset.tag;
+                        
+                        document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        currentFilter.tag = tagValue;
+                        currentFilter.pagina = 1;
+                        document.getElementById('searchInput').value = '';
+                        currentFilter.busca = '';
+                        aplicarFiltros();
+                    });
                 });
-                todasTags = Array.from(tagsSet);
-                
-                // Renderizar tudo
-                renderizarCategorias();
-                renderizarTabs();
-                renderizarPublicacoes();
-                carregarMaisVistos();
-                renderizarTags();
-                
-            } catch (error) {
-                console.error('Erro ao carregar dados:', error);
-                mostrarErro('Erro ao carregar publicações. Tente novamente mais tarde.');
             }
-        }
 
-        // =====================================================
-        // CARREGAR MAIS VISTOS
-        // =====================================================
-        async function carregarMaisVistos() {
-            try {
-                const { data, error } = await supabase
-                    .from('publicacoes')
-                    .select(`
-                        id,
-                        titulo,
-                        views,
-                        imagem_destaque,
-                        published_at,
-                        colunistas (
-                            nome
-                        )
-                    `)
-                    .eq('status', 'publicado')
-                    .order('views', { ascending: false })
-                    .limit(3);
+            // =====================================================
+            // APLICAR FILTROS
+            // =====================================================
+            function aplicarFiltros() {
+                filteredPublicacoes = publicacoes.filter(pub => {
+                    // Filtro por categoria
+                    if (currentFilter.categoria !== 'todas') {
+                        if (!pub.categorias || pub.categorias.nome !== currentFilter.categoria) {
+                            return false;
+                        }
+                    }
+                    
+                    // Filtro por busca
+                    if (currentFilter.busca) {
+                        const termo = currentFilter.busca.toLowerCase();
+                        const tituloMatch = pub.titulo ? pub.titulo.toLowerCase().includes(termo) : false;
+                        const conteudoMatch = pub.conteudo ? pub.conteudo.toLowerCase().includes(termo) : false;
+                        const autorMatch = pub.colunistas && pub.colunistas.nome ? 
+                                         pub.colunistas.nome.toLowerCase().includes(termo) : false;
+                        
+                        if (!tituloMatch && !conteudoMatch && !autorMatch) {
+                            return false;
+                        }
+                    }
+                    
+                    // Filtro por tag
+                    if (currentFilter.tag) {
+                        if (!pub.palavras_chave || !pub.palavras_chave.includes(currentFilter.tag)) {
+                            return false;
+                        }
+                    }
+                    
+                    return true;
+                });
                 
-                if (error) throw error;
+                renderizarPublicacoes();
+            }
+
+            // =====================================================
+            // RENDERIZAR PUBLICAÇÕES
+            // =====================================================
+            function renderizarPublicacoes() {
+                const grid = document.getElementById('publicacoesGrid');
                 
-                const maisVistosContainer = document.getElementById('maisVistosContainer');
+                if (filteredPublicacoes.length === 0) {
+                    grid.innerHTML = `
+                        <div class="no-results">
+                            <i class="fas fa-search"></i>
+                            <h3>Nenhuma publicação encontrada</h3>
+                            <p>Tente buscar com outros termos ou limpar os filtros.</p>
+                        </div>
+                    `;
+                    atualizarPaginacao();
+                    return;
+                }
                 
-                if (data && data.length > 0) {
-                    maisVistosContainer.innerHTML = data.map(pub => `
-                        <div class="mais-vistos-item" onclick="filtrarPorId(${pub.id})">
-                            <img src="${pub.imagem_destaque || 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=100'}" 
+                // Calcular paginação
+                const startIndex = (currentFilter.pagina - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+                const paginatedPublicacoes = filteredPublicacoes.slice(startIndex, endIndex);
+                
+                grid.innerHTML = paginatedPublicacoes.map(pub => `
+                    <div class="pub-card">
+                        <div class="pub-card-image">
+                            <span class="pub-category" style="background-color: ${pub.categorias?.cor_fundo || '#faa115'}">
+                                ${pub.categorias?.nome || 'Sem categoria'}
+                            </span>
+                            <img src="${pub.imagem_destaque || 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400'}" 
                                  alt="${pub.titulo}" 
-                                 class="mais-vistos-image"
-                                 loading="lazy">
-                            <div class="mais-vistos-info">
-                                <h4><a href="#" onclick="filtrarPorId(${pub.id}); return false;">${pub.titulo.substring(0, 40)}${pub.titulo.length > 40 ? '...' : ''}</a></h4>
-                                <div class="mais-vistos-stats">
-                                    <span><i class="far fa-eye"></i> ${pub.views || 0}</span>
-                                    <span><i class="far fa-calendar"></i> ${formatarData(pub.published_at)}</span>
+                                 loading="lazy"
+                                 onerror="this.src='https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400'">
+                        </div>
+                        <div class="pub-card-content">
+                            <h3 class="pub-card-title">
+                                <a href="#" onclick="window.abrirPublicacao(${pub.id}); return false;">${pub.titulo}</a>
+                            </h3>
+                            <div class="pub-card-meta">
+                                <span><i class="far fa-calendar"></i> ${formatarData(pub.published_at || pub.created_at)}</span>
+                                <span><i class="far fa-eye"></i> ${pub.views || 0} visualizações</span>
+                            </div>
+                            <p class="pub-card-excerpt">${pub.subtitulo || (pub.conteudo ? pub.conteudo.substring(0, 100) + '...' : '')}</p>
+                            <div class="pub-card-footer">
+                                <div class="pub-author">
+                                    <img src="${pub.colunistas?.foto_url || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50'}" 
+                                         alt="${pub.colunistas?.nome || 'Autor'}"
+                                         onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50'">
+                                    <span>${pub.colunistas?.nome || 'Autor'}</span>
                                 </div>
+                                <a href="#" class="pub-read-more" onclick="window.abrirPublicacao(${pub.id}); return false;">
+                                    Ler mais <i class="fas fa-arrow-right"></i>
+                                </a>
                             </div>
                         </div>
-                    `).join('');
-                } else {
-                    maisVistosContainer.innerHTML = '<p style="color: var(--cinza-texto); text-align: center;">Nenhuma publicação encontrada.</p>';
-                }
-            } catch (error) {
-                console.error('Erro ao carregar mais vistos:', error);
+                    </div>
+                `).join('');
+                
+                atualizarPaginacao();
             }
-        }
 
-        // =====================================================
-        // RENDERIZAR CATEGORIAS NA SIDEBAR
-        // =====================================================
-        function renderizarCategorias() {
-            const categoriasList = document.getElementById('categoriasList');
-            
-            if (categorias.length === 0) {
-                categoriasList.innerHTML = '<p style="color: var(--cinza-texto);">Nenhuma categoria encontrada.</p>';
-                return;
+            // =====================================================
+            // ATUALIZAR PAGINAÇÃO
+            // =====================================================
+            function atualizarPaginacao() {
+                const totalPages = Math.ceil(filteredPublicacoes.length / itemsPerPage);
+                const prevBtn = document.getElementById('prevPage');
+                const nextBtn = document.getElementById('nextPage');
+                const pageNumbers = document.getElementById('pageNumbers');
+                
+                if (totalPages <= 1) {
+                    pageNumbers.innerHTML = '';
+                    prevBtn.classList.add('disabled');
+                    nextBtn.classList.add('disabled');
+                    return;
+                }
+                
+                // Gerar números das páginas
+                let pagesHtml = '';
+                for (let i = 1; i <= totalPages; i++) {
+                    pagesHtml += `<button class="page-link ${i === currentFilter.pagina ? 'active' : ''}" data-page="${i}">${i}</button>`;
+                }
+                pageNumbers.innerHTML = pagesHtml;
+                
+                // Adicionar eventos aos botões de página
+                document.querySelectorAll('.page-link[data-page]').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const page = parseInt(this.dataset.page);
+                        if (page !== currentFilter.pagina) {
+                            currentFilter.pagina = page;
+                            renderizarPublicacoes();
+                        }
+                    });
+                });
+                
+                // Atualizar botões anterior/próximo
+                prevBtn.classList.toggle('disabled', currentFilter.pagina === 1);
+                nextBtn.classList.toggle('disabled', currentFilter.pagina === totalPages || totalPages === 0);
             }
-            
-            categoriasList.innerHTML = categorias.map(cat => {
-                const count = publicacoes.filter(p => p.categorias && p.categorias.id === cat.id).length;
-                return `
-                    <li class="categoria-item">
-                        <a data-categoria="${cat.nome}">
-                            ${cat.nome}
-                            <span>${count}</span>
-                        </a>
-                    </li>
-                `;
-            }).join('');
-            
-            // Adicionar eventos
-            document.querySelectorAll('.categoria-item a').forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const categoria = this.dataset.categoria;
+
+            // =====================================================
+            // CONFIGURAR BUSCA
+            // =====================================================
+            function configurarBusca() {
+                const searchInput = document.getElementById('searchInput');
+                const searchButton = document.getElementById('searchButton');
+                
+                function realizarBusca() {
+                    const termo = searchInput.value.trim();
+                    currentFilter.busca = termo;
+                    currentFilter.pagina = 1;
+                    aplicarFiltros();
+                }
+                
+                searchButton.addEventListener('click', realizarBusca);
+                
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        realizarBusca();
+                    }
+                });
+            }
+
+            // =====================================================
+            // LIMPAR FILTROS
+            // =====================================================
+            function configurarLimparFiltros() {
+                const clearBtn = document.getElementById('clearFilters');
+                
+                clearBtn.addEventListener('click', function() {
+                    // Resetar filtros
+                    currentFilter = {
+                        categoria: 'todas',
+                        busca: '',
+                        tag: '',
+                        pagina: 1
+                    };
                     
-                    // Atualizar tabs
+                    // Resetar UI
+                    document.getElementById('searchInput').value = '';
+                    
                     document.querySelectorAll('.filter-tab').forEach(tab => {
-                        if (tab.dataset.categoria === categoria) {
+                        if (tab.dataset.categoria === 'todas') {
                             tab.classList.add('active');
-                        } else if (tab.dataset.categoria === 'todas') {
-                            tab.classList.remove('active');
                         } else {
                             tab.classList.remove('active');
                         }
                     });
                     
-                    currentFilter.categoria = categoria;
-                    currentFilter.pagina = 1;
-                    aplicarFiltros();
-                });
-            });
-        }
-
-        // =====================================================
-        // RENDERIZAR TABS DE CATEGORIA
-        // =====================================================
-        function renderizarTabs() {
-            const filterTabs = document.getElementById('filterTabs');
-            
-            // Manter a tab "Todas"
-            const todasTab = filterTabs.querySelector('[data-categoria="todas"]');
-            filterTabs.innerHTML = '';
-            filterTabs.appendChild(todasTab);
-            
-            // Adicionar categorias
-            categorias.forEach(cat => {
-                const tab = document.createElement('button');
-                tab.className = 'filter-tab';
-                tab.dataset.categoria = cat.nome;
-                tab.textContent = cat.nome;
-                filterTabs.appendChild(tab);
-            });
-            
-            // Adicionar eventos
-            document.querySelectorAll('.filter-tab').forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const categoria = this.dataset.categoria;
-                    
-                    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    currentFilter.categoria = categoria;
-                    currentFilter.pagina = 1;
-                    aplicarFiltros();
-                });
-            });
-        }
-
-        // =====================================================
-        // RENDERIZAR TAGS
-        // =====================================================
-        function renderizarTags() {
-            const tagsCloud = document.getElementById('tagsCloud');
-            
-            if (todasTags.length === 0) {
-                tagsCloud.innerHTML = '<p style="color: var(--cinza-texto);">Nenhuma tag encontrada.</p>';
-                return;
-            }
-            
-            // Contar frequência das tags
-            const tagCount = {};
-            publicacoes.forEach(pub => {
-                if (pub.palavras_chave) {
-                    pub.palavras_chave.forEach(tag => {
-                        tagCount[tag] = (tagCount[tag] || 0) + 1;
-                    });
-                }
-            });
-            
-            // Pegar tags mais frequentes (top 15)
-            const tagsMaisFrequentes = Object.entries(tagCount)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 15)
-                .map(([tag]) => tag);
-            
-            tagsCloud.innerHTML = tagsMaisFrequentes.map(tag => `
-                <button class="tag" data-tag="${tag}">#${tag}</button>
-            `).join('');
-            
-            // Adicionar eventos
-            document.querySelectorAll('.tag').forEach(tag => {
-                tag.addEventListener('click', function() {
-                    const tagValue = this.dataset.tag;
-                    
                     document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
                     
-                    currentFilter.tag = tagValue;
-                    currentFilter.pagina = 1;
-                    document.getElementById('searchInput').value = '';
-                    currentFilter.busca = '';
-                    aplicarFiltros();
+                    // Aplicar
+                    filteredPublicacoes = [...publicacoes];
+                    renderizarPublicacoes();
                 });
-            });
-        }
+            }
 
-        // =====================================================
-        // APLICAR FILTROS
-        // =====================================================
-        function aplicarFiltros() {
-            filteredPublicacoes = publicacoes.filter(pub => {
-                // Filtro por categoria
-                if (currentFilter.categoria !== 'todas') {
-                    if (!pub.categorias || pub.categorias.nome !== currentFilter.categoria) {
-                        return false;
-                    }
-                }
-                
-                // Filtro por busca
-                if (currentFilter.busca) {
-                    const termo = currentFilter.busca.toLowerCase();
-                    const tituloMatch = pub.titulo.toLowerCase().includes(termo);
-                    const conteudoMatch = pub.conteudo ? pub.conteudo.toLowerCase().includes(termo) : false;
-                    const autorMatch = pub.colunistas && pub.colunistas.nome ? 
-                                     pub.colunistas.nome.toLowerCase().includes(termo) : false;
-                    
-                    if (!tituloMatch && !conteudoMatch && !autorMatch) {
-                        return false;
-                    }
-                }
-                
-                // Filtro por tag
-                if (currentFilter.tag) {
-                    if (!pub.palavras_chave || !pub.palavras_chave.includes(currentFilter.tag)) {
-                        return false;
-                    }
-                }
-                
-                return true;
-            });
-            
-            renderizarPublicacoes();
-        }
+            // =====================================================
+            // FUNÇÕES AUXILIARES
+            // =====================================================
+            function formatarData(data) {
+                if (!data) return '';
+                const d = new Date(data);
+                if (isNaN(d.getTime())) return '';
+                return d.toLocaleDateString('pt-BR');
+            }
 
-        // =====================================================
-        // RENDERIZAR PUBLICAÇÕES
-        // =====================================================
-        function renderizarPublicacoes() {
-            const grid = document.getElementById('publicacoesGrid');
-            
-            if (filteredPublicacoes.length === 0) {
+            function mostrarErro(mensagem) {
+                const grid = document.getElementById('publicacoesGrid');
                 grid.innerHTML = `
-                    <div class="no-results">
-                        <i class="fas fa-search"></i>
-                        <h3>Nenhuma publicação encontrada</h3>
-                        <p>Tente buscar com outros termos ou limpar os filtros.</p>
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Ops! Algo deu errado</h3>
+                        <p>${mensagem}</p>
+                        <button class="btn btn-primary" onclick="location.reload()">
+                            <i class="fas fa-redo"></i> Tentar novamente
+                        </button>
                     </div>
                 `;
-                atualizarPaginacao();
-                return;
             }
-            
-            // Calcular paginação
-            const startIndex = (currentFilter.pagina - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-            const paginatedPublicacoes = filteredPublicacoes.slice(startIndex, endIndex);
-            
-            grid.innerHTML = paginatedPublicacoes.map(pub => `
-                <div class="pub-card">
-                    <div class="pub-card-image">
-                        <span class="pub-category" style="background-color: ${pub.categorias?.cor_fundo || '#faa115'}">
-                            ${pub.categorias?.nome || 'Sem categoria'}
-                        </span>
-                        <img src="${pub.imagem_destaque || 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400'}" 
-                             alt="${pub.titulo}" 
-                             loading="lazy">
-                    </div>
-                    <div class="pub-card-content">
-                        <h3 class="pub-card-title">
-                            <a href="#" onclick="abrirPublicacao(${pub.id}); return false;">${pub.titulo}</a>
-                        </h3>
-                        <div class="pub-card-meta">
-                            <span><i class="far fa-calendar"></i> ${formatarData(pub.published_at || pub.created_at)}</span>
-                            <span><i class="far fa-eye"></i> ${pub.views || 0} visualizações</span>
-                        </div>
-                        <p class="pub-card-excerpt">${pub.subtitulo || (pub.conteudo ? pub.conteudo.substring(0, 100) + '...' : '')}</p>
-                        <div class="pub-card-footer">
-                            <div class="pub-author">
-                                <img src="${pub.colunistas?.foto_url || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50'}" 
-                                     alt="${pub.colunistas?.nome || 'Autor'}">
-                                <span>${pub.colunistas?.nome || 'Autor'}</span>
-                            </div>
-                            <a href="#" class="pub-read-more" onclick="abrirPublicacao(${pub.id}); return false;">
-                                Ler mais <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-            
-            atualizarPaginacao();
-        }
 
-        // =====================================================
-        // ATUALIZAR PAGINAÇÃO
-        // =====================================================
-        function atualizarPaginacao() {
-            const totalPages = Math.ceil(filteredPublicacoes.length / itemsPerPage);
-            const prevBtn = document.getElementById('prevPage');
-            const nextBtn = document.getElementById('nextPage');
-            const pageNumbers = document.getElementById('pageNumbers');
-            
-            // Gerar números das páginas
-            let pagesHtml = '';
-            for (let i = 1; i <= totalPages; i++) {
-                pagesHtml += `<button class="page-link ${i === currentFilter.pagina ? 'active' : ''}" data-page="${i}">${i}</button>`;
-            }
-            pageNumbers.innerHTML = pagesHtml;
-            
-            // Adicionar eventos aos botões de página
-            document.querySelectorAll('.page-link[data-page]').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const page = parseInt(this.dataset.page);
-                    if (page !== currentFilter.pagina) {
-                        currentFilter.pagina = page;
-                        renderizarPublicacoes();
-                    }
-                });
-            });
-            
-            // Atualizar botões anterior/próximo
-            prevBtn.classList.toggle('disabled', currentFilter.pagina === 1);
-            nextBtn.classList.toggle('disabled', currentFilter.pagina === totalPages || totalPages === 0);
-        }
-
-        // =====================================================
-        // CONFIGURAR BUSCA
-        // =====================================================
-        function configurarBusca() {
-            const searchInput = document.getElementById('searchInput');
-            const searchButton = document.getElementById('searchButton');
-            
-            function realizarBusca() {
-                const termo = searchInput.value.trim();
-                currentFilter.busca = termo;
-                currentFilter.pagina = 1;
-                aplicarFiltros();
-            }
-            
-            searchButton.addEventListener('click', realizarBusca);
-            
-            searchInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    realizarBusca();
+            // =====================================================
+            // EXPOR FUNÇÕES GLOBAIS
+            // =====================================================
+            window.filtrarPorId = function(id) {
+                const publicacao = publicacoes.find(p => p.id === id);
+                if (publicacao) {
+                    currentFilter.busca = publicacao.titulo;
+                    document.getElementById('searchInput').value = publicacao.titulo;
+                    aplicarFiltros();
                 }
+            };
+
+            window.abrirPublicacao = function(id) {
+                // Aqui você pode redirecionar para a página individual da publicação
+                alert(`Abrir publicação ID: ${id} - Em breve página individual`);
+                
+                // Incrementar visualizações
+                supabaseClient
+                    .rpc('increment_visualizacoes', {
+                        table_name: 'publicacoes',
+                        record_id: id
+                    })
+                    .then(() => {
+                        console.log('Visualização incrementada');
+                    })
+                    .catch(err => {
+                        console.error('Erro ao incrementar visualização:', err);
+                    });
+            };
+
+            // =====================================================
+            // INICIALIZAÇÃO
+            // =====================================================
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('Página carregada, inicializando...');
+                initMenu();
+                configurarBusca();
+                configurarLimparFiltros();
+                carregarDados();
             });
-        }
 
-        // =====================================================
-        // LIMPAR FILTROS
-        // =====================================================
-        function configurarLimparFiltros() {
-            const clearBtn = document.getElementById('clearFilters');
-            
-            clearBtn.addEventListener('click', function() {
-                // Resetar filtros
-                currentFilter = {
-                    categoria: 'todas',
-                    busca: '',
-                    tag: '',
-                    pagina: 1
-                };
-                
-                // Resetar UI
-                document.getElementById('searchInput').value = '';
-                
-                document.querySelectorAll('.filter-tab').forEach(tab => {
-                    if (tab.dataset.categoria === 'todas') {
-                        tab.classList.add('active');
-                    } else {
-                        tab.classList.remove('active');
-                    }
-                });
-                
-                document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
-                
-                // Aplicar
-                filteredPublicacoes = [...publicacoes];
-                renderizarPublicacoes();
-            });
-        }
-
-        // =====================================================
-        // FUNÇÕES AUXILIARES
-        // =====================================================
-        function formatarData(data) {
-            if (!data) return '';
-            const d = new Date(data);
-            return d.toLocaleDateString('pt-BR');
-        }
-
-        window.filtrarPorId = function(id) {
-            const publicacao = publicacoes.find(p => p.id === id);
-            if (publicacao) {
-                currentFilter.busca = publicacao.titulo;
-                document.getElementById('searchInput').value = publicacao.titulo;
-                aplicarFiltros();
-            }
-        };
-
-        window.abrirPublicacao = function(id) {
-            // Aqui você pode redirecionar para a página individual da publicação
-            // window.location.href = `publicacao.html?id=${id}`;
-            alert(`Abrir publicação ID: ${id} - Em breve página individual`);
-            
-            // Incrementar visualizações
-            supabase.rpc('increment_visualizacoes', {
-                table_name: 'publicacoes',
-                record_id: id
-            });
-        };
-
-        function mostrarErro(mensagem) {
-            const grid = document.getElementById('publicacoesGrid');
-            grid.innerHTML = `
-                <div class="no-results">
-                    <i class="fas fa-exclamation-triangle" style="color: #dc3545;"></i>
-                    <h3>Ops! Algo deu errado</h3>
-                    <p>${mensagem}</p>
-                </div>
-            `;
-        }
-
-        // Inicializar
-        configurarBusca();
-        configurarLimparFiltros();
+        })();
     </script>
 </body>
 </html>
