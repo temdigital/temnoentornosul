@@ -28,7 +28,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
-    <!-- Supabase JS -->
+    <!-- Supabase JS (carregar primeiro) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
@@ -373,12 +373,6 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            cursor: pointer;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
         }
         
         .card-image {
@@ -400,10 +394,6 @@
         .card-title a {
             color: var(--verde-escuro);
             text-decoration: none;
-        }
-        
-        .card-title a:hover {
-            color: var(--laranja);
         }
         
         .card-meta {
@@ -430,7 +420,6 @@
         
         .parceiro-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
         }
         
         .parceiro-card.premium {
@@ -491,13 +480,6 @@
             display: flex;
             margin-bottom: 20px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .evento-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
         }
         
         .evento-data {
@@ -543,11 +525,6 @@
             flex-wrap: wrap;
         }
         
-        .evento-meta i {
-            margin-right: 5px;
-            color: var(--laranja);
-        }
-        
         /* FUNCIONA CARD */
         .funciona-card {
             background: var(--branco);
@@ -558,12 +535,6 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            transition: transform 0.3s ease;
-        }
-        
-        .funciona-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
         }
         
         .funciona-icon {
@@ -577,11 +548,6 @@
             justify-content: center;
             margin: 0 auto 25px;
             font-size: 40px;
-            transition: transform 0.3s ease;
-        }
-        
-        .funciona-card:hover .funciona-icon {
-            transform: scale(1.1);
         }
         
         /* PLANO CARD */
@@ -594,12 +560,6 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            transition: transform 0.3s ease;
-        }
-        
-        .plano-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
         }
         
         .plano-card.premium {
@@ -663,11 +623,6 @@
             width: 100%;
             border-radius: 20px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-            transition: transform 0.3s ease;
-        }
-        
-        .sobre-imagem img:hover {
-            transform: scale(1.02);
         }
         
         /* NEWSLETTER */
@@ -786,7 +741,6 @@
         
         .footer-links a:hover {
             color: var(--amarelo);
-            padding-left: 5px;
         }
         
         .footer-contato li {
@@ -822,19 +776,7 @@
             text-decoration: none;
         }
         
-        .footer-extra a:hover {
-            color: var(--amarelo);
-        }
-        
         /* LOADING */
-        .loading {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 200px;
-            grid-column: 1 / -1;
-        }
-        
         .loading-spinner {
             width: 50px;
             height: 50px;
@@ -842,6 +784,7 @@
             border-top-color: var(--verde-escuro);
             border-radius: 50%;
             animation: spin 1s linear infinite;
+            margin: 20px auto;
         }
         
         @keyframes spin {
@@ -869,57 +812,6 @@
             padding: 25px;
             border-radius: 15px;
             margin: 30px 0;
-        }
-        
-        /* NO-RESULTS */
-        .no-results {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--cinza-texto);
-        }
-        
-        /* TOAST */
-        .toast-notification {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: var(--verde-escuro);
-            color: var(--branco);
-            padding: 15px 25px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            z-index: 9999;
-            animation: slideIn 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .toast-notification.error {
-            background: #dc3545;
-        }
-        
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        
-        @keyframes slideOut {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(100%);
-                opacity: 0;
-            }
         }
         
         /* MEDIA QUERIES */
@@ -1120,9 +1012,7 @@
                     <a href="./publicacoes.html" class="btn btn-outline">Ver Todas</a>
                 </div>
                 <div id="publicacoes-destaque" class="destaque-grid">
-                    <div class="loading">
-                        <div class="loading-spinner"></div>
-                    </div>
+                    <!-- Cards serão carregados via JavaScript -->
                 </div>
             </div>
         </section>
@@ -1175,17 +1065,15 @@
             </div>
         </section>
 
-        <!-- PARCEIROS EM DESTAQUE (APENAS PREMIUM) -->
+        <!-- PARCEIROS EM DESTAQUE -->
         <section class="parceiros-destaque">
             <div class="container">
                 <div class="section-header">
-                    <h2>Parceiros Premium</h2>
+                    <h2>Parceiros em Destaque</h2>
                     <a href="./parceiros.html" class="btn btn-outline">Ver todos</a>
                 </div>
                 <div id="parceiros-destaque" class="parceiros-grid">
-                    <div class="loading">
-                        <div class="loading-spinner"></div>
-                    </div>
+                    <!-- Cards serão carregados via JavaScript -->
                 </div>
             </div>
         </section>
@@ -1198,9 +1086,7 @@
                     <a href="./eventos.html" class="btn btn-outline">Ver agenda</a>
                 </div>
                 <div id="eventos-lista">
-                    <div class="loading">
-                        <div class="loading-spinner"></div>
-                    </div>
+                    <!-- Eventos serão carregados via JavaScript -->
                 </div>
             </div>
         </section>
@@ -1246,9 +1132,7 @@
                             <li><i class="fas fa-check"></i> Selo "Premium"</li>
                             <li><i class="fas fa-check"></i> Estatísticas</li>
                         </ul>
-                        <div style="text-align: center; margin: 0 20px 30px;">
-                            <a href="./cadastro.html?plano=premium" class="btn btn-primary" style="display: inline-block; padding: 12px 40px;">Assinar agora</a>
-                        </div>
+                        <a href="./cadastro.html?plano=premium" class="btn btn-primary btn-block" style="margin: 0 20px 30px;">Assinar agora</a>
                     </div>
                 </div>
             </div>
@@ -1280,7 +1164,7 @@
                     <p>Receba em primeira mão os eventos e promoções da região</p>
                     <form id="newsletterForm" class="newsletter-form">
                         <div class="form-group">
-                            <input type="email" id="newsletterEmail" placeholder="Seu melhor e-mail" required>
+                            <input type="email" placeholder="Seu melhor e-mail" required>
                             <button type="submit" class="btn btn-primary">Inscrever-se</button>
                         </div>
                     </form>
@@ -1351,292 +1235,206 @@
     <!-- Scripts -->
     <script>
         // =====================================================
-        // CONFIGURAÇÃO DO SUPABASE
+        // CONFIGURAÇÃO DO SUPABASE (feita antes de tudo)
         // =====================================================
-        (function() {
-            const SUPABASE_URL = 'https://flidbkfrfosuahgphiza.supabase.co';
-            const SUPABASE_ANON_KEY = 'sb_publishable_mCBYSpZc45Pw345wZ1coEA_rYL61Ea8';
+        const SUPABASE_URL = 'https://seu-projeto.supabase.co'; // Substitua pela URL do seu projeto
+        const SUPABASE_ANON_KEY = 'sua-chave-anonima'; // Substitua pela sua chave
+        
+        // Criar cliente Supabase global
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+            auth: {
+                autoRefreshToken: true,
+                persistSession: true
+            }
+        });
+
+        // =====================================================
+        // MENU HAMBURGUER - CORRIGIDO
+        // =====================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM carregado - inicializando menu');
             
-            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-            // =====================================================
-            // UTILITÁRIOS
-            // =====================================================
-            function mostrarToast(mensagem, tipo = 'sucesso') {
-                const toast = document.createElement('div');
-                toast.className = `toast-notification ${tipo === 'sucesso' ? '' : 'error'}`;
-                toast.innerHTML = `<i class="fas ${tipo === 'sucesso' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${mensagem}`;
-                document.body.appendChild(toast);
+            const menuToggle = document.getElementById('menuToggle');
+            const menuMobile = document.getElementById('menuMobile');
+            
+            if (menuToggle && menuMobile) {
+                console.log('Elementos do menu encontrados');
                 
-                setTimeout(() => {
-                    toast.style.animation = 'slideOut 0.3s ease';
-                    setTimeout(() => toast.remove(), 300);
-                }, 3000);
-            }
-
-            function formatarData(data) {
-                if (!data) return '';
-                const d = new Date(data);
-                return d.toLocaleDateString('pt-BR');
-            }
-
-            function getMesAbreviado(numero) {
-                const meses = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
-                return meses[numero - 1];
-            }
-
-            // =====================================================
-            // MENU HAMBURGUER
-            // =====================================================
-            function initMenu() {
-                const menuToggle = document.getElementById('menuToggle');
-                const menuMobile = document.getElementById('menuMobile');
-                
-                if (menuToggle && menuMobile) {
-                    menuToggle.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        
-                        this.classList.toggle('active');
-                        menuMobile.classList.toggle('active');
-                        
-                        document.body.style.overflow = menuMobile.classList.contains('active') ? 'hidden' : '';
-                    });
-                    
-                    const menuLinks = menuMobile.querySelectorAll('a');
-                    menuLinks.forEach(link => {
-                        link.addEventListener('click', function() {
-                            menuToggle.classList.remove('active');
-                            menuMobile.classList.remove('active');
-                            document.body.style.overflow = '';
-                        });
-                    });
-                }
-            }
-
-            // =====================================================
-            // FUNÇÃO PARA ABRIR PUBLICAÇÃO
-            // =====================================================
-            window.abrirPublicacao = function(id) {
-                sessionStorage.setItem('publicacaoParaAbrir', id);
-                window.location.href = './publicacoes.html';
-            };
-
-            // =====================================================
-            // CARREGAR PUBLICAÇÕES RECENTES
-            // =====================================================
-            async function carregarPublicacoes() {
-                const container = document.getElementById('publicacoes-destaque');
-                
-                try {
-                    const { data, error } = await supabase
-                        .from('publicacoes')
-                        .select(`
-                            id,
-                            titulo,
-                            subtitulo,
-                            conteudo,
-                            imagem_destaque,
-                            published_at,
-                            colunistas (
-                                nome,
-                                foto_url
-                            )
-                        `)
-                        .eq('status', 'publicado')
-                        .order('published_at', { ascending: false })
-                        .limit(3);
-                    
-                    if (error) throw error;
-                    
-                    if (!data || data.length === 0) {
-                        container.innerHTML = '<p class="no-results">Nenhuma publicação encontrada.</p>';
-                        return;
-                    }
-                    
-                    container.innerHTML = data.map(pub => `
-                        <div class="card" onclick="abrirPublicacao('${pub.id}')">
-                            <img src="${pub.imagem_destaque || 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400'}" 
-                                 alt="${pub.titulo}" 
-                                 class="card-image" 
-                                 loading="lazy"
-                                 onerror="this.src='https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400'">
-                            <div class="card-content">
-                                <h3 class="card-title">
-                                    <a href="#" onclick="event.preventDefault(); abrirPublicacao('${pub.id}'); return false;">${pub.titulo}</a>
-                                </h3>
-                                <p class="card-text">${pub.subtitulo || (pub.conteudo ? pub.conteudo.substring(0, 100) + '...' : '')}</p>
-                                <div class="card-meta">
-                                    <small><i class="far fa-calendar"></i> ${formatarData(pub.published_at)}</small>
-                                    <small><i class="far fa-user"></i> ${pub.colunistas?.nome || 'Autor'}</small>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('');
-                    
-                } catch (error) {
-                    console.error('Erro ao carregar publicações:', error);
-                    container.innerHTML = '<p class="no-results">Erro ao carregar publicações.</p>';
-                }
-            }
-
-            // =====================================================
-            // CARREGAR PARCEIROS PREMIUM
-            // =====================================================
-            async function carregarParceiros() {
-                const container = document.getElementById('parceiros-destaque');
-                
-                try {
-                    const { data, error } = await supabase
-                        .from('parceiros')
-                        .select('*')
-                        .eq('status', 'ativo')
-                        .eq('plano', 'premium') // APENAS PREMIUM
-                        .order('visualizacoes', { ascending: false })
-                        .limit(4);
-                    
-                    if (error) throw error;
-                    
-                    if (!data || data.length === 0) {
-                        container.innerHTML = '<p class="no-results">Nenhum parceiro premium encontrado.</p>';
-                        return;
-                    }
-                    
-                    container.innerHTML = data.map(p => `
-                        <div class="parceiro-card premium">
-                            <span class="badge-premium">Premium</span>
-                            <img src="${p.logo_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200'}" 
-                                 alt="${p.nome_fantasia}" 
-                                 class="parceiro-logo" 
-                                 loading="lazy"
-                                 onerror="this.src='https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200'">
-                            <h3 class="parceiro-nome">
-                                <a href="./perfil-parceiro.html?id=${p.id}">${p.nome_fantasia}</a>
-                            </h3>
-                            <p class="parceiro-descricao">${p.descricao_curta || 'Conheça nossos produtos e serviços.'}</p>
-                            <div class="parceiro-contato">
-                                ${p.whatsapp ? `
-                                    <a href="https://wa.me/${p.whatsapp.replace(/\D/g, '')}" target="_blank" class="btn btn-small btn-success">
-                                        <i class="fab fa-whatsapp"></i>
-                                    </a>
-                                ` : ''}
-                                <a href="./perfil-parceiro.html?id=${p.id}" class="btn btn-small btn-outline">
-                                    Ver perfil
-                                </a>
-                            </div>
-                        </div>
-                    `).join('');
-                    
-                } catch (error) {
-                    console.error('Erro ao carregar parceiros:', error);
-                    container.innerHTML = '<p class="no-results">Erro ao carregar parceiros.</p>';
-                }
-            }
-
-            // =====================================================
-            // CARREGAR PRÓXIMOS EVENTOS
-            // =====================================================
-            async function carregarEventos() {
-                const container = document.getElementById('eventos-lista');
-                const hoje = new Date().toISOString().split('T')[0];
-                
-                try {
-                    const { data, error } = await supabase
-                        .from('eventos')
-                        .select('*')
-                        .gte('data_evento', hoje)
-                        .order('data_evento', { ascending: true })
-                        .limit(2);
-                    
-                    if (error) throw error;
-                    
-                    if (!data || data.length === 0) {
-                        container.innerHTML = '<p class="no-results">Nenhum evento próximo.</p>';
-                        return;
-                    }
-                    
-                    container.innerHTML = data.map(evento => {
-                        const data = new Date(evento.data_evento);
-                        return `
-                            <div class="evento-card" onclick="window.location.href='./eventos.html?id=${evento.id}'">
-                                <div class="evento-data">
-                                    <span class="dia">${data.getDate()}</span>
-                                    <span class="mes">${getMesAbreviado(data.getMonth() + 1)}</span>
-                                </div>
-                                <div class="evento-info">
-                                    <h3>${evento.titulo}</h3>
-                                    <p>${evento.descricao.substring(0, 100)}${evento.descricao.length > 100 ? '...' : ''}</p>
-                                    <div class="evento-meta">
-                                        <span><i class="fas fa-map-marker-alt"></i> ${evento.local || evento.cidade || 'Local a definir'}</span>
-                                        ${evento.horario ? `<span><i class="far fa-clock"></i> ${evento.horario}</span>` : ''}
-                                    </div>
-                                    <a href="./eventos.html?id=${evento.id}" class="btn btn-outline btn-small">Saiba mais</a>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-                    
-                } catch (error) {
-                    console.error('Erro ao carregar eventos:', error);
-                    container.innerHTML = '<p class="no-results">Erro ao carregar eventos.</p>';
-                }
-            }
-
-            // =====================================================
-            // NEWSLETTER COM SUPABASE
-            // =====================================================
-            async function initNewsletter() {
-                const form = document.getElementById('newsletterForm');
-                
-                form.addEventListener('submit', async (e) => {
+                // Toggle do menu ao clicar no hamburguer
+                menuToggle.addEventListener('click', function(e) {
                     e.preventDefault();
+                    e.stopPropagation();
                     
-                    const email = document.getElementById('newsletterEmail').value;
-                    const btn = form.querySelector('button[type="submit"]');
-                    const originalText = btn.innerHTML;
+                    console.log('Menu toggle clicado');
                     
-                    btn.disabled = true;
-                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+                    this.classList.toggle('active');
+                    menuMobile.classList.toggle('active');
                     
-                    try {
-                        // Inserir no banco de dados
-                        const { error } = await supabase
-                            .from('newsletter')
-                            .insert([{ email: email }]);
-                        
-                        if (error) {
-                            if (error.code === '23505') { // email já existe
-                                mostrarToast('Este e-mail já está cadastrado!', 'error');
-                            } else {
-                                throw error;
-                            }
-                        } else {
-                            mostrarToast('Inscrição realizada com sucesso!');
-                            form.reset();
-                        }
-                        
-                    } catch (error) {
-                        console.error('Erro na newsletter:', error);
-                        mostrarToast('Erro ao realizar inscrição', 'error');
-                    } finally {
-                        btn.disabled = false;
-                        btn.innerHTML = originalText;
+                    // Impedir scroll do body
+                    if (menuMobile.classList.contains('active')) {
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        document.body.style.overflow = '';
                     }
                 });
+                
+                // Fechar ao clicar em links
+                const menuLinks = menuMobile.querySelectorAll('a');
+                menuLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        menuToggle.classList.remove('active');
+                        menuMobile.classList.remove('active');
+                        document.body.style.overflow = '';
+                    });
+                });
+                
+                // Fechar ao clicar fora
+                document.addEventListener('click', function(e) {
+                    if (!menuToggle.contains(e.target) && !menuMobile.contains(e.target)) {
+                        menuToggle.classList.remove('active');
+                        menuMobile.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            } else {
+                console.error('Elementos do menu NÃO encontrados');
             }
-
+            
             // =====================================================
-            // INICIALIZAÇÃO
+            // CARREGAR DADOS DE EXEMPLO
             // =====================================================
-            document.addEventListener('DOMContentLoaded', () => {
-                initMenu();
-                carregarPublicacoes();
-                carregarParceiros();
-                carregarEventos();
-                initNewsletter();
-            });
-
-        })();
+            
+            // Publicações
+            const pubContainer = document.getElementById('publicacoes-destaque');
+            if (pubContainer) {
+                pubContainer.innerHTML = `
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400" alt="Publicação" class="card-image" loading="lazy">
+                        <div class="card-content">
+                            <h3 class="card-title"><a href="#">Como fortalecer o comércio local</a></h3>
+                            <p class="card-text">Dicas práticas para pequenos negócios se destacarem...</p>
+                            <div class="card-meta">
+                                <small><i class="far fa-calendar"></i> 15/03/2026</small>
+                                <small><i class="far fa-user"></i> João Silva</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400" alt="Publicação" class="card-image" loading="lazy">
+                        <div class="card-content">
+                            <h3 class="card-title"><a href="#">Eventos imperdíveis em março</a></h3>
+                            <p class="card-text">Confira a agenda completa de eventos na região...</p>
+                            <div class="card-meta">
+                                <small><i class="far fa-calendar"></i> 10/03/2026</small>
+                                <small><i class="far fa-user"></i> Maria Santos</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400" alt="Publicação" class="card-image" loading="lazy">
+                        <div class="card-content">
+                            <h3 class="card-title"><a href="#">Novos parceiros chegando</a></h3>
+                            <p class="card-text">Conheça os novos comércios que estão se juntando...</p>
+                            <div class="card-meta">
+                                <small><i class="far fa-calendar"></i> 05/03/2026</small>
+                                <small><i class="far fa-user"></i> Admin</small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Parceiros
+            const parcContainer = document.getElementById('parceiros-destaque');
+            if (parcContainer) {
+                parcContainer.innerHTML = `
+                    <div class="parceiro-card premium">
+                        <span class="badge-premium">Premium</span>
+                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200" alt="Restaurante" class="parceiro-logo" loading="lazy">
+                        <h3 class="parceiro-nome"><a href="#">Restaurante Sabor Caseiro</a></h3>
+                        <p class="parceiro-descricao">Comida caseira com qualidade</p>
+                        <div class="parceiro-contato">
+                            <a href="#" class="btn btn-small btn-success"><i class="fab fa-whatsapp"></i></a>
+                            <a href="#" class="btn btn-small btn-outline">Perfil</a>
+                        </div>
+                    </div>
+                    <div class="parceiro-card">
+                        <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=200" alt="Barbearia" class="parceiro-logo" loading="lazy">
+                        <h3 class="parceiro-nome"><a href="#">Barbearia Estilo</a></h3>
+                        <p class="parceiro-descricao">Corte e barba com estilo</p>
+                        <div class="parceiro-contato">
+                            <a href="#" class="btn btn-small btn-success"><i class="fab fa-whatsapp"></i></a>
+                            <a href="#" class="btn btn-small btn-outline">Perfil</a>
+                        </div>
+                    </div>
+                    <div class="parceiro-card">
+                        <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=200" alt="Padaria" class="parceiro-logo" loading="lazy">
+                        <h3 class="parceiro-nome"><a href="#">Padaria Pão Quente</a></h3>
+                        <p class="parceiro-descricao">Pães e doces fresquinhos</p>
+                        <div class="parceiro-contato">
+                            <a href="#" class="btn btn-small btn-success"><i class="fab fa-whatsapp"></i></a>
+                            <a href="#" class="btn btn-small btn-outline">Perfil</a>
+                        </div>
+                    </div>
+                    <div class="parceiro-card">
+                        <img src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=200" alt="Academia" class="parceiro-logo" loading="lazy">
+                        <h3 class="parceiro-nome"><a href="#">Academia Corpo em Ação</a></h3>
+                        <p class="parceiro-descricao">Saúde e bem-estar</p>
+                        <div class="parceiro-contato">
+                            <a href="#" class="btn btn-small btn-success"><i class="fab fa-whatsapp"></i></a>
+                            <a href="#" class="btn btn-small btn-outline">Perfil</a>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Eventos
+            const evContainer = document.getElementById('eventos-lista');
+            if (evContainer) {
+                evContainer.innerHTML = `
+                    <div class="evento-card">
+                        <div class="evento-data">
+                            <span class="dia">20</span>
+                            <span class="mes">MAR</span>
+                        </div>
+                        <div class="evento-info">
+                            <h3>Feira Gastronômica</h3>
+                            <p>Evento com os melhores food trucks da região...</p>
+                            <div class="evento-meta">
+                                <span><i class="fas fa-map-marker-alt"></i> Praça Central</span>
+                                <span><i class="far fa-clock"></i> 18:00</span>
+                            </div>
+                            <a href="#" class="btn btn-outline btn-small">Saiba mais</a>
+                        </div>
+                    </div>
+                    <div class="evento-card">
+                        <div class="evento-data">
+                            <span class="dia">25</span>
+                            <span class="mes">MAR</span>
+                        </div>
+                        <div class="evento-info">
+                            <h3>Show Sertanejo</h3>
+                            <p>Show com artistas locais...</p>
+                            <div class="evento-meta">
+                                <span><i class="fas fa-map-marker-alt"></i> Parque</span>
+                                <span><i class="far fa-clock"></i> 21:00</span>
+                            </div>
+                            <a href="#" class="btn btn-outline btn-small">Saiba mais</a>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Newsletter
+            const newsletterForm = document.getElementById('newsletterForm');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Inscrição realizada com sucesso!');
+                    this.reset();
+                });
+            }
+        });
     </script>
 </body>
 </html>

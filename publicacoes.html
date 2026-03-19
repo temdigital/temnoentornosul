@@ -1350,7 +1350,7 @@
                 pagina: 1
             };
             let usuarioAtual = null;
-            let curtidasUsuario = new Map(); // Mapa de publicacao_id -> boolean
+            let curtidasUsuario = new Map();
             
             const itemsPerPage = 6;
             let filteredPublicacoes = [];
@@ -1382,7 +1382,6 @@
                     usuarioAtual = user;
                     
                     if (user) {
-                        // Carregar curtidas do usuário
                         const { data: curtidas } = await supabase
                             .from('curtidas')
                             .select('publicacao_id')
@@ -1394,6 +1393,23 @@
                     }
                 } catch (error) {
                     console.warn('Erro ao verificar usuário:', error);
+                }
+            }
+
+            // =====================================================
+            // VERIFICAR PUBLICAÇÃO PARA ABRIR
+            // =====================================================
+            function verificarPublicacaoParaAbrir() {
+                const idParaAbrir = sessionStorage.getItem('publicacaoParaAbrir');
+                if (idParaAbrir) {
+                    sessionStorage.removeItem('publicacaoParaAbrir');
+                    
+                    const checkInterval = setInterval(() => {
+                        if (publicacoes.length > 0) {
+                            clearInterval(checkInterval);
+                            window.abrirPublicacao(idParaAbrir);
+                        }
+                    }, 100);
                 }
             }
 
@@ -1525,7 +1541,6 @@
                     publicacoes = pubs;
                     filteredPublicacoes = [...publicacoes];
                     
-                    // Extrair categorias
                     const catsMap = new Map();
                     publicacoes.forEach(p => {
                         if (p.categorias && !catsMap.has(p.categorias.id)) {
@@ -1534,7 +1549,6 @@
                     });
                     categorias = Array.from(catsMap.values());
                     
-                    // Extrair tags
                     const tagsSet = new Set();
                     publicacoes.forEach(p => {
                         if (p.palavras_chave && Array.isArray(p.palavras_chave)) {
@@ -1548,6 +1562,8 @@
                     renderizarPublicacoes();
                     await carregarMaisVistos();
                     renderizarTags();
+                    
+                    verificarPublicacaoParaAbrir();
                     
                 } catch (error) {
                     console.error('❌ Erro:', error);
@@ -2022,7 +2038,6 @@
                     
                     if (error) throw error;
                     
-                    // Incrementar visualização
                     supabase
                         .from('publicacoes')
                         .update({ views: (pub.views || 0) + 1 })
@@ -2034,10 +2049,8 @@
                             }
                         });
                     
-                    // Verificar se usuário já curtiu
                     const usuarioCurtiu = curtidasUsuario.has(id);
                     
-                    // Buscar total de curtidas
                     const { count } = await supabase
                         .from('curtidas')
                         .select('*', { count: 'exact', head: true })
@@ -2092,7 +2105,6 @@
                     document.body.appendChild(modal);
                     document.body.style.overflow = 'hidden';
                     
-                    // Configurar botão de curtir
                     const btnCurtir = document.getElementById('btnCurtir');
                     if (btnCurtir) {
                         btnCurtir.addEventListener('click', (e) => {
@@ -2101,7 +2113,6 @@
                         });
                     }
                     
-                    // Configurar botão de compartilhar
                     const btnWA = document.getElementById('btnCompartilharWA');
                     if (btnWA) {
                         btnWA.addEventListener('click', (e) => {
@@ -2110,7 +2121,6 @@
                         });
                     }
                     
-                    // Fechar modal
                     const closeBtn = modal.querySelector('.modal-close');
                     closeBtn.addEventListener('click', () => {
                         modal.remove();
