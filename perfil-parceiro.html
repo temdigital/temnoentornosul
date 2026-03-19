@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Perfil do Parceiro - Tem no Entorno Sul</title>
+    
+    <!-- SEO / Open Graph -->
+    <meta property="og:site_name" content="Tem no Entorno Sul">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.temnoentornosul.com.br/perfil-parceiro.html">
+    <meta property="og:title" content="Perfil do Parceiro - Tem no Entorno Sul">
+    <meta property="og:image" content="https://i.imgur.com/9eZarki.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://i.imgur.com/9eZarki.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <style>
+        /* ==================== VARIÁVEIS E RESET ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --verde-escuro: #256d3c;
+            --amarelo: #f8d236;
+            --laranja: #faa115;
+            --verde-claro: #91b69d;
+            --branco: #ffffff;
+            --cinza-claro: #f5f5f5;
+            --cinza-medio: #e0e0e0;
+            --cinza-escuro: #333333;
+            --cinza-texto: #666666;
+            --sombra: 0 5px 15px rgba(0,0,0,0.1);
+            --sombra-forte: 0 15px 30px rgba(0,0,0,0.15);
+            --transicao: all 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background: var(--cinza-claro);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* ==================== HEADER ==================== */
+        .header {
+            background: var(--branco);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+        
+        .logo img {
+            height: 45px;
+            width: auto;
+            display: block;
+        }
+        
+        .menu-desktop {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .menu-desktop a {
+            color: var(--verde-escuro);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transicao);
+            position: relative;
+        }
+        
+        .menu-desktop a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--laranja);
+            transition: var(--transicao);
+        }
+        
+        .menu-desktop a:hover::after,
+        .menu-desktop a.active::after {
+            width: 100%;
+        }
+        
+        .menu-desktop a:hover,
+        .menu-desktop a.active {
+            color: var(--laranja);
+        }
+        
+        .btn-login {
+            background: var(--verde-escuro);
+            color: var(--branco) !important;
+            padding: 8px 20px;
+            border-radius: 5px;
+        }
+        
+        .btn-login:hover {
+            background: #1a4f2b;
+            transform: translateY(-2px);
+            box-shadow: var(--sombra);
+        }
+        
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        .menu-toggle span {
+            width: 30px;
+            height: 3px;
+            background: var(--verde-escuro);
+            transition: var(--transicao);
+        }
+        
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+        
+        .menu-mobile {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 70px);
+            background: var(--branco);
+            padding: 20px;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        
+        .menu-mobile.active {
+            transform: translateX(0);
+            display: block;
+        }
+        
+        .menu-mobile a {
+            display: block;
+            padding: 15px 0;
+            color: var(--verde-escuro);
+            text-decoration: none;
+            border-bottom: 1px solid var(--cinza-claro);
+        }
+        
+        .menu-mobile .btn-login {
+            display: inline-block;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        /* ==================== LOADING ==================== */
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+            width: 100%;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid var(--verde-claro);
+            border-top-color: var(--verde-escuro);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* ==================== BANNER DO PARCEIRO ==================== */
+        .parceiro-banner {
+            position: relative;
+            height: 400px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin-top: 0;
+        }
+        
+        .banner-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+            display: flex;
+            align-items: flex-end;
+            padding: 40px;
+        }
+        
+        .banner-content {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            color: var(--branco);
+            flex-wrap: wrap;
+        }
+        
+        .banner-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid var(--branco);
+            background: var(--branco);
+            box-shadow: var(--sombra-forte);
+        }
+        
+        .banner-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .banner-text h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .banner-text p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            max-width: 600px;
+        }
+        
+        .premium-badge {
+            display: inline-block;
+            background: var(--laranja);
+            color: var(--branco);
+            padding: 5px 15px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        /* ==================== INFORMAÇÕES DO PARCEIRO ==================== */
+        .parceiro-info-section {
+            padding: 60px 0;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .info-main {
+            background: var(--branco);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--sombra);
+        }
+        
+        .info-main h2 {
+            color: var(--verde-escuro);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--laranja);
+        }
+        
+        .descricao-completa {
+            color: var(--cinza-texto);
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-size: 1.05rem;
+        }
+        
+        .horario-card {
+            background: var(--cinza-claro);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .horario-card h3 {
+            color: var(--verde-escuro);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .horario-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .horario-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--cinza-medio);
+        }
+        
+        .horario-dia {
+            font-weight: 500;
+            color: var(--cinza-escuro);
+        }
+        
+        .horario-hora {
+            color: var(--verde-escuro);
+        }
+        
+        .contato-rapido {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+        
+        .btn-contato-grande {
+            flex: 1;
+            min-width: 180px;
+            padding: 15px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: var(--transicao);
+        }
+        
+        .btn-contato-grande.whatsapp {
+            background: #25D366;
+            color: var(--branco);
+        }
+        
+        .btn-contato-grande.whatsapp:hover {
+            background: #128C7E;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+        }
+        
+        .btn-contato-grande.telefone {
+            background: var(--verde-escuro);
+            color: var(--branco);
+        }
+        
+        .btn-contato-grande.telefone:hover {
+            background: #1a4f2b;
+            transform: translateY(-3px);
+            box-shadow: var(--sombra);
+        }
+        
+        .btn-contato-grande.site {
+            background: var(--laranja);
+            color: var(--branco);
+        }
+        
+        .btn-contato-grande.site:hover {
+            background: #e59400;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(250, 161, 21, 0.3);
+        }
+        
+        .btn-contato-grande.email {
+            background: #ea4335;
+            color: var(--branco);
+        }
+        
+        .btn-contato-grande.email:hover {
+            background: #d33426;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(234, 67, 53, 0.3);
+        }
+        
+        .btn-contato-grande.instagram {
+            background: linear-gradient(45deg, #f09433, #d62976, #962fbf);
+            color: var(--branco);
+        }
+        
+        .btn-contato-grande.instagram:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(225, 48, 108, 0.3);
+        }
+        
+        .redes-sociais {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .rede-social-link {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--branco);
+            text-decoration: none;
+            transition: var(--transicao);
+            font-size: 1.2rem;
+        }
+        
+        .rede-social-link:hover {
+            transform: translateY(-5px) scale(1.1);
+        }
+        
+        .info-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .sidebar-card {
+            background: var(--branco);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: var(--sombra);
+        }
+        
+        .sidebar-card h3 {
+            color: var(--verde-escuro);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--laranja);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .endereco-info {
+            margin-bottom: 20px;
+        }
+        
+        .endereco-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+            color: var(--cinza-texto);
+        }
+        
+        .endereco-item i {
+            width: 20px;
+            color: var(--laranja);
+        }
+        
+        .mapa-container {
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 20px;
+            height: 200px;
+        }
+        
+        .mapa-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        
+        .servico-item {
+            padding: 15px 0;
+            border-bottom: 1px solid var(--cinza-medio);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .servico-item:last-child {
+            border-bottom: none;
+        }
+        
+        .servico-info h4 {
+            color: var(--verde-escuro);
+            margin-bottom: 5px;
+        }
+        
+        .servico-info p {
+            color: var(--cinza-texto);
+            font-size: 0.9rem;
+        }
+        
+        .servico-preco {
+            font-weight: 700;
+            color: var(--laranja);
+            font-size: 1.2rem;
+        }
+        
+        .btn-agendar {
+            width: 100%;
+            background: var(--verde-escuro);
+            color: var(--branco);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transicao);
+            font-size: 1rem;
+            font-weight: 500;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-agendar:hover {
+            background: #1a4f2b;
+            transform: translateY(-2px);
+            box-shadow: var(--sombra);
+        }
+        
+        /* ==================== SLIDER DE FOTOS ==================== */
+        .fotos-section {
+            padding: 40px 0;
+            background: var(--branco);
+        }
+        
+        .fotos-section h2 {
+            color: var(--verde-escuro);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--laranja);
+        }
+        
+        .swiper {
+            width: 100%;
+            padding: 20px 0 40px;
+        }
+        
+        .swiper-slide {
+            height: 250px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--sombra);
+        }
+        
+        .swiper-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transicao);
+        }
+        
+        .swiper-slide:hover img {
+            transform: scale(1.05);
+        }
+        
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: var(--verde-escuro);
+            background: rgba(255,255,255,0.8);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            box-shadow: var(--sombra);
+        }
+        
+        .swiper-button-next:after,
+        .swiper-button-prev:after {
+            font-size: 1.2rem;
+        }
+        
+        .swiper-pagination-bullet-active {
+            background: var(--verde-escuro);
+        }
+        
+        /* ==================== VÍDEOS ==================== */
+        .videos-section {
+            padding: 40px 0;
+            background: var(--cinza-claro);
+        }
+        
+        .videos-section h2 {
+            color: var(--verde-escuro);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--laranja);
+        }
+        
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: var(--sombra);
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        
+        /* ==================== MODAL DE AGENDAMENTO ==================== */
+        .modal-agendamento {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal-agendamento-content {
+            background: var(--branco);
+            border-radius: 25px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.4s ease;
+            padding: 40px;
+        }
+        
+        .modal-agendamento-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--cinza-claro);
+            border: none;
+            color: var(--cinza-escuro);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transicao);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-agendamento-close:hover {
+            background: var(--cinza-medio);
+            transform: rotate(90deg);
+        }
+        
+        .modal-agendamento h2 {
+            color: var(--verde-escuro);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--laranja);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--cinza-escuro);
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--cinza-medio);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: var(--transicao);
+            font-family: inherit;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--verde-escuro);
+            box-shadow: 0 0 0 3px rgba(37, 109, 60, 0.1);
+        }
+        
+        .btn-agendar-modal {
+            width: 100%;
+            padding: 15px;
+            background: var(--verde-escuro);
+            color: var(--branco);
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transicao);
+            margin-top: 10px;
+        }
+        
+        .btn-agendar-modal:hover {
+            background: #1a4f2b;
+            transform: translateY(-2px);
+            box-shadow: var(--sombra);
+        }
+        
+        /* ==================== TOAST ==================== */
+        .toast-notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--verde-escuro);
+            color: var(--branco);
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: var(--sombra-forte);
+            z-index: 3000;
+            animation: slideInRight 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .toast-notification.error {
+            background: #dc3545;
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* ==================== FOOTER ==================== */
+        .footer {
+            background: #1a4f2b;
+            color: var(--branco);
+            padding: 60px 0 20px;
+            margin-top: 60px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            height: 45px;
+            margin-bottom: 20px;
+            filter: brightness(0) invert(1);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--branco);
+            text-decoration: none;
+            transition: var(--transicao);
+        }
+        
+        .social-link:hover {
+            transform: translateY(-5px);
+        }
+        
+        .social-link.facebook { background: #3b5998; }
+        .social-link.instagram { background: linear-gradient(45deg, #f09433, #d62976, #962fbf); }
+        .social-link.youtube { background: #ff0000; }
+        
+        .footer h3 {
+            color: var(--branco);
+            border-bottom: 2px solid var(--amarelo);
+            display: inline-block;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links ul,
+        .footer-contato ul {
+            list-style: none;
+        }
+        
+        .footer-links li,
+        .footer-contato li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            color: var(--amarelo);
+        }
+        
+        .footer-contato li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-contato i {
+            color: var(--amarelo);
+        }
+        
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .footer-extra {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-extra a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+        }
+        
+        /* ==================== RESPONSIVIDADE ==================== */
+        @media (max-width: 1024px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .videos-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-desktop {
+                display: none;
+            }
+            
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .parceiro-banner {
+                height: 350px;
+            }
+            
+            .banner-content {
+                flex-direction: column;
+                text-align: center;
+                width: 100%;
+            }
+            
+            .banner-text h1 {
+                font-size: 2rem;
+            }
+            
+            .horario-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contato-rapido {
+                flex-direction: column;
+            }
+            
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .modal-agendamento-content {
+                padding: 30px 20px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .parceiro-banner {
+                height: 300px;
+            }
+            
+            .banner-text h1 {
+                font-size: 1.8rem;
+            }
+            
+            .banner-logo {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .info-main {
+                padding: 20px;
+            }
+            
+            .info-main h2 {
+                font-size: 1.5rem;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-extra {
+                justify-content: center;
+            }
+            
+            .redes-sociais {
+                justify-content: center;
+            }
+            
+            .toast-notification {
+                left: 20px;
+                right: 20px;
+                bottom: 20px;
+                text-align: center;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="./index.html">
+                    <img src="https://i.imgur.com/9eZarki.png" alt="Tem no Entorno Sul">
+                </a>
+            </div>
+            
+            <nav class="menu-desktop">
+                <a href="./index.html">Início</a>
+                <a href="./publicacoes.html">Publicações</a>
+                <a href="./eventos.html">Eventos</a>
+                <a href="./colunistas.html">Colunistas</a>
+                <a href="./parceiros.html">Parceiros</a>
+                <a href="./contato.html">Contato</a>
+                <a href="./admin/login.html" class="btn-login"><i class="fas fa-user"></i> Login</a>
+            </nav>
+            
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <div class="menu-mobile" id="menuMobile">
+                <a href="./index.html">Início</a>
+                <a href="./publicacoes.html">Publicações</a>
+                <a href="./eventos.html">Eventos</a>
+                <a href="./colunistas.html">Colunistas</a>
+                <a href="./parceiros.html">Parceiros</a>
+                <a href="./contato.html">Contato</a>
+                <a href="./admin/login.html" class="btn-login"><i class="fas fa-user"></i> Login</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div id="perfilContainer">
+            <!-- Loading -->
+            <div class="loading-container" id="loading">
+                <div class="loading-spinner"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-info">
+                    <img src="https://i.imgur.com/9eZarki.png" alt="Tem no Entorno Sul" class="footer-logo">
+                    <p>Conectando moradores aos melhores comércios, serviços e eventos da região do Entorno Sul.</p>
+                    <div class="social-links">
+                        <a href="https://facebook.com/temnoentornosul" target="_blank" class="social-link facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://instagram.com/temnoentornosul" target="_blank" class="social-link instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://youtube.com/@temnoentornosul" target="_blank" class="social-link youtube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="./index.html">Início</a></li>
+                        <li><a href="./publicacoes.html">Publicações</a></li>
+                        <li><a href="./eventos.html">Eventos</a></li>
+                        <li><a href="./colunistas.html">Colunistas</a></li>
+                        <li><a href="./parceiros.html">Parceiros</a></li>
+                        <li><a href="./contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Para Comércios</h3>
+                    <ul>
+                        <li><a href="./cadastro.html">Cadastrar grátis</a></li>
+                        <li><a href="./planos.html">Planos premium</a></li>
+                        <li><a href="./admin/login.html">Área do parceiro</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contato">
+                    <h3>Contato</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> (45) 99999-9999</li>
+                        <li><i class="fas fa-envelope"></i> contato@temnoentornosul.com.br</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Toledo - PR</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Tem no Entorno Sul. Todos os direitos reservados.</p>
+                <div class="footer-extra">
+                    <a href="./termos.html">Termos de uso</a>
+                    <a href="./privacidade.html">Política de privacidade</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script>
+        (function() {
+            // =====================================================
+            // CONFIGURAÇÃO SUPABASE
+            // =====================================================
+            const SUPABASE_URL = 'https://flidbkfrfosuahgphiza.supabase.co';
+            const SUPABASE_ANON_KEY = 'sb_publishable_mCBYSpZc45Pw345wZ1coEA_rYL61Ea8';
+            
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            
+            // =====================================================
+            // VARIÁVEIS GLOBAIS
+            // =====================================================
+            let parceiroAtual = null;
+            let servicos = [];
+
+            // =====================================================
+            // MENU HAMBURGUER
+            // =====================================================
+            function initMenu() {
+                const toggle = document.getElementById('menuToggle');
+                const mobile = document.getElementById('menuMobile');
+                
+                if (toggle && mobile) {
+                    toggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        this.classList.toggle('active');
+                        mobile.classList.toggle('active');
+                        document.body.style.overflow = mobile.classList.contains('active') ? 'hidden' : '';
+                    });
+                    
+                    mobile.querySelectorAll('a').forEach(link => {
+                        link.addEventListener('click', () => {
+                            toggle.classList.remove('active');
+                            mobile.classList.remove('active');
+                            document.body.style.overflow = '';
+                        });
+                    });
+                }
+            }
+
+            // =====================================================
+            // UTILITÁRIOS
+            // =====================================================
+            function mostrarToast(mensagem, tipo = 'sucesso') {
+                const toast = document.createElement('div');
+                toast.className = `toast-notification ${tipo}`;
+                toast.innerHTML = `
+                    <i class="fas ${tipo === 'sucesso' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                    <span>${mensagem}</span>
+                `;
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.animation = 'slideInRight 0.3s reverse';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+
+            function getDiaSemana(dia) {
+                const dias = {
+                    'segunda': 'Segunda',
+                    'terca': 'Terça',
+                    'quarta': 'Quarta',
+                    'quinta': 'Quinta',
+                    'sexta': 'Sexta',
+                    'sabado': 'Sábado',
+                    'domingo': 'Domingo'
+                };
+                return dias[dia] || dia;
+            }
+
+            function getIconeRede(rede) {
+                const map = {
+                    'instagram': 'fab fa-instagram',
+                    'facebook': 'fab fa-facebook-f',
+                    'youtube': 'fab fa-youtube',
+                    'site': 'fas fa-globe',
+                    'email': 'fas fa-envelope'
+                };
+                return map[rede.toLowerCase()] || 'fas fa-link';
+            }
+
+            function getClasseRede(rede) {
+                const map = {
+                    'instagram': 'instagram',
+                    'facebook': 'facebook',
+                    'youtube': 'youtube',
+                    'site': 'site',
+                    'email': 'email'
+                };
+                return map[rede.toLowerCase()] || 'site';
+            }
+
+            // =====================================================
+            // CARREGAR DADOS DO PARCEIRO
+            // =====================================================
+            async function carregarParceiro() {
+                try {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const id = urlParams.get('id');
+                    
+                    if (!id) {
+                        window.location.href = './parceiros.html';
+                        return;
+                    }
+                    
+                    console.log('🔍 Carregando parceiro:', id);
+                    
+                    // Carregar dados do parceiro
+                    const { data: parceiro, error } = await supabase
+                        .from('parceiros')
+                        .select('*')
+                        .eq('id', id)
+                        .eq('status', 'ativo')
+                        .single();
+                    
+                    if (error) throw error;
+                    
+                    if (!parceiro) {
+                        window.location.href = './parceiros.html';
+                        return;
+                    }
+                    
+                    // Verificar se é premium
+                    if (parceiro.plano !== 'premium') {
+                        mostrarToast('Este parceiro não possui página personalizada', 'error');
+                        setTimeout(() => {
+                            window.location.href = './parceiros.html';
+                        }, 2000);
+                        return;
+                    }
+                    
+                    parceiroAtual = parceiro;
+                    
+                    // Carregar serviços do parceiro
+                    const { data: servicosData } = await supabase
+                        .from('servicos')
+                        .select('*')
+                        .eq('parceiro_id', id)
+                        .eq('ativo', true);
+                    
+                    servicos = servicosData || [];
+                    
+                    // Incrementar visualizações
+                    await supabase
+                        .from('parceiros')
+                        .update({ visualizacoes: (parceiro.visualizacoes || 0) + 1 })
+                        .eq('id', id);
+                    
+                    renderizarPerfil();
+                    
+                } catch (error) {
+                    console.error('❌ Erro:', error);
+                    document.getElementById('perfilContainer').innerHTML = `
+                        <div class="container" style="padding: 60px 20px;">
+                            <div style="text-align: center; padding: 60px 20px; background: var(--branco); border-radius: 15px; box-shadow: var(--sombra);">
+                                <i class="fas fa-exclamation-triangle" style="font-size: 4rem; color: #dc3545; margin-bottom: 20px;"></i>
+                                <h3 style="color: var(--cinza-escuro); margin-bottom: 10px;">Ops! Algo deu errado</h3>
+                                <p style="color: var(--cinza-texto); margin-bottom: 20px;">${error.message || 'Erro ao carregar perfil do parceiro.'}</p>
+                                <button onclick="window.location.href='./parceiros.html'" style="padding: 12px 30px; background: var(--verde-escuro); color: white; border: none; border-radius: 5px; cursor: pointer;">
+                                    Voltar para parceiros
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    document.getElementById('loading').style.display = 'none';
+                }
+            }
+
+            // =====================================================
+            // RENDERIZAR PERFIL
+            // =====================================================
+            function renderizarPerfil() {
+                const p = parceiroAtual;
+                const container = document.getElementById('perfilContainer');
+                
+                // Processar horário
+                let horarioHtml = '';
+                if (p.horario_funcionamento) {
+                    horarioHtml = Object.entries(p.horario_funcionamento).map(([dia, hora]) => `
+                        <div class="horario-item">
+                            <span class="horario-dia">${getDiaSemana(dia)}</span>
+                            <span class="horario-hora">${hora}</span>
+                        </div>
+                    `).join('');
+                }
+                
+                // Processar redes sociais
+                let redesHtml = '';
+                const redes = {
+                    instagram: p.instagram,
+                    facebook: p.facebook,
+                    youtube: p.youtube,
+                    site: p.site
+                };
+                
+                redesHtml = Object.entries(redes)
+                    .filter(([_, link]) => link)
+                    .map(([rede, link]) => {
+                        let url = link;
+                        if (!link.startsWith('http')) {
+                            if (rede === 'instagram') url = `https://instagram.com/${link.replace('@', '')}`;
+                            else if (rede === 'facebook') url = `https://facebook.com/${link}`;
+                            else if (rede === 'youtube') url = `https://youtube.com/${link}`;
+                            else url = `https://${link}`;
+                        }
+                        return `
+                            <a href="${url}" 
+                               target="_blank" 
+                               class="rede-social-link ${getClasseRede(rede)}"
+                               title="${rede}">
+                                <i class="${getIconeRede(rede)}"></i>
+                            </a>
+                        `;
+                    }).join('');
+                
+                // Processar serviços
+                const servicosHtml = servicos.map(s => `
+                    <div class="servico-item">
+                        <div class="servico-info">
+                            <h4>${s.nome}</h4>
+                            <p>${s.descricao || ''}</p>
+                        </div>
+                        <div class="servico-preco">R$ ${s.preco?.toFixed(2).replace('.', ',') || '0,00'}</div>
+                    </div>
+                `).join('');
+                
+                // Processar fotos para o slider
+                const fotos = p.fotos && p.fotos.length > 0 ? p.fotos : (p.logo_url ? [p.logo_url] : []);
+                
+                const fotosSlides = fotos.map(foto => `
+                    <div class="swiper-slide">
+                        <img src="${foto}" alt="${p.nome_fantasia}" loading="lazy">
+                    </div>
+                `).join('');
+                
+                // Processar vídeos
+                const videosHtml = p.videos && p.videos.length > 0 
+                    ? p.videos.map(video => {
+                        let videoId = '';
+                        if (video.includes('youtube.com/watch')) {
+                            videoId = video.split('v=')[1]?.split('&')[0];
+                        } else if (video.includes('youtu.be/')) {
+                            videoId = video.split('youtu.be/')[1]?.split('?')[0];
+                        }
+                        return videoId ? `
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/${videoId}" 
+                                        title="YouTube video player" 
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowfullscreen>
+                                </iframe>
+                            </div>
+                        ` : '';
+                    }).join('')
+                    : '';
+                
+                container.innerHTML = `
+                    <!-- BANNER -->
+                    <div class="parceiro-banner" style="background-image: url('${p.banner_url || 'https://images.unsplash.com/photo-1556742044-3c52d6e88c62?w=1200'}')">
+                        <div class="banner-overlay">
+                            <div class="container">
+                                <div class="banner-content">
+                                    <div class="banner-logo">
+                                        <img src="${p.logo_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400'}" 
+                                             alt="${p.nome_fantasia}"
+                                             onerror="this.src='https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400'">
+                                    </div>
+                                    <div class="banner-text">
+                                        <h1>${p.nome_fantasia}</h1>
+                                        <p>${p.descricao_curta || ''}</p>
+                                        <span class="premium-badge">Parceiro Premium</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- INFORMAÇÕES -->
+                    <section class="parceiro-info-section">
+                        <div class="container">
+                            <div class="info-grid">
+                                <!-- Coluna Principal -->
+                                <div class="info-main">
+                                    <h2>Sobre o estabelecimento</h2>
+                                    <div class="descricao-completa">
+                                        ${p.descricao_completa || p.descricao_curta || 'Informações em breve...'}
+                                    </div>
+                                    
+                                    ${horarioHtml ? `
+                                        <div class="horario-card">
+                                            <h3><i class="far fa-clock"></i> Horário de Funcionamento</h3>
+                                            <div class="horario-grid">
+                                                ${horarioHtml}
+                                            </div>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    <div class="contato-rapido">
+                                        ${p.whatsapp ? `
+                                            <a href="https://wa.me/${p.whatsapp.replace(/\D/g, '')}" 
+                                               class="btn-contato-grande whatsapp"
+                                               target="_blank">
+                                                <i class="fab fa-whatsapp"></i> WhatsApp
+                                            </a>
+                                        ` : ''}
+                                        ${p.telefone ? `
+                                            <a href="tel:${p.telefone}" 
+                                               class="btn-contato-grande telefone">
+                                                <i class="fas fa-phone"></i> Ligar
+                                            </a>
+                                        ` : ''}
+                                        ${p.email_contato ? `
+                                            <a href="mailto:${p.email_contato}" 
+                                               class="btn-contato-grande email">
+                                                <i class="fas fa-envelope"></i> E-mail
+                                            </a>
+                                        ` : ''}
+                                        ${p.site ? `
+                                            <a href="${p.site.startsWith('http') ? p.site : 'https://' + p.site}" 
+                                               class="btn-contato-grande site"
+                                               target="_blank">
+                                                <i class="fas fa-globe"></i> Site
+                                            </a>
+                                        ` : ''}
+                                    </div>
+                                    
+                                    ${redesHtml ? `
+                                        <div class="redes-sociais">
+                                            ${redesHtml}
+                                        </div>
+                                    ` : ''}
+                                </div>
+                                
+                                <!-- Coluna Lateral -->
+                                <div class="info-sidebar">
+                                    <div class="sidebar-card">
+                                        <h3><i class="fas fa-map-marker-alt"></i> Localização</h3>
+                                        <div class="endereco-info">
+                                            <div class="endereco-item">
+                                                <i class="fas fa-map-pin"></i>
+                                                <span>
+                                                    ${p.endereco || ''} ${p.numero ? ', ' + p.numero : ''}
+                                                    ${p.complemento ? ' - ' + p.complemento : ''}
+                                                </span>
+                                            </div>
+                                            <div class="endereco-item">
+                                                <i class="fas fa-city"></i>
+                                                <span>${p.bairro || ''}, ${p.cidade || 'Toledo'} - ${p.estado || 'PR'}</span>
+                                            </div>
+                                            ${p.cep ? `
+                                                <div class="endereco-item">
+                                                    <i class="fas fa-mail-bulk"></i>
+                                                    <span>CEP: ${p.cep}</span>
+                                                </div>
+                                            ` : ''}
+                                        </div>
+                                        
+                                        ${p.latitude && p.longitude ? `
+                                            <div class="mapa-container">
+                                                <iframe 
+                                                    src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d${p.longitude}!3d${p.latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1spt-BR!2sbr!4v1"
+                                                    allowfullscreen=""
+                                                    loading="lazy">
+                                                </iframe>
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                    
+                                    ${servicos.length > 0 ? `
+                                        <div class="sidebar-card">
+                                            <h3><i class="fas fa-tags"></i> Serviços</h3>
+                                            ${servicosHtml}
+                                            <button class="btn-agendar" onclick="abrirModalAgendamento()">
+                                                <i class="fas fa-calendar-check"></i> Agendar horário
+                                            </button>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- FOTOS -->
+                    ${fotos.length > 1 ? `
+                        <section class="fotos-section">
+                            <div class="container">
+                                <h2><i class="fas fa-images"></i> Fotos</h2>
+                                <div class="swiper fotos-swiper">
+                                    <div class="swiper-wrapper">
+                                        ${fotosSlides}
+                                    </div>
+                                    <div class="swiper-pagination"></div>
+                                    <div class="swiper-button-next"></div>
+                                    <div class="swiper-button-prev"></div>
+                                </div>
+                            </div>
+                        </section>
+                    ` : fotos.length === 1 ? `
+                        <section class="fotos-section">
+                            <div class="container">
+                                <h2><i class="fas fa-images"></i> Foto</h2>
+                                <img src="${fotos[0]}" alt="${p.nome_fantasia}" style="width:100%; max-height:400px; object-fit:cover; border-radius:15px; box-shadow:var(--sombra);">
+                            </div>
+                        </section>
+                    ` : ''}
+
+                    <!-- VÍDEOS -->
+                    ${videosHtml ? `
+                        <section class="videos-section">
+                            <div class="container">
+                                <h2><i class="fas fa-video"></i> Vídeos</h2>
+                                <div class="videos-grid">
+                                    ${videosHtml}
+                                </div>
+                            </div>
+                        </section>
+                    ` : ''}
+                `;
+                
+                // Esconder loading
+                const loading = document.getElementById('loading');
+                if (loading) {
+                    loading.style.display = 'none';
+                }
+                
+                // Inicializar Swiper após renderizar (apenas se houver mais de 1 foto)
+                if (fotos.length > 1) {
+                    try {
+                        new Swiper('.fotos-swiper', {
+                            slidesPerView: 1,
+                            spaceBetween: 20,
+                            loop: fotos.length >= 3,
+                            pagination: {
+                                el: '.swiper-pagination',
+                                clickable: true
+                            },
+                            navigation: {
+                                nextEl: '.swiper-button-next',
+                                prevEl: '.swiper-button-prev'
+                            },
+                            breakpoints: {
+                                640: { slidesPerView: Math.min(2, fotos.length) },
+                                1024: { slidesPerView: Math.min(3, fotos.length) }
+                            }
+                        });
+                    } catch (e) {
+                        console.warn('Erro ao inicializar Swiper:', e);
+                    }
+                }
+            }
+
+            // =====================================================
+            // MODAL DE AGENDAMENTO
+            // =====================================================
+            window.abrirModalAgendamento = function() {
+                if (!parceiroAtual) return;
+                
+                const modal = document.createElement('div');
+                modal.className = 'modal-agendamento';
+                modal.innerHTML = `
+                    <div class="modal-agendamento-content">
+                        <button class="modal-agendamento-close"><i class="fas fa-times"></i></button>
+                        <h2>Agendar horário - ${parceiroAtual.nome_fantasia}</h2>
+                        
+                        <form id="formAgendamento">
+                            <div class="form-group">
+                                <label>Serviço desejado *</label>
+                                <select id="servicoSelect" required>
+                                    <option value="">Selecione um serviço</option>
+                                    ${servicos.map(s => `
+                                        <option value="${s.id}">${s.nome} - R$ ${s.preco?.toFixed(2).replace('.', ',') || '0,00'}</option>
+                                    `).join('')}
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Seu nome completo *</label>
+                                <input type="text" id="clienteNome" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Telefone para contato *</label>
+                                <input type="tel" id="clienteTelefone" placeholder="(45) 99999-9999" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>E-mail</label>
+                                <input type="email" id="clienteEmail">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Data do agendamento *</label>
+                                <input type="date" id="dataAgendamento" required min="${new Date().toISOString().split('T')[0]}">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Horário *</label>
+                                <input type="time" id="horaAgendamento" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Observações</label>
+                                <textarea id="observacoes" rows="3"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn-agendar-modal">
+                                <i class="fas fa-calendar-check"></i> Confirmar agendamento
+                            </button>
+                        </form>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+                document.body.style.overflow = 'hidden';
+                
+                // Fechar modal
+                const closeBtn = modal.querySelector('.modal-agendamento-close');
+                closeBtn.addEventListener('click', () => {
+                    modal.remove();
+                    document.body.style.overflow = '';
+                });
+                
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.remove();
+                        document.body.style.overflow = '';
+                    }
+                });
+                
+                // Fechar com ESC
+                const handleEsc = (e) => {
+                    if (e.key === 'Escape') {
+                        modal.remove();
+                        document.body.style.overflow = '';
+                        document.removeEventListener('keydown', handleEsc);
+                    }
+                };
+                document.addEventListener('keydown', handleEsc);
+                
+                // Submit do formulário
+                const form = document.getElementById('formAgendamento');
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const servicoId = document.getElementById('servicoSelect').value;
+                    const nome = document.getElementById('clienteNome').value;
+                    const telefone = document.getElementById('clienteTelefone').value;
+                    const email = document.getElementById('clienteEmail').value;
+                    const data = document.getElementById('dataAgendamento').value;
+                    const hora = document.getElementById('horaAgendamento').value;
+                    const obs = document.getElementById('observacoes').value;
+                    
+                    if (!servicoId || !nome || !telefone || !data || !hora) {
+                        mostrarToast('Preencha todos os campos obrigatórios', 'error');
+                        return;
+                    }
+                    
+                    try {
+                        const { error } = await supabase
+                            .from('agendamentos')
+                            .insert([{
+                                parceiro_id: parceiroAtual.id,
+                                servico_id: servicoId,
+                                cliente_nome: nome,
+                                cliente_telefone: telefone,
+                                cliente_email: email || null,
+                                data_agendamento: data,
+                                hora_agendamento: hora,
+                                observacoes: obs || null,
+                                status: 'confirmado'
+                            }]);
+                        
+                        if (error) throw error;
+                        
+                        mostrarToast('Agendamento realizado com sucesso!');
+                        modal.remove();
+                        document.body.style.overflow = '';
+                        
+                    } catch (error) {
+                        console.error('Erro ao agendar:', error);
+                        mostrarToast('Erro ao realizar agendamento', 'error');
+                    }
+                });
+            };
+
+            // =====================================================
+            // INICIALIZAÇÃO
+            // =====================================================
+            document.addEventListener('DOMContentLoaded', () => {
+                initMenu();
+                carregarParceiro();
+            });
+
+        })();
+    </script>
+</body>
+</html>

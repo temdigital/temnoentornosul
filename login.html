@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Contato - Tem no Entorno Sul</title>
+    
+    <!-- SEO / Open Graph -->
+    <meta property="og:site_name" content="Tem no Entorno Sul">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.temnoentornosul.com.br/contato.html">
+    <meta property="og:title" content="Contato - Tem no Entorno Sul">
+    <meta property="og:description" content="Entre em contato conosco. Tire suas dúvidas, envie sugestões ou fale com nossa equipe.">
+    <meta property="og:image" content="https://i.imgur.com/9eZarki.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://i.imgur.com/9eZarki.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <style>
+        /* ==================== VARIÁVEIS E RESET ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --verde-escuro: #256d3c;
+            --amarelo: #f8d236;
+            --laranja: #faa115;
+            --verde-claro: #91b69d;
+            --branco: #ffffff;
+            --cinza-claro: #f5f5f5;
+            --cinza-medio: #e0e0e0;
+            --cinza-escuro: #333333;
+            --cinza-texto: #666666;
+            --sombra: 0 5px 15px rgba(0,0,0,0.1);
+            --sombra-forte: 0 15px 30px rgba(0,0,0,0.15);
+            --transicao: all 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background: var(--cinza-claro);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* ==================== HEADER ==================== */
+        .header {
+            background: var(--branco);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+        
+        .logo img {
+            height: 45px;
+            width: auto;
+            display: block;
+        }
+        
+        .menu-desktop {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .menu-desktop a {
+            color: var(--verde-escuro);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transicao);
+            position: relative;
+        }
+        
+        .menu-desktop a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--laranja);
+            transition: var(--transicao);
+        }
+        
+        .menu-desktop a:hover::after,
+        .menu-desktop a.active::after {
+            width: 100%;
+        }
+        
+        .menu-desktop a:hover,
+        .menu-desktop a.active {
+            color: var(--laranja);
+        }
+        
+        .btn-login {
+            background: var(--verde-escuro);
+            color: var(--branco) !important;
+            padding: 8px 20px;
+            border-radius: 5px;
+        }
+        
+        .btn-login:hover {
+            background: #1a4f2b;
+            transform: translateY(-2px);
+            box-shadow: var(--sombra);
+        }
+        
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        .menu-toggle span {
+            width: 30px;
+            height: 3px;
+            background: var(--verde-escuro);
+            transition: var(--transicao);
+        }
+        
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+        
+        .menu-mobile {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 70px);
+            background: var(--branco);
+            padding: 20px;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        
+        .menu-mobile.active {
+            transform: translateX(0);
+            display: block;
+        }
+        
+        .menu-mobile a {
+            display: block;
+            padding: 15px 0;
+            color: var(--verde-escuro);
+            text-decoration: none;
+            border-bottom: 1px solid var(--cinza-claro);
+        }
+        
+        .menu-mobile .btn-login {
+            display: inline-block;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        /* ==================== HERO ==================== */
+        .page-hero {
+            background: linear-gradient(135deg, var(--verde-escuro) 0%, var(--verde-claro) 100%);
+            color: var(--branco);
+            padding: 60px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        
+        .page-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            left: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        
+        .page-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--branco);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .page-hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.95;
+        }
+        
+        /* ==================== INFORMAÇÕES DE CONTATO ==================== */
+        .contact-info-section {
+            padding: 60px 0 30px;
+        }
+        
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .info-card {
+            background: var(--branco);
+            border-radius: 15px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: var(--sombra);
+            transition: var(--transicao);
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--sombra-forte);
+        }
+        
+        .info-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--verde-escuro), var(--verde-claro));
+            color: var(--branco);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin: 0 auto 20px;
+            transition: var(--transicao);
+        }
+        
+        .info-card:hover .info-icon {
+            transform: scale(1.1);
+        }
+        
+        .info-card h3 {
+            color: var(--verde-escuro);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .info-card p {
+            color: var(--cinza-texto);
+            margin-bottom: 5px;
+        }
+        
+        .info-card a {
+            color: var(--laranja);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transicao);
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .info-card a:hover {
+            color: var(--verde-escuro);
+            transform: translateX(5px);
+        }
+        
+        /* ==================== FORMULÁRIO DE CONTATO ==================== */
+        .contact-form-section {
+            padding: 30px 0 60px;
+        }
+        
+        .form-container {
+            background: var(--branco);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--sombra-forte);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .form-container h2 {
+            color: var(--verde-escuro);
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--cinza-escuro);
+        }
+        
+        .form-group label i {
+            color: var(--laranja);
+            margin-right: 8px;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--cinza-medio);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: var(--transicao);
+            font-family: inherit;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--verde-escuro);
+            box-shadow: 0 0 0 3px rgba(37, 109, 60, 0.1);
+        }
+        
+        .form-group input.error,
+        .form-group select.error,
+        .form-group textarea.error {
+            border-color: #dc3545;
+        }
+        
+        .error-message {
+            color: #dc3545;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        .btn-submit {
+            background: var(--verde-escuro);
+            color: var(--branco);
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transicao);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .btn-submit:hover {
+            background: #1a4f2b;
+            transform: translateY(-2px);
+            box-shadow: var(--sombra);
+        }
+        
+        .btn-submit i {
+            transition: var(--transicao);
+        }
+        
+        .btn-submit:hover i {
+            transform: translateX(5px);
+        }
+        
+        .btn-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        /* ==================== MAPA ==================== */
+        .map-section {
+            padding: 0 0 60px;
+        }
+        
+        .map-container {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--sombra-forte);
+            height: 400px;
+        }
+        
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        
+        /* ==================== FAQ ==================== */
+        .faq-section {
+            padding: 60px 0;
+            background: var(--branco);
+        }
+        
+        .faq-section h2 {
+            color: var(--verde-escuro);
+            font-size: 2rem;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            background: var(--cinza-claro);
+            border-radius: 15px;
+            padding: 25px;
+            transition: var(--transicao);
+        }
+        
+        .faq-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--sombra);
+        }
+        
+        .faq-item h3 {
+            color: var(--verde-escuro);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .faq-item h3 i {
+            color: var(--laranja);
+        }
+        
+        .faq-item p {
+            color: var(--cinza-texto);
+            line-height: 1.6;
+        }
+        
+        /* ==================== TOAST ==================== */
+        .toast-notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--verde-escuro);
+            color: var(--branco);
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: var(--sombra-forte);
+            z-index: 3000;
+            animation: slideInRight 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .toast-notification.error {
+            background: #dc3545;
+        }
+        
+        .toast-notification.warning {
+            background: var(--laranja);
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        /* ==================== FOOTER ==================== */
+        .footer {
+            background: #1a4f2b;
+            color: var(--branco);
+            padding: 60px 0 20px;
+            margin-top: 0;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            height: 45px;
+            margin-bottom: 20px;
+            filter: brightness(0) invert(1);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--branco);
+            text-decoration: none;
+            transition: var(--transicao);
+        }
+        
+        .social-link:hover {
+            transform: translateY(-5px);
+        }
+        
+        .social-link.facebook { background: #3b5998; }
+        .social-link.instagram { background: linear-gradient(45deg, #f09433, #d62976, #962fbf); }
+        .social-link.youtube { background: #ff0000; }
+        
+        .footer h3 {
+            color: var(--branco);
+            border-bottom: 2px solid var(--amarelo);
+            display: inline-block;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links ul,
+        .footer-contato ul {
+            list-style: none;
+        }
+        
+        .footer-links li,
+        .footer-contato li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: var(--transicao);
+        }
+        
+        .footer-links a:hover {
+            color: var(--amarelo);
+            padding-left: 5px;
+        }
+        
+        .footer-contato li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .footer-contato i {
+            width: 20px;
+            color: var(--amarelo);
+        }
+        
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .footer-extra {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-extra a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+        }
+        
+        .footer-extra a:hover {
+            color: var(--amarelo);
+        }
+        
+        /* ==================== LOADING ==================== */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: var(--branco);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* ==================== RESPONSIVIDADE ==================== */
+        @media (max-width: 1024px) {
+            .info-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-desktop {
+                display: none;
+            }
+            
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .page-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            
+            .form-container {
+                padding: 30px 20px;
+            }
+            
+            .info-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .page-hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-extra {
+                justify-content: center;
+            }
+            
+            .toast-notification {
+                left: 20px;
+                right: 20px;
+                bottom: 20px;
+                text-align: center;
+                justify-content: center;
+            }
+            
+            .map-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="./index.html">
+                    <img src="https://i.imgur.com/9eZarki.png" alt="Tem no Entorno Sul">
+                </a>
+            </div>
+            
+            <nav class="menu-desktop">
+                <a href="./index.html">Início</a>
+                <a href="./publicacoes.html">Publicações</a>
+                <a href="./eventos.html">Eventos</a>
+                <a href="./colunistas.html">Colunistas</a>
+                <a href="./parceiros.html">Parceiros</a>
+                <a href="./contato.html" class="active">Contato</a>
+                <a href="./admin/login.html" class="btn-login"><i class="fas fa-user"></i> Login</a>
+            </nav>
+            
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <div class="menu-mobile" id="menuMobile">
+                <a href="./index.html">Início</a>
+                <a href="./publicacoes.html">Publicações</a>
+                <a href="./eventos.html">Eventos</a>
+                <a href="./colunistas.html">Colunistas</a>
+                <a href="./parceiros.html">Parceiros</a>
+                <a href="./contato.html">Contato</a>
+                <a href="./admin/login.html" class="btn-login"><i class="fas fa-user"></i> Login</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section class="page-hero">
+            <div class="container">
+                <h1>Fale Conosco</h1>
+                <p>Estamos aqui para ouvir você. Tire suas dúvidas, envie sugestões ou faça parte da nossa comunidade</p>
+            </div>
+        </section>
+
+        <!-- INFORMAÇÕES DE CONTATO -->
+        <section class="contact-info-section">
+            <div class="container">
+                <div class="info-cards">
+                    <!-- Email -->
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3>E-mail</h3>
+                        <p>temnoentornosul@gmail.com</p>
+                        <a href="mailto:temnoentornosul@gmail.com">
+                            Enviar mensagem <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                    
+                    <!-- WhatsApp -->
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <h3>WhatsApp</h3>
+                        <p>(45) 99999-9999</p>
+                        <a href="https://wa.me/554599999999" target="_blank">
+                            Iniciar conversa <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                    
+                    <!-- Horário -->
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="far fa-clock"></i>
+                        </div>
+                        <h3>Horário</h3>
+                        <p>Segunda a Sexta</p>
+                        <p>08:00 - 18:00</p>
+                    </div>
+                    
+                    <!-- Localização -->
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3>Localização</h3>
+                        <p>Toledo - PR</p>
+                        <a href="#mapa">
+                            Ver mapa <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FORMULÁRIO DE CONTATO -->
+        <section class="contact-form-section">
+            <div class="container">
+                <div class="form-container">
+                    <h2>Envie sua mensagem</h2>
+                    
+                    <form id="contactForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label><i class="fas fa-user"></i> Nome completo *</label>
+                                <input type="text" id="nome" placeholder="Seu nome" required>
+                                <div class="error-message" id="nomeError">Nome é obrigatório</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-envelope"></i> E-mail *</label>
+                                <input type="email" id="email" placeholder="seu@email.com" required>
+                                <div class="error-message" id="emailError">E-mail inválido</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-phone"></i> Telefone</label>
+                                <input type="tel" id="telefone" placeholder="(45) 99999-9999">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-tag"></i> Assunto *</label>
+                                <select id="assunto" required>
+                                    <option value="">Selecione um assunto</option>
+                                    <option value="duvida">Dúvida</option>
+                                    <option value="sugestao">Sugestão</option>
+                                    <option value="parceria">Parceria</option>
+                                    <option value="suporte">Suporte</option>
+                                    <option value="outro">Outro</option>
+                                </select>
+                                <div class="error-message" id="assuntoError">Selecione um assunto</div>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label><i class="fas fa-comment"></i> Mensagem *</label>
+                                <textarea id="mensagem" rows="5" placeholder="Digite sua mensagem..." required></textarea>
+                                <div class="error-message" id="mensagemError">Mensagem é obrigatória</div>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn-submit" id="btnSubmit">
+                            <span>Enviar mensagem</span>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- MAPA -->
+        <section class="map-section" id="mapa">
+            <div class="container">
+                <div class="map-container">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115493.29767739022!2d-53.781231!3d-24.72453!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94f3b4b8b5b5b5b5%3A0x5b5b5b5b5b5b5b5b!2sToledo%2C%20PR!5e0!3m2!1spt-BR!2sbr!4v1"
+                        allowfullscreen=""
+                        loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="faq-section">
+            <div class="container">
+                <h2>Perguntas Frequentes</h2>
+                
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <h3><i class="fas fa-question-circle"></i> Como posso me cadastrar como parceiro?</h3>
+                        <p>Basta acessar a página de cadastro e preencher o formulário com os dados do seu negócio. Após análise, você receberá um e-mail com a confirmação.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3><i class="fas fa-question-circle"></i> Quanto custa anunciar no site?</h3>
+                        <p>Oferecemos planos gratuitos e premium. O plano gratuito já dá visibilidade ao seu negócio, e o premium oferece benefícios exclusivos por apenas R$ 29,90/mês.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3><i class="fas fa-question-circle"></i> Como posso divulgar um evento?</h3>
+                        <p>Entre em contato pelo e-mail temnoentornosul@gmail.com com as informações do evento. Analisaremos e incluiremos na agenda gratuitamente.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3><i class="fas fa-question-circle"></i> Posso sugerir melhorias para o site?</h3>
+                        <p>Claro! Adoramos sugestões. Utilize o formulário de contato ou nos envie um e-mail com suas ideias para melhorarmos cada vez mais.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-info">
+                    <img src="https://i.imgur.com/9eZarki.png" alt="Tem no Entorno Sul" class="footer-logo">
+                    <p>Conectando moradores aos melhores comércios, serviços e eventos da região do Entorno Sul.</p>
+                    <div class="social-links">
+                        <a href="https://facebook.com/temnoentornosul" target="_blank" class="social-link facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://instagram.com/temnoentornosul" target="_blank" class="social-link instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://youtube.com/@temnoentornosul" target="_blank" class="social-link youtube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="./index.html">Início</a></li>
+                        <li><a href="./publicacoes.html">Publicações</a></li>
+                        <li><a href="./eventos.html">Eventos</a></li>
+                        <li><a href="./colunistas.html">Colunistas</a></li>
+                        <li><a href="./parceiros.html">Parceiros</a></li>
+                        <li><a href="./contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Para Comércios</h3>
+                    <ul>
+                        <li><a href="./cadastro.html">Cadastrar grátis</a></li>
+                        <li><a href="./planos.html">Planos premium</a></li>
+                        <li><a href="./admin/login.html">Área do parceiro</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contato">
+                    <h3>Contato</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> (45) 99999-9999</li>
+                        <li><i class="fas fa-envelope"></i> temnoentornosul@gmail.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Toledo - PR</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Tem no Entorno Sul. Todos os direitos reservados.</p>
+                <div class="footer-extra">
+                    <a href="./termos.html">Termos de uso</a>
+                    <a href="./privacidade.html">Política de privacidade</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            // =====================================================
+            // CONFIGURAÇÃO SUPABASE
+            // =====================================================
+            const SUPABASE_URL = 'https://flidbkfrfosuahgphiza.supabase.co';
+            const SUPABASE_ANON_KEY = 'sb_publishable_mCBYSpZc45Pw345wZ1coEA_rYL61Ea8';
+            
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            
+            // =====================================================
+            // MENU HAMBURGUER
+            // =====================================================
+            function initMenu() {
+                const toggle = document.getElementById('menuToggle');
+                const mobile = document.getElementById('menuMobile');
+                
+                if (toggle && mobile) {
+                    toggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        this.classList.toggle('active');
+                        mobile.classList.toggle('active');
+                        document.body.style.overflow = mobile.classList.contains('active') ? 'hidden' : '';
+                    });
+                    
+                    mobile.querySelectorAll('a').forEach(link => {
+                        link.addEventListener('click', () => {
+                            toggle.classList.remove('active');
+                            mobile.classList.remove('active');
+                            document.body.style.overflow = '';
+                        });
+                    });
+                }
+            }
+
+            // =====================================================
+            // UTILITÁRIOS
+            // =====================================================
+            function mostrarToast(mensagem, tipo = 'sucesso') {
+                const toast = document.createElement('div');
+                toast.className = `toast-notification ${tipo}`;
+                toast.innerHTML = `
+                    <i class="fas ${tipo === 'sucesso' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                    <span>${mensagem}</span>
+                `;
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.animation = 'slideInRight 0.3s reverse';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+
+            function formatarTelefone(telefone) {
+                const numeros = telefone.replace(/\D/g, '');
+                if (numeros.length === 11) {
+                    return numeros.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+                } else if (numeros.length === 10) {
+                    return numeros.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+                }
+                return telefone;
+            }
+
+            // =====================================================
+            // VALIDAÇÕES
+            // =====================================================
+            function validarEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+
+            function validarTelefone(telefone) {
+                const numeros = telefone.replace(/\D/g, '');
+                return numeros.length >= 10 && numeros.length <= 11;
+            }
+
+            function mostrarErro(campoId, mensagem) {
+                const campo = document.getElementById(campoId);
+                const errorDiv = document.getElementById(campoId + 'Error');
+                campo.classList.add('error');
+                errorDiv.textContent = mensagem;
+                errorDiv.classList.add('show');
+            }
+
+            function limparErro(campoId) {
+                const campo = document.getElementById(campoId);
+                const errorDiv = document.getElementById(campoId + 'Error');
+                campo.classList.remove('error');
+                errorDiv.classList.remove('show');
+            }
+
+            // =====================================================
+            // ENVIAR MENSAGEM
+            // =====================================================
+            async function enviarMensagem(event) {
+                event.preventDefault();
+                
+                // Limpar erros anteriores
+                ['nome', 'email', 'assunto', 'mensagem'].forEach(limparErro);
+                
+                // Obter valores
+                const nome = document.getElementById('nome').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const telefone = document.getElementById('telefone').value.trim();
+                const assunto = document.getElementById('assunto').value;
+                const mensagem = document.getElementById('mensagem').value.trim();
+                
+                // Validações
+                let isValid = true;
+                
+                if (!nome) {
+                    mostrarErro('nome', 'Nome é obrigatório');
+                    isValid = false;
+                }
+                
+                if (!email) {
+                    mostrarErro('email', 'E-mail é obrigatório');
+                    isValid = false;
+                } else if (!validarEmail(email)) {
+                    mostrarErro('email', 'E-mail inválido');
+                    isValid = false;
+                }
+                
+                if (telefone && !validarTelefone(telefone)) {
+                    mostrarErro('telefone', 'Telefone inválido');
+                    isValid = false;
+                }
+                
+                if (!assunto) {
+                    mostrarErro('assunto', 'Selecione um assunto');
+                    isValid = false;
+                }
+                
+                if (!mensagem) {
+                    mostrarErro('mensagem', 'Mensagem é obrigatória');
+                    isValid = false;
+                }
+                
+                if (!isValid) return;
+                
+                // Desabilitar botão
+                const btn = document.getElementById('btnSubmit');
+                btn.disabled = true;
+                btn.innerHTML = '<span class="loading"></span> Enviando...';
+                
+                try {
+                    // Inserir no Supabase
+                    const { error } = await supabase
+                        .from('contatos')
+                        .insert([{
+                            nome: nome,
+                            email: email,
+                            telefone: telefone || null,
+                            assunto: assunto,
+                            mensagem: mensagem,
+                            lida: false,
+                            created_at: new Date()
+                        }]);
+                    
+                    if (error) throw error;
+                    
+                    // Sucesso
+                    mostrarToast('Mensagem enviada com sucesso! Em breve responderemos.', 'sucesso');
+                    
+                    // Limpar formulário
+                    document.getElementById('contactForm').reset();
+                    
+                } catch (error) {
+                    console.error('Erro ao enviar mensagem:', error);
+                    mostrarToast('Erro ao enviar mensagem. Tente novamente.', 'error');
+                } finally {
+                    // Reabilitar botão
+                    btn.disabled = false;
+                    btn.innerHTML = '<span>Enviar mensagem</span> <i class="fas fa-paper-plane"></i>';
+                }
+            }
+
+            // =====================================================
+            // MÁSCARA DE TELEFONE
+            // =====================================================
+            function aplicarMascaraTelefone() {
+                const input = document.getElementById('telefone');
+                
+                input.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    
+                    if (value.length > 11) value = value.slice(0, 11);
+                    
+                    if (value.length > 10) {
+                        value = value.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+                    } else if (value.length > 5) {
+                        value = value.replace(/^(\d{2})(\d{4})(\d{0,4})$/, '($1) $2-$3');
+                    } else if (value.length > 2) {
+                        value = value.replace(/^(\d{2})(\d{0,5})$/, '($1) $2');
+                    } else if (value.length > 0) {
+                        value = value.replace(/^(\d*)/, '($1');
+                    }
+                    
+                    e.target.value = value;
+                });
+            }
+
+            // =====================================================
+            // INICIALIZAÇÃO
+            // =====================================================
+            document.addEventListener('DOMContentLoaded', () => {
+                initMenu();
+                aplicarMascaraTelefone();
+                
+                const form = document.getElementById('contactForm');
+                form.addEventListener('submit', enviarMensagem);
+                
+                // Remover erro ao digitar
+                ['nome', 'email', 'telefone', 'assunto', 'mensagem'].forEach(campo => {
+                    document.getElementById(campo).addEventListener('input', () => {
+                        limparErro(campo);
+                    });
+                });
+            });
+
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Parceiros - Tem no Entorno Sul</title>
+    
+    <!-- SEO / Open Graph -->
+    <meta property="og:site_name" content="Tem no Entorno Sul">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.temnoentornosul.com.br/parceiros.html">
+    <meta property="og:title" content="Parceiros - Tem no Entorno Sul">
+    <meta property="og:description" content="Encontre os melhores comércios e serviços da região do Entorno Sul.">
+    <meta property="og:image" content="https://i.imgur.com/9eZarki.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://i.imgur.com/9eZarki.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <style>
+        /* ==================== VARIÁVEIS E RESET ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --verde-escuro: #256d3c;
+            --amarelo: #f8d236;
+            --laranja: #faa115;
+            --verde-claro: #91b69d;
+            --branco: #ffffff;
+            --cinza-claro: #f5f5f5;
+            --cinza-medio: #e0e0e0;
+            --cinza-escuro: #333333;
+            --cinza-texto: #666666;
+            --sombra: 0 5px 15px rgba(0,0,0,0.1);
+            --sombra-forte: 0 15px 30px rgba(0,0,0,0.15);
+            --transicao: all 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background: var(--cinza-claro);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* ==================== HEADER ==================== */
+        .header {
+            background: var(--branco);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+        
+        .logo img {
+            height: 45px;
+            width: auto;
+            display: block;
+        }
+        
+        .menu-desktop {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .menu-desktop a {
+            color: var(--verde-escuro);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transicao);
+            position: relative;
+        }
+        
+        .menu-desktop a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--laranja);
+            transition: var(--transicao);
+        }
+        
+        .menu-desktop a:hover::after,
+        .menu-desktop a.active::after {
+            width: 100%;
+        }
+        
+        .menu-desktop a:hover,
+        .menu-desktop a.active {
+            color: var(--laranja);
+        }
+        
+        .btn-login {
+            background: var(--verde-escuro);
+            color: var(--branco) !important;
+            padding: 8px 20px;
+            border-radius: 5px;
+        }
+        
+        .btn-login:hover {
+            background: #1a4f2b;
+            transform: translateY(-2px);
+            box-shadow: var(--sombra);
+        }
+        
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        .menu-toggle span {
+            width: 30px;
+            height: 3px;
+            background: var(--verde-escuro);
+            transition: var(--transicao);
+        }
+        
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+        
+        .menu-mobile {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 70px);
+            background: var(--branco);
+            padding: 20px;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        
+        .menu-mobile.active {
+            transform: translateX(0);
+            display: block;
+        }
+        
+        .menu-mobile a {
+            display: block;
+            padding: 15px 0;
+            color: var(--verde-escuro);
+            text-decoration: none;
+            border-bottom: 1px solid var(--cinza-claro);
+        }
+        
+        .menu-mobile .btn-login {
+            display: inline-block;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        /* ==================== HERO ==================== */
+        .page-hero {
+            background: linear-gradient(135deg, var(--verde-escuro) 0%, var(--verde-claro) 100%);
+            color: var(--branco);
+            padding: 60px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--branco);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .page-hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.95;
+        }
+        
+        /* ==================== FILTROS ==================== */
+        .filters-section {
+            background: var(--branco);
+            padding: 30px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+            border: 2px solid var(--cinza-medio);
+            border-radius: 50px;
+            padding: 5px;
+            transition: var(--transicao);
+        }
+        
+        .search-box:focus-within {
+            border-color: var(--verde-escuro);
+            box-shadow: 0 0 0 3px rgba(37, 109, 60, 0.1);
+        }
+        
+        .search-box input {
+            flex: 1;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 50px;
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        .search-box button {
+            background: var(--verde-escuro);
+            color: var(--branco);
+            border: none;
+            padding: 0 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transicao);
+            white-space: nowrap;
+        }
+        
+        .search-box button:hover {
+            background: #1a4f2b;
+            transform: scale(1.05);
+        }
+        
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-tab {
+            padding: 8px 25px;
+            border: 2px solid var(--verde-escuro);
+            border-radius: 30px;
+            background: transparent;
+            color: var(--verde-escuro);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transicao);
+        }
+        
+        .filter-tab:hover {
+            background: var(--verde-escuro);
+            color: var(--branco);
+        }
+        
+        .filter-tab.active {
+            background: var(--verde-escuro);
+            color: var(--branco);
+        }
+        
+        .active-filters {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+            min-height: 40px;
+        }
+        
+        .filter-tag {
+            background: var(--verde-claro);
+            color: var(--cinza-escuro);
+            padding: 6px 15px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .filter-tag i {
+            cursor: pointer;
+            font-size: 0.8rem;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transicao);
+        }
+        
+        .filter-tag i:hover {
+            background: rgba(0,0,0,0.1);
+            transform: scale(1.1);
+        }
+        
+        /* ==================== SEÇÕES DE PARCEIROS ==================== */
+        .parceiros-section {
+            margin-bottom: 50px;
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .section-title h2 {
+            color: var(--verde-escuro);
+            font-size: 1.8rem;
+            margin: 0;
+        }
+        
+        .section-title .badge {
+            background: var(--laranja);
+            color: var(--branco);
+            padding: 5px 15px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .section-title .badge.premium {
+            background: var(--laranja);
+        }
+        
+        .section-title .badge.gratis {
+            background: var(--verde-claro);
+        }
+        
+        /* Grid de parceiros */
+        .parceiros-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+        
+        /* Card Base */
+        .parceiro-card {
+            background: var(--branco);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--sombra);
+            transition: var(--transicao);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .parceiro-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--sombra-forte);
+        }
+        
+        .parceiro-card.premium {
+            border: 2px solid var(--laranja);
+            cursor: pointer;
+        }
+        
+        .parceiro-card.premium:hover {
+            transform: translateY(-8px);
+        }
+        
+        .parceiro-card.gratis {
+            border: 1px solid var(--cinza-medio);
+        }
+        
+        .premium-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--laranja);
+            color: var(--branco);
+            padding: 5px 15px;
+            border-radius: 25px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .parceiro-logo {
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--verde-claro) 0%, var(--branco) 100%);
+        }
+        
+        .parceiro-logo img {
+            max-width: 100%;
+            max-height: 120px;
+            object-fit: contain;
+            transition: var(--transicao);
+        }
+        
+        .parceiro-card:hover .parceiro-logo img {
+            transform: scale(1.05);
+        }
+        
+        .parceiro-content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .parceiro-nome {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--verde-escuro);
+        }
+        
+        .parceiro-descricao {
+            color: var(--cinza-texto);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            flex: 1;
+        }
+        
+        .parceiro-info {
+            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--cinza-texto);
+            font-size: 0.9rem;
+        }
+        
+        .info-item i {
+            width: 18px;
+            color: var(--laranja);
+        }
+        
+        .horario-preview {
+            font-size: 0.85rem;
+            background: var(--cinza-claro);
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        
+        .horario-preview i {
+            margin-right: 5px;
+            color: var(--laranja);
+        }
+        
+        .parceiro-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--cinza-medio);
+        }
+        
+        .contato-rapido {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-contato {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--branco);
+            text-decoration: none;
+            transition: var(--transicao);
+            font-size: 1.1rem;
+        }
+        
+        .btn-contato.whatsapp {
+            background: #25D366;
+        }
+        
+        .btn-contato.whatsapp:hover {
+            background: #128C7E;
+            transform: scale(1.1);
+        }
+        
+        .btn-contato.telefone {
+            background: var(--verde-escuro);
+        }
+        
+        .btn-contato.telefone:hover {
+            background: #1a4f2b;
+            transform: scale(1.1);
+        }
+        
+        .btn-contato.email {
+            background: var(--laranja);
+        }
+        
+        .btn-contato.email:hover {
+            background: #e59400;
+            transform: scale(1.1);
+        }
+        
+        .btn-saiba-mais {
+            background: var(--verde-escuro);
+            color: var(--branco);
+            padding: 8px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transicao);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn-saiba-mais:hover {
+            background: #1a4f2b;
+            gap: 8px;
+        }
+        
+        .btn-saiba-mais i {
+            transition: var(--transicao);
+        }
+        
+        .btn-saiba-mais:hover i {
+            transform: translateX(3px);
+        }
+        
+        .gratis-info {
+            background: var(--cinza-claro);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--cinza-texto);
+            text-align: center;
+        }
+        
+        /* ==================== LOADING E ERROS ==================== */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+            grid-column: 1 / -1;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--verde-claro);
+            border-top-color: var(--verde-escuro);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .no-results,
+        .error-message {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--branco);
+            border-radius: 15px;
+            box-shadow: var(--sombra);
+        }
+        
+        .no-results i,
+        .error-message i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        .no-results i {
+            color: var(--cinza-medio);
+        }
+        
+        .error-message i {
+            color: #dc3545;
+        }
+        
+        /* ==================== FOOTER ==================== */
+        .footer {
+            background: #1a4f2b;
+            color: var(--branco);
+            padding: 60px 0 20px;
+            margin-top: 60px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            height: 45px;
+            margin-bottom: 20px;
+            filter: brightness(0) invert(1);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--branco);
+            text-decoration: none;
+            transition: var(--transicao);
+        }
+        
+        .social-link:hover {
+            transform: translateY(-5px);
+        }
+        
+        .social-link.facebook { background: #3b5998; }
+        .social-link.instagram { background: linear-gradient(45deg, #f09433, #d62976, #962fbf); }
+        .social-link.youtube { background: #ff0000; }
+        
+        .footer h3 {
+            color: var(--branco);
+            border-bottom: 2px solid var(--amarelo);
+            display: inline-block;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links ul,
+        .footer-contato ul {
+            list-style: none;
+        }
+        
+        .footer-links li,
+        .footer-contato li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            color: var(--amarelo);
+        }
+        
+        .footer-contato li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-contato i {
+            color: var(--amarelo);
+        }
+        
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .footer-extra {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-extra a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+        }
+        
+        /* ==================== RESPONSIVIDADE ==================== */
+        @media (max-width: 1024px) {
+            .parceiros-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-desktop {
+                display: none;
+            }
+            
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .page-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .search-box {
+                flex-direction: column;
+                background: transparent;
+                border: none;
+                gap: 10px;
+            }
+            
+            .search-box input {
+                border: 2px solid var(--cinza-medio);
+            }
+            
+            .search-box button {
+                width: 100%;
+                padding: 15px;
+            }
+            
+            .parceiros-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .page-hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-extra {
+                justify-content: center;
+            }
+            
+            .section-title {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            
+            .parceiro-footer {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+            
+            .contato-rapido {
+                justify-content: center;
+            }
+            
+            .btn-saiba-mais {
+                text-align: center;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="./index.html">
+                    <img src="https://i.imgur.com/9eZarki.png" alt="Tem no Entorno Sul">
+                </a>
+            </div>
+            
+            <nav class="menu-desktop">
+                <a href="./index.html">Início</a>
+                <a href="./publicacoes.html">Publicações</a>
+                <a href="./eventos.html">Eventos</a>
+                <a href="./colunistas.html">Colunistas</a>
+                <a href="./parceiros.html" class="active">Parceiros</a>
+                <a href="./contato.html">Contato</a>
+                <a href="./admin/login.html" class="btn-login"><i class="fas fa-user"></i> Login</a>
+            </nav>
+            
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <div class="menu-mobile" id="menuMobile">
+                <a href="./index.html">Início</a>
+                <a href="./publicacoes.html">Publicações</a>
+                <a href="./eventos.html">Eventos</a>
+                <a href="./colunistas.html">Colunistas</a>
+                <a href="./parceiros.html">Parceiros</a>
+                <a href="./contato.html">Contato</a>
+                <a href="./admin/login.html" class="btn-login"><i class="fas fa-user"></i> Login</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-hero">
+            <div class="container">
+                <h1>Parceiros</h1>
+                <p>Conheça os melhores comércios e serviços da nossa região</p>
+            </div>
+        </section>
+
+        <section class="filters-section">
+            <div class="container">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Buscar parceiros por nome ou descrição...">
+                    <button type="button" id="searchButton"><i class="fas fa-search"></i> Buscar</button>
+                </div>
+                
+                <div class="filter-tabs" id="filterTabs">
+                    <button class="filter-tab active" data-filtro="todos">Todos</button>
+                    <button class="filter-tab" data-filtro="premium">Premium</button>
+                    <button class="filter-tab" data-filtro="gratis">Grátis</button>
+                </div>
+                
+                <div class="active-filters" id="activeFilters"></div>
+            </div>
+        </section>
+
+        <div class="container">
+            <!-- Parceiros Premium -->
+            <div class="parceiros-section" id="premiumSection">
+                <div class="section-title">
+                    <h2>Parceiros Premium</h2>
+                    <span class="badge premium">Destaque</span>
+                </div>
+                <div class="parceiros-grid" id="premiumGrid">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parceiros Grátis -->
+            <div class="parceiros-section" id="gratisSection">
+                <div class="section-title">
+                    <h2>Parceiros Grátis</h2>
+                    <span class="badge gratis">Comércio Local</span>
+                </div>
+                <div class="parceiros-grid" id="gratisGrid">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-info">
+                    <img src="https://i.imgur.com/9eZarki.png" alt="Tem no Entorno Sul" class="footer-logo">
+                    <p>Conectando moradores aos melhores comércios, serviços e eventos da região do Entorno Sul.</p>
+                    <div class="social-links">
+                        <a href="https://facebook.com/temnoentornosul" target="_blank" class="social-link facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://instagram.com/temnoentornosul" target="_blank" class="social-link instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://youtube.com/@temnoentornosul" target="_blank" class="social-link youtube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="./index.html">Início</a></li>
+                        <li><a href="./publicacoes.html">Publicações</a></li>
+                        <li><a href="./eventos.html">Eventos</a></li>
+                        <li><a href="./colunistas.html">Colunistas</a></li>
+                        <li><a href="./parceiros.html">Parceiros</a></li>
+                        <li><a href="./contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Para Comércios</h3>
+                    <ul>
+                        <li><a href="./cadastro.html">Cadastrar grátis</a></li>
+                        <li><a href="./planos.html">Planos premium</a></li>
+                        <li><a href="./admin/login.html">Área do parceiro</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contato">
+                    <h3>Contato</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> (45) 99999-9999</li>
+                        <li><i class="fas fa-envelope"></i> contato@temnoentornosul.com.br</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Toledo - PR</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Tem no Entorno Sul. Todos os direitos reservados.</p>
+                <div class="footer-extra">
+                    <a href="./termos.html">Termos de uso</a>
+                    <a href="./privacidade.html">Política de privacidade</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            // =====================================================
+            // CONFIGURAÇÃO SUPABASE
+            // =====================================================
+            const SUPABASE_URL = 'https://flidbkfrfosuahgphiza.supabase.co';
+            const SUPABASE_ANON_KEY = 'sb_publishable_mCBYSpZc45Pw345wZ1coEA_rYL61Ea8';
+            
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            
+            // =====================================================
+            // ESTADO GLOBAL
+            // =====================================================
+            let parceiros = [];
+            let filteredParceiros = [];
+            let currentFilter = 'todos';
+            let searchTerm = '';
+
+            // =====================================================
+            // MENU HAMBURGUER
+            // =====================================================
+            function initMenu() {
+                const toggle = document.getElementById('menuToggle');
+                const mobile = document.getElementById('menuMobile');
+                
+                if (toggle && mobile) {
+                    toggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        this.classList.toggle('active');
+                        mobile.classList.toggle('active');
+                        document.body.style.overflow = mobile.classList.contains('active') ? 'hidden' : '';
+                    });
+                    
+                    mobile.querySelectorAll('a').forEach(link => {
+                        link.addEventListener('click', () => {
+                            toggle.classList.remove('active');
+                            mobile.classList.remove('active');
+                            document.body.style.overflow = '';
+                        });
+                    });
+                }
+            }
+
+            // =====================================================
+            // CARREGAR PARCEIROS DO SUPABASE
+            // =====================================================
+            async function carregarParceiros() {
+                try {
+                    console.log('🔍 Carregando parceiros...');
+                    
+                    const { data, error } = await supabase
+                        .from('parceiros')
+                        .select('*')
+                        .eq('status', 'ativo')
+                        .order('plano', { ascending: false }) // premium primeiro
+                        .order('nome_fantasia', { ascending: true });
+                    
+                    if (error) throw error;
+                    
+                    console.log('✅ Parceiros carregados:', data?.length || 0);
+                    
+                    if (!data || data.length === 0) {
+                        document.getElementById('premiumGrid').innerHTML = '';
+                        document.getElementById('gratisGrid').innerHTML = `
+                            <div class="no-results">
+                                <i class="fas fa-store-slash"></i>
+                                <h3>Nenhum parceiro encontrado</h3>
+                                <p>Em breve teremos novidades!</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    parceiros = data;
+                    aplicarFiltros();
+                    
+                } catch (error) {
+                    console.error('❌ Erro:', error);
+                    document.getElementById('premiumGrid').innerHTML = '';
+                    document.getElementById('gratisGrid').innerHTML = `
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>Ops! Algo deu errado</h3>
+                            <p>${error.message || 'Erro ao carregar parceiros.'}</p>
+                            <button onclick="location.reload()" style="margin-top:20px; padding:10px 30px; background:var(--verde-escuro); color:white; border:none; border-radius:5px; cursor:pointer;">
+                                <i class="fas fa-redo"></i> Tentar novamente
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+
+            // =====================================================
+            // APLICAR FILTROS
+            // =====================================================
+            function aplicarFiltros() {
+                filteredParceiros = parceiros.filter(p => {
+                    // Filtro por tipo
+                    if (currentFilter !== 'todos' && p.plano !== currentFilter) {
+                        return false;
+                    }
+                    
+                    // Filtro por busca
+                    if (searchTerm) {
+                        const termo = searchTerm.toLowerCase();
+                        const nome = p.nome_fantasia?.toLowerCase() || '';
+                        const descricao = p.descricao_curta?.toLowerCase() || '';
+                        const bairro = p.bairro?.toLowerCase() || '';
+                        
+                        return nome.includes(termo) || descricao.includes(termo) || bairro.includes(termo);
+                    }
+                    
+                    return true;
+                });
+                
+                renderizarParceiros();
+                atualizarActiveFilters();
+            }
+
+            // =====================================================
+            // ATUALIZAR FILTROS ATIVOS
+            // =====================================================
+            function atualizarActiveFilters() {
+                const container = document.getElementById('activeFilters');
+                let html = '';
+                
+                if (currentFilter !== 'todos') {
+                    html += `
+                        <span class="filter-tag">
+                            <i class="fas fa-filter"></i> ${currentFilter === 'premium' ? 'Premium' : 'Grátis'}
+                            <i class="fas fa-times" onclick="window.removerFiltroTipo()"></i>
+                        </span>
+                    `;
+                }
+                
+                if (searchTerm) {
+                    html += `
+                        <span class="filter-tag">
+                            <i class="fas fa-search"></i> "${searchTerm}"
+                            <i class="fas fa-times" onclick="window.limparBusca()"></i>
+                        </span>
+                    `;
+                }
+                
+                container.innerHTML = html;
+            }
+
+            // =====================================================
+            // REMOVER FILTRO DE TIPO
+            // =====================================================
+            window.removerFiltroTipo = function() {
+                currentFilter = 'todos';
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                document.querySelector('[data-filtro="todos"]').classList.add('active');
+                aplicarFiltros();
+            };
+
+            // =====================================================
+            // LIMPAR BUSCA
+            // =====================================================
+            window.limparBusca = function() {
+                searchTerm = '';
+                document.getElementById('searchInput').value = '';
+                aplicarFiltros();
+            };
+
+            // =====================================================
+            // RENDERIZAR PARCEIROS
+            // =====================================================
+            function renderizarParceiros() {
+                const premiumGrid = document.getElementById('premiumGrid');
+                const gratisGrid = document.getElementById('gratisGrid');
+                
+                const premiumParceiros = filteredParceiros.filter(p => p.plano === 'premium');
+                const gratisParceiros = filteredParceiros.filter(p => p.plano === 'gratis');
+                
+                // Renderizar premium
+                if (premiumParceiros.length === 0) {
+                    premiumGrid.innerHTML = `
+                        <div class="no-results" style="grid-column:1/-1;">
+                            <i class="fas fa-crown"></i>
+                            <h3>Nenhum parceiro premium encontrado</h3>
+                            <p>${searchTerm ? 'Tente outros termos de busca.' : 'Em breve teremos novidades!'}</p>
+                        </div>
+                    `;
+                } else {
+                    premiumGrid.innerHTML = premiumParceiros.map(p => `
+                        <div class="parceiro-card premium" onclick="window.abrirParceiro('${p.id}')">
+                            <div class="premium-badge">Premium</div>
+                            <div class="parceiro-logo">
+                                <img src="${p.logo_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400'}" 
+                                     alt="${p.nome_fantasia}"
+                                     onerror="this.src='https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400'">
+                            </div>
+                            <div class="parceiro-content">
+                                <h3 class="parceiro-nome">${p.nome_fantasia}</h3>
+                                <p class="parceiro-descricao">${p.descricao_curta || 'Conheça nossos serviços e promoções.'}</p>
+                                
+                                <div class="parceiro-info">
+                                    <div class="info-item">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>${p.bairro || 'Centro'}, ${p.cidade || 'Toledo'}</span>
+                                    </div>
+                                    ${p.horario_funcionamento ? `
+                                        <div class="horario-preview">
+                                            <i class="far fa-clock"></i>
+                                            ${Object.entries(p.horario_funcionamento)[0]?.[1] || 'Horário a definir'}
+                                        </div>
+                                    ` : ''}
+                                </div>
+                                
+                                <div class="parceiro-footer">
+                                    <div class="contato-rapido">
+                                        ${p.whatsapp ? `
+                                            <a href="https://wa.me/${p.whatsapp.replace(/\D/g, '')}" 
+                                               class="btn-contato whatsapp"
+                                               onclick="event.stopPropagation()"
+                                               target="_blank">
+                                                <i class="fab fa-whatsapp"></i>
+                                            </a>
+                                        ` : ''}
+                                        ${p.telefone ? `
+                                            <a href="tel:${p.telefone}" 
+                                               class="btn-contato telefone"
+                                               onclick="event.stopPropagation()">
+                                                <i class="fas fa-phone"></i>
+                                            </a>
+                                        ` : ''}
+                                    </div>
+                                    <span class="btn-saiba-mais" onclick="event.stopPropagation(); window.abrirParceiro('${p.id}'); return false;">
+                                        Ver perfil <i class="fas fa-arrow-right"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+                
+                // Renderizar grátis
+                if (gratisParceiros.length === 0) {
+                    gratisGrid.innerHTML = `
+                        <div class="no-results" style="grid-column:1/-1;">
+                            <i class="fas fa-store"></i>
+                            <h3>Nenhum parceiro grátis encontrado</h3>
+                            <p>${searchTerm ? 'Tente outros termos de busca.' : 'Em breve teremos novidades!'}</p>
+                        </div>
+                    `;
+                } else {
+                    gratisGrid.innerHTML = gratisParceiros.map(p => `
+                        <div class="parceiro-card gratis">
+                            <div class="parceiro-logo">
+                                <img src="${p.logo_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400'}" 
+                                     alt="${p.nome_fantasia}"
+                                     onerror="this.src='https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400'">
+                            </div>
+                            <div class="parceiro-content">
+                                <h3 class="parceiro-nome">${p.nome_fantasia}</h3>
+                                <p class="parceiro-descricao">${p.descricao_curta || 'Comércio local da nossa região.'}</p>
+                                
+                                <div class="parceiro-info">
+                                    <div class="info-item">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>${p.bairro || 'Centro'}, ${p.cidade || 'Toledo'}</span>
+                                    </div>
+                                    ${p.horario_funcionamento ? `
+                                        <div class="info-item">
+                                            <i class="far fa-clock"></i>
+                                            <span>${Object.entries(p.horario_funcionamento)[0]?.[1] || 'Horário a definir'}</span>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                                
+                                <div class="gratis-info">
+                                    <i class="fas fa-info-circle"></i>
+                                    Informações de contato disponíveis
+                                </div>
+                                
+                                <div class="parceiro-footer">
+                                    <div class="contato-rapido">
+                                        ${p.whatsapp ? `
+                                            <a href="https://wa.me/${p.whatsapp.replace(/\D/g, '')}" 
+                                               class="btn-contato whatsapp"
+                                               onclick="event.stopPropagation()"
+                                               target="_blank">
+                                                <i class="fab fa-whatsapp"></i>
+                                            </a>
+                                        ` : ''}
+                                        ${p.telefone ? `
+                                            <a href="tel:${p.telefone}" 
+                                               class="btn-contato telefone"
+                                               onclick="event.stopPropagation()">
+                                                <i class="fas fa-phone"></i>
+                                            </a>
+                                        ` : ''}
+                                        ${p.email_contato ? `
+                                            <a href="mailto:${p.email_contato}" 
+                                               class="btn-contato email"
+                                               onclick="event.stopPropagation()">
+                                                <i class="fas fa-envelope"></i>
+                                            </a>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            // =====================================================
+            // ABRIR PÁGINA DO PARCEIRO (APENAS PREMIUM)
+            // =====================================================
+            window.abrirParceiro = function(id) {
+                // Redirecionar para página do parceiro (faremos depois)
+                window.location.href = `./perfil-parceiro.html?id=${id}`;
+            };
+
+            // =====================================================
+            // CONFIGURAR BUSCA
+            // =====================================================
+            function configurarBusca() {
+                const input = document.getElementById('searchInput');
+                const btn = document.getElementById('searchButton');
+                
+                const buscar = () => {
+                    searchTerm = input.value.trim();
+                    aplicarFiltros();
+                };
+                
+                btn.addEventListener('click', buscar);
+                input.addEventListener('keypress', e => e.key === 'Enter' && buscar());
+            }
+
+            // =====================================================
+            // CONFIGURAR FILTROS
+            // =====================================================
+            function configurarFiltros() {
+                const tabs = document.querySelectorAll('.filter-tab');
+                
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        tabs.forEach(t => t.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        currentFilter = this.dataset.filtro;
+                        aplicarFiltros();
+                    });
+                });
+            }
+
+            // =====================================================
+            // INICIALIZAÇÃO
+            // =====================================================
+            document.addEventListener('DOMContentLoaded', () => {
+                initMenu();
+                configurarBusca();
+                configurarFiltros();
+                carregarParceiros();
+            });
+
+        })();
+    </script>
+</body>
+</html>

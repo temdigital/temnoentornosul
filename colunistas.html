@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Colunistas - Tem no Entorno Sul</title>
+    
+    <!-- SEO / Open Graph -->
+    <meta property="og:site_name" content="Tem no Entorno Sul">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.temnoentornosul.com.br/colunistas.html">
+    <meta property="og:title" content="Colunistas - Tem no Entorno Sul">
+    <meta property="og:description" content="Conheça nossos colunistas e especialistas que compartilham conhecimento e análises sobre a região.">
+    <meta property="og:image" content="https://i.imgur.com/9eZarki.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://i.imgur.com/9eZarki.png">
+    <link rel="apple-touch-icon" href="https://i.imgur.com/9eZarki.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <style>
+        /* ==================== VARIÁVEIS E RESET ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --verde-escuro: #256d3c;
+            --amarelo: #f8d236;
+            --laranja: #faa115;
+            --verde-claro: #91b69d;
+            --branco: #ffffff;
+            --cinza-claro: #f5f5f5;
+            --cinza-medio: #e0e0e0;
+            --cinza-escuro: #333333;
+            --cinza-texto: #666666;
+            --sombra: 0 5px 15px rgba(0,0,0,0.1);
+            --sombra-forte: 0 15px 30px rgba(0,0,0,0.15);
+            --transicao: all 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background: var(--cinza-claro);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* ==================== HEADER ==================== */
+        .header {
+            background: var(--branco);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+        
+        .logo img {
+            height: 45px;
+            width: auto;
+            display: block;
+        }
+        
+        .menu-desktop {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .menu-desktop a {
+            color: var(--verde-escuro);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transicao);
+            position: relative;
+        }
+        
+        .menu-desktop a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--laranja);
+            transition: var(--transicao);
+        }
+        
+        .menu-desktop a:hover::after,
+        .menu-desktop a.active::after {
+            width: 100%;
+        }
+        
+        .menu-desktop a:hover,
+        .menu-desktop a.active {
+            color: var(--laranja);
+        }
+        
+        .btn-login {
+            background: var(--verde-escuro);
+            color: var(--branco) !important;
+            padding: 8px 20px;
+            border-radius: 5px;
+        }
+        
+        .btn-login:hover {
+            background: #1a4f2b;
+            transform: translateY(-2px);
+            box-shadow: var(--sombra);
+        }
+        
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        .menu-toggle span {
+            width: 30px;
+            height: 3px;
+            background: var(--verde-escuro);
+            transition: var(--transicao);
+        }
+        
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+        
+        .menu-mobile {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 70px);
+            background: var(--branco);
+            padding: 20px;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        
+        .menu-mobile.active {
+            transform: translateX(0);
+            display: block;
+        }
+        
+        .menu-mobile a {
+            display: block;
+            padding: 15px 0;
+            color: var(--verde-escuro);
+            text-decoration: none;
+            border-bottom: 1px solid var(--cinza-claro);
+        }
+        
+        .menu-mobile .btn-login {
+            display: inline-block;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        /* ==================== HERO ==================== */
+        .page-hero {
+            background: linear-gradient(135deg, var(--verde-escuro) 0%, var(--verde-claro) 100%);
+            color: var(--branco);
+            padding: 60px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        
+        .page-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            left: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        
+        .page-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--branco);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .page-hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.95;
+        }
+        
+        /* ==================== FILTROS ==================== */
+        .filters-section {
+            background: var(--branco);
+            padding: 30px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+        }
+        
+        .filters-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .filters-title {
+            font-size: 1rem;
+            color: var(--cinza-texto);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .categorias-filter {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .categoria-filter-btn {
+            padding: 8px 20px;
+            border: 2px solid var(--verde-escuro);
+            border-radius: 30px;
+            background: transparent;
+            color: var(--verde-escuro);
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transicao);
+        }
+        
+        .categoria-filter-btn:hover {
+            background: var(--verde-escuro);
+            color: var(--branco);
+            transform: translateY(-2px);
+        }
+        
+        .categoria-filter-btn.active {
+            background: var(--verde-escuro);
+            color: var(--branco);
+        }
+        
+        .active-filters {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+            min-height: 40px;
+        }
+        
+        .filter-tag {
+            background: var(--verde-claro);
+            color: var(--cinza-escuro);
+            padding: 6px 15px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .filter-tag i {
+            cursor: pointer;
+            font-size: 0.8rem;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transicao);
+        }
+        
+        .filter-tag i:hover {
+            background: rgba(0,0,0,0.1);
+            transform: scale(1.1);
+        }
+        
+        /* ==================== GRID DE COLUNISTAS ==================== */
+        .colunistas-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            margin: 40px 0 60px;
+        }
+        
+        /* Card de Colunista (formato curriculum) */
+        .colunista-card {
+            background: var(--branco);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--sombra-forte);
+            transition: var(--transicao);
+            display: flex;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .colunista-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .colunista-foto {
+            width: 280px;
+            background: linear-gradient(135deg, var(--verde-escuro), var(--verde-claro));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+        
+        .colunista-foto img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--branco);
+            box-shadow: var(--sombra-forte);
+            transition: var(--transicao);
+        }
+        
+        .colunista-card:hover .colunista-foto img {
+            transform: scale(1.05);
+        }
+        
+        .colunista-info {
+            flex: 1;
+            padding: 35px;
+        }
+        
+        .colunista-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .colunista-nome-area h2 {
+            color: var(--verde-escuro);
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        
+        .colunista-area {
+            color: var(--laranja);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        .colunista-categorias {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .colunista-categoria-tag {
+            background: var(--verde-claro);
+            color: var(--cinza-escuro);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .colunista-mini-curriculo {
+            color: var(--cinza-texto);
+            line-height: 1.8;
+            margin: 20px 0;
+            font-size: 1rem;
+            border-left: 3px solid var(--laranja);
+            padding-left: 20px;
+        }
+        
+        .colunista-redes {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .rede-social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--branco);
+            text-decoration: none;
+            transition: var(--transicao);
+            font-size: 1.1rem;
+        }
+        
+        .rede-social-link:hover {
+            transform: translateY(-5px) scale(1.1);
+        }
+        
+        .rede-social-link.instagram { background: linear-gradient(45deg, #f09433, #d62976, #962fbf); }
+        .rede-social-link.facebook { background: #3b5998; }
+        .rede-social-link.linkedin { background: #0077b5; }
+        .rede-social-link.twitter { background: #1da1f2; }
+        .rede-social-link.youtube { background: #ff0000; }
+        .rede-social-link.site { background: var(--verde-escuro); }
+        .rede-social-link.email { background: #ea4335; }
+        
+        .colunista-contato-extra {
+            display: flex;
+            gap: 25px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--cinza-medio);
+            flex-wrap: wrap;
+        }
+        
+        .contato-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--cinza-texto);
+            font-size: 0.95rem;
+        }
+        
+        .contato-item i {
+            color: var(--laranja);
+            width: 18px;
+        }
+        
+        .contato-item a {
+            color: var(--cinza-texto);
+            text-decoration: none;
+            transition: var(--transicao);
+        }
+        
+        .contato-item a:hover {
+            color: var(--laranja);
+        }
+        
+        /* ==================== LOADING E ERROS ==================== */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+            grid-column: 1 / -1;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--verde-claro);
+            border-top-color: var(--verde-escuro);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .no-results,
+        .error-message {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--branco);
+            border-radius: 15px;
+            box-shadow: var(--sombra);
+            margin: 40px 0;
+        }
+        
+        .no-results i,
+        .error-message i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        .no-results i {
+            color: var(--cinza-medio);
+        }
+        
+        .error-message i {
+            color: #dc3545;
+        }
+        
+        /* ==================== FOOTER ==================== */
+        .footer {
+            background: #1a4f2b;
+            color: var(--branco);
+            padding: 60px 0 20px;
+            margin-top: 60px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            height: 45px;
+            margin-bottom: 20px;
+            filter: brightness(0) invert(1);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--branco);
+            text-decoration: none;
+            transition: var(--transicao);
+        }
+        
+        .social-link:hover {
+            transform: translateY(-5px);
+        }
+        
+        .social-link.facebook { background: #3b5998; }
+        .social-link.instagram { background: linear-gradient(45deg, #f09433, #d62976, #962fbf); }
+        .social-link.youtube { background: #ff0000; }
+        
+        .footer h3 {
+            color: var(--branco);
+            border-bottom: 2px solid var(--amarelo);
+            display: inline-block;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links ul,
+        .footer-contato ul {
+            list-style: none;
+        }
+        
+        .footer-links li,
+        .footer-contato li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            color: var(--amarelo);
+        }
+        
+        .footer-contato li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-contato i {
+            color: var(--amarelo);
+        }
+        
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .footer-extra {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-extra a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+        }
+        
+        /* ==================== RESPONSIVIDADE ==================== */
+        @media (max-width: 992px) {
+            .colunista-card {
+                flex-direction: column;
+            }
+            
+            .colunista-foto {
+                width: 100%;
+                padding: 40px;
+            }
+            
+            .colunista-foto img {
+                width: 150px;
+                height: 150px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-desktop {
+                display: none;
+            }
+            
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .page-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .colunista-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .colunista-nome-area h2 {
+                font-size: 1.8rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .page-hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-extra {
+                justify-content: center;
+            }
+            
+            .colunista-info {
+                padding: 25px;
+            }
+            
+            .colunista-nome-area h2 {
+                font-size: 1.5rem;
+            }
+            
+            .colunista-redes {
+                justify-content: center;
+            }
+            
+            .colunista-contato-extra {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="./index.html">
+                    <img src="https://i.imgur.com/9eZarki.png" alt="Tem no Entorno Sul">
+                </a>
+            </div>
+            
+            <nav class="menu-desktop">
+                <a href="./index.html">Início</a>
+                <a href="./publicacoes.html">Publicações</a>
+                <a href="./eventos.html">Eventos</a>
+                <a href="./colunistas.html" class="active">Colunistas</a>
+                <a href="./parceiros.html">Parceiros</a>
+                <a href="./contato.html">Contato</a>
+                <a href="./admin/login.html" class="btn-login"><i class="fas fa-user"></i> Login</a>
+            </nav>
+            
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <div class="menu-mobile" id="menuMobile">
+                <a href="./index.html">Início</a>
+                <a href="./publicacoes.html">Publicações</a>
+                <a href="./eventos.html">Eventos</a>
+                <a href="./colunistas.html">Colunistas</a>
+                <a href="./parceiros.html">Parceiros</a>
+                <a href="./contato.html">Contato</a>
+                <a href="./admin/login.html" class="btn-login"><i class="fas fa-user"></i> Login</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-hero">
+            <div class="container">
+                <h1>Colunistas</h1>
+                <p>Conheça nossa equipe de especialistas e colunistas que compartilham conhecimento e análises sobre a região</p>
+            </div>
+        </section>
+
+        <section class="filters-section">
+            <div class="container">
+                <div class="filters-container">
+                    <div class="filters-title">Filtrar por área de atuação</div>
+                    <div class="categorias-filter" id="categoriasFilter">
+                        <button class="categoria-filter-btn active" data-categoria="todas">Todos</button>
+                        <!-- Categorias serão carregadas via JavaScript -->
+                    </div>
+                    
+                    <div class="active-filters" id="activeFilters"></div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="colunistas-grid" id="colunistasGrid">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-info">
+                    <img src="https://i.imgur.com/9eZarki.png" alt="Tem no Entorno Sul" class="footer-logo">
+                    <p>Conectando moradores aos melhores comércios, serviços e eventos da região do Entorno Sul.</p>
+                    <div class="social-links">
+                        <a href="https://facebook.com/temnoentornosul" target="_blank" class="social-link facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://instagram.com/temnoentornosul" target="_blank" class="social-link instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://youtube.com/@temnoentornosul" target="_blank" class="social-link youtube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="./index.html">Início</a></li>
+                        <li><a href="./publicacoes.html">Publicações</a></li>
+                        <li><a href="./eventos.html">Eventos</a></li>
+                        <li><a href="./colunistas.html">Colunistas</a></li>
+                        <li><a href="./parceiros.html">Parceiros</a></li>
+                        <li><a href="./contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Para Comércios</h3>
+                    <ul>
+                        <li><a href="./cadastro.html">Cadastrar grátis</a></li>
+                        <li><a href="./planos.html">Planos premium</a></li>
+                        <li><a href="./admin/login.html">Área do parceiro</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contato">
+                    <h3>Contato</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> (45) 99999-9999</li>
+                        <li><i class="fas fa-envelope"></i> contato@temnoentornosul.com.br</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Toledo - PR</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Tem no Entorno Sul. Todos os direitos reservados.</p>
+                <div class="footer-extra">
+                    <a href="./termos.html">Termos de uso</a>
+                    <a href="./privacidade.html">Política de privacidade</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            // =====================================================
+            // CONFIGURAÇÃO SUPABASE
+            // =====================================================
+            const SUPABASE_URL = 'https://flidbkfrfosuahgphiza.supabase.co';
+            const SUPABASE_ANON_KEY = 'sb_publishable_mCBYSpZc45Pw345wZ1coEA_rYL61Ea8';
+            
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            
+            // =====================================================
+            // ESTADO GLOBAL
+            // =====================================================
+            let colunistas = [];
+            let filteredColunistas = [];
+            let todasCategorias = [];
+            let currentFilter = 'todas';
+
+            // =====================================================
+            // UTILITÁRIOS
+            // =====================================================
+            function getIconeRede(rede) {
+                const map = {
+                    'instagram': 'fab fa-instagram',
+                    'facebook': 'fab fa-facebook-f',
+                    'linkedin': 'fab fa-linkedin-in',
+                    'twitter': 'fab fa-twitter',
+                    'youtube': 'fab fa-youtube',
+                    'site': 'fas fa-globe',
+                    'email': 'fas fa-envelope'
+                };
+                return map[rede.toLowerCase()] || 'fas fa-link';
+            }
+
+            function getClasseRede(rede) {
+                const map = {
+                    'instagram': 'instagram',
+                    'facebook': 'facebook',
+                    'linkedin': 'linkedin',
+                    'twitter': 'twitter',
+                    'youtube': 'youtube',
+                    'site': 'site',
+                    'email': 'email'
+                };
+                return map[rede.toLowerCase()] || 'site';
+            }
+
+            // =====================================================
+            // MENU HAMBURGUER
+            // =====================================================
+            function initMenu() {
+                const toggle = document.getElementById('menuToggle');
+                const mobile = document.getElementById('menuMobile');
+                
+                if (toggle && mobile) {
+                    toggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        this.classList.toggle('active');
+                        mobile.classList.toggle('active');
+                        document.body.style.overflow = mobile.classList.contains('active') ? 'hidden' : '';
+                    });
+                    
+                    mobile.querySelectorAll('a').forEach(link => {
+                        link.addEventListener('click', () => {
+                            toggle.classList.remove('active');
+                            mobile.classList.remove('active');
+                            document.body.style.overflow = '';
+                        });
+                    });
+                }
+            }
+
+            // =====================================================
+            // CARREGAR COLUNISTAS DO SUPABASE
+            // =====================================================
+            async function carregarColunistas() {
+                try {
+                    console.log('🔍 Carregando colunistas...');
+                    
+                    const { data, error } = await supabase
+                        .from('colunistas')
+                        .select('*')
+                        .eq('ativo', true)
+                        .order('nome', { ascending: true });
+                    
+                    if (error) throw error;
+                    
+                    console.log('✅ Colunistas carregados:', data?.length || 0);
+                    
+                    if (!data || data.length === 0) {
+                        document.getElementById('colunistasGrid').innerHTML = `
+                            <div class="no-results">
+                                <i class="fas fa-users-slash"></i>
+                                <h3>Nenhum colunista encontrado</h3>
+                                <p>Em breve teremos novidades em nossa equipe!</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    colunistas = data;
+                    filteredColunistas = data;
+                    
+                    // Extrair todas as categorias únicas
+                    const categoriasSet = new Set();
+                    colunistas.forEach(c => {
+                        if (c.categorias && Array.isArray(c.categorias)) {
+                            c.categorias.forEach(cat => categoriasSet.add(cat));
+                        }
+                    });
+                    todasCategorias = Array.from(categoriasSet).sort();
+                    
+                    renderizarFiltros();
+                    renderizarColunistas();
+                    
+                } catch (error) {
+                    console.error('❌ Erro:', error);
+                    document.getElementById('colunistasGrid').innerHTML = `
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>Ops! Algo deu errado</h3>
+                            <p>${error.message || 'Erro ao carregar colunistas.'}</p>
+                            <button onclick="location.reload()" style="margin-top:20px; padding:10px 30px; background:var(--verde-escuro); color:white; border:none; border-radius:5px; cursor:pointer;">
+                                <i class="fas fa-redo"></i> Tentar novamente
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+
+            // =====================================================
+            // RENDERIZAR FILTROS DE CATEGORIA
+            // =====================================================
+            function renderizarFiltros() {
+                const container = document.getElementById('categoriasFilter');
+                
+                if (todasCategorias.length === 0) return;
+                
+                todasCategorias.forEach(categoria => {
+                    const btn = document.createElement('button');
+                    btn.className = 'categoria-filter-btn';
+                    btn.dataset.categoria = categoria;
+                    btn.textContent = categoria;
+                    container.appendChild(btn);
+                });
+                
+                container.querySelectorAll('.categoria-filter-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        container.querySelectorAll('.categoria-filter-btn').forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        const categoria = this.dataset.categoria;
+                        
+                        if (categoria === 'todas') {
+                            filteredColunistas = colunistas;
+                            document.getElementById('activeFilters').innerHTML = '';
+                        } else {
+                            filteredColunistas = colunistas.filter(c => 
+                                c.categorias && c.categorias.includes(categoria)
+                            );
+                            
+                            document.getElementById('activeFilters').innerHTML = `
+                                <span class="filter-tag">
+                                    <i class="fas fa-filter"></i> ${categoria}
+                                    <i class="fas fa-times" onclick="window.removerFiltro()"></i>
+                                </span>
+                            `;
+                        }
+                        
+                        renderizarColunistas();
+                    });
+                });
+            }
+
+            // =====================================================
+            // REMOVER FILTRO
+            // =====================================================
+            window.removerFiltro = function() {
+                document.querySelectorAll('.categoria-filter-btn').forEach(b => b.classList.remove('active'));
+                document.querySelector('[data-categoria="todas"]').classList.add('active');
+                
+                filteredColunistas = colunistas;
+                document.getElementById('activeFilters').innerHTML = '';
+                renderizarColunistas();
+            };
+
+            // =====================================================
+            // RENDERIZAR COLUNISTAS
+            // =====================================================
+            function renderizarColunistas() {
+                const grid = document.getElementById('colunistasGrid');
+                
+                if (filteredColunistas.length === 0) {
+                    grid.innerHTML = `
+                        <div class="no-results">
+                            <i class="fas fa-users-slash"></i>
+                            <h3>Nenhum colunista encontrado</h3>
+                            <p>Tente outro filtro ou volte mais tarde.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                grid.innerHTML = filteredColunistas.map(colunista => {
+                    // Processar redes sociais
+                    let redesHtml = '';
+                    if (colunista.redes_sociais) {
+                        redesHtml = Object.entries(colunista.redes_sociais).map(([rede, link]) => `
+                            <a href="${link}" target="_blank" class="rede-social-link ${getClasseRede(rede)}" title="${rede}">
+                                <i class="${getIconeRede(rede)}"></i>
+                            </a>
+                        `).join('');
+                    }
+                    
+                    // Processar categorias
+                    const categoriasHtml = colunista.categorias && colunista.categorias.length > 0 
+                        ? colunista.categorias.map(cat => `<span class="colunista-categoria-tag">${cat}</span>`).join('')
+                        : '';
+                    
+                    return `
+                        <div class="colunista-card">
+                            <div class="colunista-foto">
+                                <img src="${colunista.foto_url || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400'}" 
+                                     alt="${colunista.nome}"
+                                     onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400'">
+                            </div>
+                            <div class="colunista-info">
+                                <div class="colunista-header">
+                                    <div class="colunista-nome-area">
+                                        <h2>${colunista.nome}</h2>
+                                        <div class="colunista-area">${colunista.area_atuacao || 'Colunista'}</div>
+                                    </div>
+                                    ${categoriasHtml ? `<div class="colunista-categorias">${categoriasHtml}</div>` : ''}
+                                </div>
+                                
+                                ${colunista.mini_curriculo ? `
+                                    <div class="colunista-mini-curriculo">
+                                        ${colunista.mini_curriculo}
+                                    </div>
+                                ` : ''}
+                                
+                                ${redesHtml ? `<div class="colunista-redes">${redesHtml}</div>` : ''}
+                                
+                                <div class="colunista-contato-extra">
+                                    ${colunista.email_contato ? `
+                                        <div class="contato-item">
+                                            <i class="fas fa-envelope"></i>
+                                            <a href="mailto:${colunista.email_contato}">${colunista.email_contato}</a>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    ${colunista.site ? `
+                                        <div class="contato-item">
+                                            <i class="fas fa-globe"></i>
+                                            <a href="${colunista.site}" target="_blank">Site pessoal</a>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // =====================================================
+            // INICIALIZAÇÃO
+            // =====================================================
+            document.addEventListener('DOMContentLoaded', () => {
+                initMenu();
+                carregarColunistas();
+            });
+
+        })();
+    </script>
+</body>
+</html>
