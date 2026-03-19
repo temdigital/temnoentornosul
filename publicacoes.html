@@ -30,8 +30,14 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
-        /* ==================== VARIÁVEIS ==================== */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* =====================================================
+           VARIÁVEIS E RESET
+           ===================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
         :root {
             --verde-escuro: #256d3c;
@@ -44,6 +50,9 @@
             --cinza-medio: #e0e0e0;
             --cinza-escuro: #333333;
             --cinza-texto: #666666;
+            --sombra: 0 5px 15px rgba(0,0,0,0.1);
+            --sombra-forte: 0 15px 30px rgba(0,0,0,0.15);
+            --transicao: all 0.3s ease;
         }
         
         body {
@@ -60,7 +69,9 @@
             padding: 0 15px;
         }
         
-        /* ==================== HEADER ==================== */
+        /* =====================================================
+           HEADER
+           ===================================================== */
         .header {
             background: var(--branco);
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -76,7 +87,11 @@
             height: 70px;
         }
         
-        .logo img { height: 45px; width: auto; }
+        .logo img {
+            height: 45px;
+            width: auto;
+            display: block;
+        }
         
         /* Menu Desktop */
         .menu-desktop {
@@ -89,21 +104,50 @@
             color: var(--verde-escuro);
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.3s;
+            font-size: 1rem;
+            transition: var(--transicao);
             white-space: nowrap;
+            position: relative;
+        }
+        
+        .menu-desktop a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--laranja);
+            transition: var(--transicao);
+        }
+        
+        .menu-desktop a:hover::after,
+        .menu-desktop a.active::after {
+            width: 100%;
         }
         
         .menu-desktop a:hover,
-        .menu-desktop a.active { color: var(--laranja); }
+        .menu-desktop a.active {
+            color: var(--laranja);
+        }
         
         .btn-login {
             background: var(--verde-escuro);
             color: var(--branco) !important;
             padding: 8px 20px;
             border-radius: 5px;
+            transition: var(--transicao);
         }
         
-        .btn-login:hover { background: #1a4f2b; }
+        .btn-login:hover {
+            background: #1a4f2b;
+            transform: translateY(-2px);
+            box-shadow: var(--sombra);
+        }
+        
+        .btn-login::after {
+            display: none;
+        }
         
         /* Menu Hamburguer */
         .menu-toggle {
@@ -122,14 +166,17 @@
             height: 3px;
             background: var(--verde-escuro);
             border-radius: 3px;
-            transition: all 0.3s;
+            transition: var(--transicao);
         }
         
         .menu-toggle.active span:nth-child(1) {
             transform: translateY(9px) rotate(45deg);
         }
         
-        .menu-toggle.active span:nth-child(2) { opacity: 0; }
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+            transform: translateX(-10px);
+        }
         
         .menu-toggle.active span:nth-child(3) {
             transform: translateY(-9px) rotate(-45deg);
@@ -147,7 +194,7 @@
             padding: 20px;
             z-index: 1000;
             transform: translateX(-100%);
-            transition: transform 0.3s;
+            transition: transform 0.3s ease;
             overflow-y: auto;
         }
         
@@ -162,28 +209,86 @@
             color: var(--verde-escuro);
             text-decoration: none;
             font-size: 1.1rem;
+            font-weight: 500;
             border-bottom: 1px solid var(--cinza-claro);
+            transition: var(--transicao);
+        }
+        
+        .menu-mobile a:hover {
+            color: var(--laranja);
+            padding-left: 10px;
         }
         
         .menu-mobile .btn-login {
             display: inline-block;
             margin-top: 15px;
             padding: 12px 30px;
+            background: var(--verde-escuro);
+            color: var(--branco) !important;
+            border-radius: 5px;
             text-align: center;
+            border-bottom: none;
         }
         
-        /* ==================== HERO ==================== */
+        .menu-mobile .btn-login:hover {
+            padding-left: 30px;
+        }
+        
+        /* =====================================================
+           HERO
+           ===================================================== */
         .page-hero {
-            background: linear-gradient(135deg, var(--verde-escuro), var(--verde-claro));
+            background: linear-gradient(135deg, var(--verde-escuro) 0%, var(--verde-claro) 100%);
             color: var(--branco);
             padding: 60px 0;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
         
-        .page-hero h1 { font-size: 2.5rem; margin-bottom: 15px; color: var(--branco); }
-        .page-hero p { font-size: 1.2rem; max-width: 600px; margin: 0 auto; opacity: 0.95; }
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
         
-        /* ==================== BUSCA ==================== */
+        .page-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            left: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        
+        .page-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--branco);
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .page-hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* =====================================================
+           BUSCA E FILTROS
+           ===================================================== */
         .search-section {
             background: var(--branco);
             padding: 30px 0;
@@ -196,13 +301,17 @@
             gap: 15px;
             max-width: 600px;
             margin: 0 auto;
+            background: var(--branco);
             border: 2px solid var(--cinza-medio);
             border-radius: 50px;
             padding: 5px;
-            transition: border-color 0.3s;
+            transition: var(--transicao);
         }
         
-        .search-box:focus-within { border-color: var(--verde-escuro); }
+        .search-box:focus-within {
+            border-color: var(--verde-escuro);
+            box-shadow: 0 0 0 3px rgba(37, 109, 60, 0.1);
+        }
         
         .search-box input {
             flex: 1;
@@ -221,11 +330,53 @@
             border-radius: 50px;
             cursor: pointer;
             font-weight: 500;
-            transition: background 0.3s;
+            transition: var(--transicao);
             white-space: nowrap;
         }
         
-        .search-box button:hover { background: #1a4f2b; }
+        .search-box button:hover {
+            background: #1a4f2b;
+            transform: scale(1.05);
+        }
+        
+        .filters-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .btn-clear-top {
+            background: var(--amarelo);
+            color: var(--cinza-escuro);
+            border: none;
+            padding: 8px 25px;
+            border-radius: 30px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transicao);
+            font-size: 0.95rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .btn-clear-top:hover {
+            background: #e5bc1f;
+            transform: translateY(-2px);
+            box-shadow: var(--sombra);
+        }
+        
+        .btn-clear-top i {
+            transition: var(--transicao);
+        }
+        
+        .btn-clear-top:hover i {
+            transform: rotate(90deg);
+        }
         
         .filter-tabs {
             display: flex;
@@ -239,25 +390,34 @@
             padding: 8px 25px;
             border: 2px solid var(--verde-escuro);
             border-radius: 30px;
-            color: var(--verde-escuro);
-            font-weight: 500;
-            cursor: pointer;
             background: transparent;
-            transition: all 0.3s;
+            color: var(--verde-escuro);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transicao);
+            font-size: 0.95rem;
         }
         
-        .filter-tab:hover,
+        .filter-tab:hover {
+            background: var(--verde-escuro);
+            color: var(--branco);
+            transform: translateY(-2px);
+            box-shadow: var(--sombra);
+        }
+        
         .filter-tab.active {
             background: var(--verde-escuro);
             color: var(--branco);
         }
         
-        /* ==================== LAYOUT ==================== */
+        /* =====================================================
+           LAYOUT PRINCIPAL
+           ===================================================== */
         .publicacoes-layout {
             display: grid;
             grid-template-columns: 1fr 300px;
             gap: 30px;
-            margin-bottom: 60px;
+            margin: 40px 0;
         }
         
         .publicacoes-grid {
@@ -266,21 +426,25 @@
             gap: 25px;
         }
         
-        /* Card */
+        /* =====================================================
+           CARD DE PUBLICAÇÃO
+           ===================================================== */
         .pub-card {
             background: var(--branco);
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s;
+            box-shadow: var(--sombra);
+            transition: var(--transicao);
             height: 100%;
             display: flex;
             flex-direction: column;
+            cursor: pointer;
+            position: relative;
         }
         
         .pub-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            transform: translateY(-8px);
+            box-shadow: var(--sombra-forte);
         }
         
         .pub-card-image {
@@ -293,10 +457,12 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s;
+            transition: transform 0.5s ease;
         }
         
-        .pub-card:hover .pub-card-image img { transform: scale(1.05); }
+        .pub-card:hover .pub-card-image img {
+            transform: scale(1.1);
+        }
         
         .pub-category {
             position: absolute;
@@ -308,7 +474,8 @@
             border-radius: 25px;
             font-size: 0.85rem;
             font-weight: 500;
-            z-index: 1;
+            z-index: 2;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         
         .pub-card-content {
@@ -319,32 +486,39 @@
         }
         
         .pub-card-title {
-            font-size: 1.3rem;
             margin-bottom: 10px;
+            font-size: 1.2rem;
+            line-height: 1.4;
         }
         
         .pub-card-title a {
             color: var(--verde-escuro);
             text-decoration: none;
+            transition: var(--transicao);
         }
         
-        .pub-card-title a:hover { color: var(--laranja); }
+        .pub-card-title a:hover {
+            color: var(--laranja);
+        }
         
         .pub-card-meta {
             display: flex;
             gap: 15px;
-            margin-bottom: 15px;
             color: var(--cinza-texto);
             font-size: 0.9rem;
+            margin-bottom: 10px;
             flex-wrap: wrap;
         }
         
-        .pub-card-meta i { margin-right: 5px; color: var(--laranja); }
+        .pub-card-meta i {
+            margin-right: 5px;
+            color: var(--laranja);
+        }
         
         .pub-card-excerpt {
             color: var(--cinza-texto);
-            margin-bottom: 20px;
             line-height: 1.6;
+            margin-bottom: 15px;
             flex: 1;
         }
         
@@ -352,8 +526,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 1px solid var(--cinza-medio);
+            margin-top: 15px;
             padding-top: 15px;
+            border-top: 1px solid var(--cinza-medio);
         }
         
         .pub-author {
@@ -367,30 +542,58 @@
             height: 35px;
             border-radius: 50%;
             object-fit: cover;
+            border: 2px solid var(--verde-claro);
         }
         
-        .pub-author span { font-size: 0.9rem; color: var(--cinza-texto); }
+        .pub-author span {
+            font-size: 0.9rem;
+            color: var(--cinza-texto);
+            font-weight: 500;
+        }
         
         .pub-read-more {
             color: var(--verde-escuro);
             text-decoration: none;
             font-weight: 500;
+            transition: var(--transicao);
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
         
-        .pub-read-more i { margin-left: 5px; transition: transform 0.3s; }
-        .pub-read-more:hover i { transform: translateX(5px); }
+        .pub-read-more:hover {
+            color: var(--laranja);
+            gap: 8px;
+        }
         
-        /* ==================== SIDEBAR ==================== */
+        .pub-read-more i {
+            transition: var(--transicao);
+        }
+        
+        .pub-read-more:hover i {
+            transform: translateX(5px);
+        }
+        
+        /* =====================================================
+           SIDEBAR
+           ===================================================== */
         .sidebar {
             background: var(--branco);
             border-radius: 15px;
             padding: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: var(--sombra);
             height: fit-content;
+            position: sticky;
+            top: 90px;
         }
         
-        .sidebar-widget { margin-bottom: 35px; }
-        .sidebar-widget:last-child { margin-bottom: 0; }
+        .sidebar-widget {
+            margin-bottom: 30px;
+        }
+        
+        .sidebar-widget:last-child {
+            margin-bottom: 0;
+        }
         
         .sidebar-widget h3 {
             color: var(--verde-escuro);
@@ -402,26 +605,32 @@
         }
         
         /* Categorias */
-        .categorias-list { list-style: none; }
-        .categoria-item { margin-bottom: 12px; }
+        .categorias-list {
+            list-style: none;
+        }
         
-        .categoria-item a {
+        .categoria-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: var(--cinza-texto);
-            text-decoration: none;
-            padding: 8px 0;
+            padding: 10px 0;
             border-bottom: 1px dashed var(--cinza-medio);
             cursor: pointer;
+            color: var(--cinza-texto);
+            transition: var(--transicao);
         }
         
-        .categoria-item a:hover { color: var(--laranja); }
+        .categoria-item:hover {
+            color: var(--laranja);
+            padding-left: 8px;
+        }
+        
         .categoria-item span {
             background: var(--cinza-claro);
             padding: 3px 10px;
             border-radius: 15px;
             font-size: 0.85rem;
+            color: var(--cinza-escuro);
         }
         
         /* Mais Vistos */
@@ -430,46 +639,108 @@
             gap: 15px;
             margin-bottom: 20px;
             cursor: pointer;
+            transition: var(--transicao);
         }
         
-        .mais-vistos-image {
+        .mais-vistos-item:hover {
+            opacity: 0.8;
+            transform: translateX(5px);
+        }
+        
+        .mais-vistos-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .mais-vistos-item img {
             width: 70px;
             height: 70px;
             border-radius: 10px;
             object-fit: cover;
         }
         
-        .mais-vistos-info h4 { font-size: 1rem; margin-bottom: 5px; }
-        .mais-vistos-info h4 a { color: var(--verde-escuro); text-decoration: none; }
+        .mais-vistos-info h4 {
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+            line-height: 1.3;
+        }
+        
+        .mais-vistos-info h4 a {
+            color: var(--verde-escuro);
+            text-decoration: none;
+            transition: var(--transicao);
+        }
+        
+        .mais-vistos-info h4 a:hover {
+            color: var(--laranja);
+        }
+        
         .mais-vistos-stats {
             display: flex;
             gap: 10px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--cinza-texto);
         }
         
-        .mais-vistos-stats i { color: var(--laranja); }
+        .mais-vistos-stats i {
+            margin-right: 3px;
+            color: var(--laranja);
+        }
         
         /* Tags */
         .tags-cloud {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
         }
         
         .tag {
             background: var(--cinza-claro);
             color: var(--cinza-escuro);
-            padding: 6px 15px;
-            border-radius: 25px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
             cursor: pointer;
             border: none;
-            transition: all 0.3s;
+            transition: var(--transicao);
         }
         
-        .tag:hover { background: var(--verde-escuro); color: var(--branco); }
+        .tag:hover {
+            background: var(--verde-escuro);
+            color: var(--branco);
+            transform: translateY(-2px);
+        }
         
-        /* ==================== PAGINAÇÃO ==================== */
+        .tag.active {
+            background: var(--verde-escuro);
+            color: var(--branco);
+        }
+        
+        /* Botão Limpar Filtros Sidebar */
+        .btn-clear {
+            background: var(--cinza-claro);
+            color: var(--cinza-escuro);
+            border: 1px solid var(--cinza-medio);
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 500;
+            transition: var(--transicao);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-clear:hover {
+            background: var(--cinza-medio);
+            transform: translateY(-2px);
+            box-shadow: var(--sombra);
+        }
+        
+        /* =====================================================
+           PAGINAÇÃO
+           ===================================================== */
         .pagination {
             display: flex;
             justify-content: center;
@@ -480,22 +751,27 @@
         }
         
         .page-link {
+            min-width: 45px;
+            height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-width: 45px;
-            height: 45px;
-            padding: 0 15px;
             background: var(--branco);
             color: var(--verde-escuro);
             border-radius: 10px;
             font-weight: 500;
             cursor: pointer;
             border: none;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: var(--transicao);
+            box-shadow: var(--sombra);
         }
         
-        .page-link:hover,
+        .page-link:hover {
+            background: var(--verde-escuro);
+            color: var(--branco);
+            transform: translateY(-2px);
+        }
+        
         .page-link.active {
             background: var(--verde-escuro);
             color: var(--branco);
@@ -504,119 +780,282 @@
         .page-link.disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            pointer-events: none;
         }
         
-        #pageNumbers { display: flex; gap: 10px; flex-wrap: wrap; }
-        
-        /* ==================== BOTÕES ==================== */
-        .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 500;
-            border: none;
-            cursor: pointer;
+        .page-link.prev,
+        .page-link.next {
+            padding: 0 20px;
         }
         
-        .btn-primary {
-            background: var(--verde-escuro);
-            color: var(--branco);
+        #pageNumbers {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
         
-        .btn-outline {
-            border: 2px solid var(--verde-escuro);
-            color: var(--verde-escuro);
-            background: transparent;
-        }
-        
-        .btn-outline:hover {
-            background: var(--verde-escuro);
-            color: var(--branco);
-        }
-        
-        /* ==================== FOOTER ==================== */
-        .footer {
-            background: #1a4f2b;
-            color: var(--branco);
-            padding: 60px 0 20px;
-        }
-        
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1.5fr;
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-        
-        .footer-logo {
-            height: 45px;
-            margin-bottom: 20px;
-            filter: brightness(0) invert(1);
-        }
-        
-        .social-links { display: flex; gap: 15px; }
-        
-        .social-link {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+        /* =====================================================
+           MODAL DE LEITURA
+           ===================================================== */
+        .modal-leitura {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-content {
+            background: var(--branco);
+            border-radius: 25px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            border: none;
             color: var(--branco);
-            text-decoration: none;
-        }
-        
-        .social-link.facebook { background: #3b5998; }
-        .social-link.instagram { background: linear-gradient(45deg, #f09433, #d62976, #962fbf); }
-        .social-link.youtube { background: #ff0000; }
-        
-        .footer h3 {
-            color: var(--branco);
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--amarelo);
-            display: inline-block;
-        }
-        
-        .footer-links ul,
-        .footer-contato ul { list-style: none; padding: 0; }
-        .footer-links li,
-        .footer-contato li { margin-bottom: 12px; }
-        
-        .footer-links a {
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-        }
-        
-        .footer-links a:hover { color: var(--amarelo); }
-        
-        .footer-contato li {
+            font-size: 1.3rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: var(--transicao);
+            backdrop-filter: blur(5px);
             display: flex;
             align-items: center;
-            gap: 10px;
-            color: rgba(255,255,255,0.8);
+            justify-content: center;
         }
         
-        .footer-contato i { color: var(--amarelo); }
+        .modal-close:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(90deg) scale(1.1);
+        }
         
-        .footer-bottom {
+        .modal-header {
+            padding: 50px 50px 40px;
+            color: var(--branco);
+            position: relative;
+        }
+        
+        .modal-categoria {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            backdrop-filter: blur(5px);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        
+        .modal-header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: var(--branco);
+            line-height: 1.3;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .modal-meta {
+            display: flex;
+            gap: 30px;
+            font-size: 1rem;
+            opacity: 0.9;
+            flex-wrap: wrap;
+        }
+        
+        .modal-meta i {
+            margin-right: 8px;
+        }
+        
+        .modal-body {
+            padding: 50px;
+        }
+        
+        .modal-imagem {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: var(--sombra-forte);
+        }
+        
+        .modal-conteudo {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--cinza-escuro);
+        }
+        
+        .modal-conteudo p {
+            margin-bottom: 20px;
+        }
+        
+        .modal-conteudo h2 {
+            font-size: 1.5rem;
+            color: var(--verde-escuro);
+            margin: 30px 0 15px;
+        }
+        
+        .modal-conteudo h3 {
+            font-size: 1.2rem;
+            color: var(--laranja);
+            margin: 25px 0 10px;
+        }
+        
+        .modal-conteudo ul,
+        .modal-conteudo ol {
+            margin: 15px 0 15px 30px;
+        }
+        
+        .modal-conteudo blockquote {
+            border-left: 4px solid var(--laranja);
+            padding: 15px 20px;
+            background: var(--cinza-claro);
+            border-radius: 0 10px 10px 0;
+            font-style: italic;
+            margin: 20px 0;
+        }
+        
+        .modal-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid var(--cinza-medio);
+        }
+        
+        .modal-footer {
+            padding: 30px 50px 50px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
             flex-wrap: wrap;
+            gap: 20px;
+            border-top: 1px solid var(--cinza-medio);
+        }
+        
+        .modal-stats {
+            display: flex;
+            gap: 25px;
+            color: var(--cinza-texto);
+        }
+        
+        .modal-stats i {
+            margin-right: 5px;
+            color: var(--laranja);
+        }
+        
+        .modal-actions {
+            display: flex;
             gap: 15px;
         }
         
-        .footer-extra { display: flex; gap: 20px; flex-wrap: wrap; }
-        .footer-extra a { color: rgba(255,255,255,0.8); text-decoration: none; }
-        .footer-extra a:hover { color: var(--amarelo); }
+        .btn-like {
+            background: transparent;
+            color: var(--cinza-escuro);
+            border: 2px solid var(--cinza-medio);
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transicao);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
         
-        /* ==================== LOADING E ERROS ==================== */
+        .btn-like:hover {
+            border-color: #dc3545;
+            color: #dc3545;
+            transform: scale(1.05);
+        }
+        
+        .btn-like.liked {
+            background: #dc3545;
+            border-color: #dc3545;
+            color: var(--branco);
+        }
+        
+        .btn-like i {
+            transition: var(--transicao);
+        }
+        
+        .btn-like:hover i {
+            transform: scale(1.2);
+        }
+        
+        .btn-share {
+            background: var(--verde-escuro);
+            color: var(--branco);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transicao);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+        
+        .btn-share:hover {
+            background: #1a4f2b;
+            transform: translateY(-2px);
+            box-shadow: var(--sombra);
+        }
+        
+        .btn-share i {
+            transition: var(--transicao);
+        }
+        
+        .btn-share:hover i {
+            transform: rotate(15deg);
+        }
+        
+        /* =====================================================
+           LOADING E ERROS
+           ===================================================== */
         .loading {
             display: flex;
             justify-content: center;
@@ -634,33 +1073,252 @@
             animation: spin 1s linear infinite;
         }
         
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
         
-        .no-results, .error-message {
+        .no-results,
+        .error-message {
             grid-column: 1 / -1;
             text-align: center;
             padding: 60px 20px;
             background: var(--branco);
             border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: var(--sombra);
         }
         
-        .no-results i, .error-message i { font-size: 4rem; margin-bottom: 20px; }
-        .no-results i { color: var(--cinza-medio); }
-        .error-message i { color: #dc3545; }
+        .no-results i,
+        .error-message i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
         
-        /* ==================== MEDIA QUERIES ==================== */
+        .no-results i {
+            color: var(--cinza-medio);
+        }
+        
+        .error-message i {
+            color: #dc3545;
+        }
+        
+        .error-message button {
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: var(--verde-escuro);
+            color: var(--branco);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transicao);
+        }
+        
+        .error-message button:hover {
+            background: #1a4f2b;
+            transform: translateY(-2px);
+        }
+        
+        /* =====================================================
+           FOOTER
+           ===================================================== */
+        .footer {
+            background: #1a4f2b;
+            color: var(--branco);
+            padding: 60px 0 20px;
+            margin-top: 60px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            height: 45px;
+            margin-bottom: 20px;
+            filter: brightness(0) invert(1);
+        }
+        
+        .footer-info p {
+            opacity: 0.8;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--branco);
+            text-decoration: none;
+            transition: var(--transicao);
+        }
+        
+        .social-link:hover {
+            transform: translateY(-5px) scale(1.1);
+        }
+        
+        .social-link.facebook {
+            background: #3b5998;
+        }
+        
+        .social-link.instagram {
+            background: linear-gradient(45deg, #f09433, #d62976, #962fbf);
+        }
+        
+        .social-link.youtube {
+            background: #ff0000;
+        }
+        
+        .footer h3 {
+            color: var(--branco);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--amarelo);
+            display: inline-block;
+        }
+        
+        .footer-links ul,
+        .footer-contato ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li,
+        .footer-contato li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: var(--transicao);
+        }
+        
+        .footer-links a:hover {
+            color: var(--amarelo);
+            padding-left: 5px;
+        }
+        
+        .footer-contato li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .footer-contato i {
+            width: 20px;
+            color: var(--amarelo);
+        }
+        
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .footer-extra {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-extra a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: var(--transicao);
+        }
+        
+        .footer-extra a:hover {
+            color: var(--amarelo);
+        }
+        
+        /* =====================================================
+           TOAST NOTIFICATION
+           ===================================================== */
+        .toast-notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--verde-escuro);
+            color: var(--branco);
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: var(--sombra-forte);
+            z-index: 3000;
+            animation: slideIn 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .toast-notification.error {
+            background: #dc3545;
+        }
+        
+        .toast-notification i {
+            font-size: 1.2rem;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        /* =====================================================
+           RESPONSIVIDADE
+           ===================================================== */
         @media (max-width: 1024px) {
-            .publicacoes-layout { grid-template-columns: 1fr; }
-            .publicacoes-grid { grid-template-columns: repeat(2, 1fr); }
+            .publicacoes-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .publicacoes-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .sidebar {
+                position: static;
+            }
         }
         
         @media (max-width: 768px) {
-            .menu-desktop { display: none; }
-            .menu-toggle { display: flex; }
+            .menu-desktop {
+                display: none;
+            }
             
-            .page-hero h1 { font-size: 2rem; }
-            .page-hero p { font-size: 1rem; }
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .page-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .page-hero p {
+                font-size: 1rem;
+            }
             
             .search-box {
                 flex-direction: column;
@@ -669,20 +1327,134 @@
                 gap: 10px;
             }
             
-            .search-box input { border: 2px solid var(--cinza-medio); }
-            .search-box button { width: 100%; padding: 15px; }
+            .search-box input {
+                border: 2px solid var(--cinza-medio);
+            }
             
-            .publicacoes-grid { grid-template-columns: 1fr; }
-            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+            .search-box button {
+                width: 100%;
+                padding: 15px;
+            }
+            
+            .filters-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-tab {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .publicacoes-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            /* Modal Responsivo */
+            .modal-header {
+                padding: 40px 30px 30px;
+            }
+            
+            .modal-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .modal-body {
+                padding: 30px;
+            }
+            
+            .modal-footer {
+                padding: 30px;
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .modal-actions {
+                width: 100%;
+                flex-direction: column;
+            }
+            
+            .btn-like,
+            .btn-share {
+                width: 100%;
+                justify-content: center;
+            }
         }
         
         @media (max-width: 576px) {
-            .page-hero h1 { font-size: 1.8rem; }
-            .pub-card-title { font-size: 1.2rem; }
-            .pub-card-meta { flex-direction: column; gap: 5px; }
-            .pub-card-footer { flex-direction: column; align-items: flex-start; gap: 15px; }
-            .footer-grid { grid-template-columns: 1fr; }
-            .footer-bottom { flex-direction: column; text-align: center; }
+            .page-hero {
+                padding: 40px 0;
+            }
+            
+            .page-hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .pub-card-title {
+                font-size: 1.1rem;
+            }
+            
+            .pub-card-meta {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .pub-card-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-extra {
+                justify-content: center;
+            }
+            
+            /* Modal Mobile */
+            .modal-content {
+                max-height: 95vh;
+            }
+            
+            .modal-header {
+                padding: 35px 20px 25px;
+            }
+            
+            .modal-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .modal-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .modal-body {
+                padding: 20px;
+            }
+            
+            .modal-conteudo {
+                font-size: 1rem;
+            }
+            
+            .toast-notification {
+                left: 20px;
+                right: 20px;
+                bottom: 20px;
+                text-align: center;
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -692,7 +1464,7 @@
         <div class="container">
             <div class="logo">
                 <a href="./index.html">
-                    <img src="https://i.imgur.com/9eZarki.png" alt="Tem no Entorno Sul">
+                    <img src="https://i.imgur.com/9eZarki.png" alt="Tem no Entorno Sul" onerror="this.src='https://via.placeholder.com/150x50/256d3c/ffffff?text=TEM+NO+ENTORNO+SUL'">
                 </a>
             </div>
             
@@ -707,7 +1479,9 @@
             </nav>
             
             <div class="menu-toggle" id="menuToggle">
-                <span></span><span></span><span></span>
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
             
             <div class="menu-mobile" id="menuMobile">
@@ -723,6 +1497,7 @@
     </header>
 
     <main>
+        <!-- HERO -->
         <section class="page-hero">
             <div class="container">
                 <h1>Publicações</h1>
@@ -730,68 +1505,91 @@
             </div>
         </section>
 
+        <!-- BUSCA E FILTROS -->
         <section class="search-section">
             <div class="container">
                 <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="Buscar publicações...">
+                    <input type="text" id="searchInput" placeholder="Buscar publicações por título ou conteúdo...">
                     <button type="button" id="searchButton"><i class="fas fa-search"></i> Buscar</button>
                 </div>
                 
-                <div class="filter-tabs" id="filterTabs">
+                <div class="filters-row">
                     <button class="filter-tab active" data-categoria="todas">Todas</button>
+                    <button id="clearFiltersTop" class="btn-clear-top">
+                        <i class="fas fa-times"></i> Limpar filtros
+                    </button>
+                </div>
+                
+                <div class="filter-tabs" id="filterTabs">
+                    <!-- Categorias serão carregadas via JS -->
                 </div>
             </div>
         </section>
 
+        <!-- CONTEÚDO PRINCIPAL -->
         <div class="container">
             <div class="publicacoes-layout">
+                <!-- Grid de Publicações -->
                 <div class="publicacoes-grid" id="publicacoesGrid">
-                    <div class="loading"><div class="loading-spinner"></div></div>
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                    </div>
                 </div>
 
+                <!-- Sidebar -->
                 <aside class="sidebar">
+                    <!-- Categorias -->
                     <div class="sidebar-widget">
                         <h3>Categorias</h3>
-                        <ul class="categorias-list" id="categoriasList">
-                            <li class="loading"><div class="loading-spinner" style="width:30px;height:30px;"></div></li>
-                        </ul>
+                        <div id="categoriasList">
+                            <div class="loading">
+                                <div class="loading-spinner" style="width:30px;height:30px;"></div>
+                            </div>
+                        </div>
                     </div>
 
+                    <!-- Mais Vistos -->
                     <div class="sidebar-widget">
                         <h3>Mais Vistos</h3>
                         <div id="maisVistosContainer">
-                            <div class="loading"><div class="loading-spinner" style="width:30px;height:30px;"></div></div>
+                            <div class="loading">
+                                <div class="loading-spinner" style="width:30px;height:30px;"></div>
+                            </div>
                         </div>
                     </div>
 
+                    <!-- Tags Populares -->
                     <div class="sidebar-widget">
                         <h3>Tags Populares</h3>
                         <div class="tags-cloud" id="tagsCloud">
-                            <div class="loading"><div class="loading-spinner" style="width:30px;height:30px;"></div></div>
+                            <div class="loading">
+                                <div class="loading-spinner" style="width:30px;height:30px;"></div>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="sidebar-widget" style="text-align:center;">
-                        <button id="clearFilters" class="btn btn-outline" style="width:100%;">
-                            <i class="fas fa-times"></i> Limpar filtros
-                        </button>
-                    </div>
+                    <!-- Botão Limpar Filtros -->
+                    <button class="btn-clear" id="clearFilters">
+                        <i class="fas fa-times"></i> Limpar todos os filtros
+                    </button>
                 </aside>
             </div>
 
+            <!-- Paginação -->
             <div class="pagination">
-                <button class="page-link prev disabled" id="prevPage"><i class="fas fa-chevron-left"></i></button>
+                <button class="page-link prev disabled" id="prevPage"><i class="fas fa-chevron-left"></i> Anterior</button>
                 <div id="pageNumbers"></div>
                 <button class="page-link next" id="nextPage">Próximo <i class="fas fa-chevron-right"></i></button>
             </div>
         </div>
     </main>
 
+    <!-- FOOTER -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-info">
-                    <img src="https://i.imgur.com/9eZarki.png" alt="Tem no Entorno Sul" class="footer-logo">
+                    <img src="https://i.imgur.com/9eZarki.png" alt="Tem no Entorno Sul" class="footer-logo" onerror="this.src='https://via.placeholder.com/150x50/ffffff/256d3c?text=TEM+NO+ENTORNO+SUL'">
                     <p>Conectando moradores aos melhores comércios, serviços e eventos da região do Entorno Sul.</p>
                     <div class="social-links">
                         <a href="https://facebook.com/temnoentornosul" target="_blank" class="social-link facebook"><i class="fab fa-facebook-f"></i></a>
@@ -841,32 +1639,20 @@
         </div>
     </footer>
 
+    <!-- SCRIPT PRINCIPAL -->
     <script>
         (function() {
-            // ==================== CONFIGURAÇÕES ====================
-            // 🔴 ATENÇÃO: SUBSTITUA PELOS SEUS DADOS REAIS DO SUPABASE
-            const SUPABASE_URL = 'https://flidbkfrfosuahgphiza.supabase.co';  // COLE SUA URL AQUI
-            const SUPABASE_ANON_KEY = 'sb_publishable_mCBYSpZc45Pw345wZ1coEA_rYL61Ea8';          // COLE SUA CHAVE ANÔNIMA AQUI
-            
-            // Validação rápida
-            if (SUPABASE_URL.includes('seu-projeto') || SUPABASE_ANON_KEY.includes('sua-chave')) {
-                console.error('⚠️ Configure as credenciais do Supabase no código!');
-                document.addEventListener('DOMContentLoaded', function() {
-                    document.getElementById('publicacoesGrid').innerHTML = `
-                        <div class="error-message">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <h3>Configuração necessária</h3>
-                            <p>As credenciais do Supabase não foram configuradas.</p>
-                            <p style="font-size:0.9rem; color:#666;">Edite o arquivo e substitua SUPABASE_URL e SUPABASE_ANON_KEY.</p>
-                        </div>
-                    `;
-                });
-                return;
-            }
+            // =====================================================
+            // CONFIGURAÇÃO SUPABASE
+            // =====================================================
+            const SUPABASE_URL = 'https://flidbkfrfosuahgphiza.supabase.co';
+            const SUPABASE_ANON_KEY = 'sb_publishable_mCBYSpZc45Pw345wZ1coEA_rYL61Ea8';
             
             const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             
-            // ==================== ESTADO GLOBAL ====================
+            // =====================================================
+            // ESTADO GLOBAL
+            // =====================================================
             let publicacoes = [];
             let categorias = [];
             let todasTags = [];
@@ -876,79 +1662,146 @@
                 tag: '',
                 pagina: 1
             };
+            let usuarioAtual = null;
+            let curtidasUsuario = new Set();
+            
             const itemsPerPage = 6;
             let filteredPublicacoes = [];
 
-            // ==================== MENU HAMBURGUER ====================
+            // =====================================================
+            // UTILITÁRIOS
+            // =====================================================
+            function mostrarToast(mensagem, tipo = 'sucesso') {
+                const toast = document.createElement('div');
+                toast.className = `toast-notification ${tipo}`;
+                toast.innerHTML = `
+                    <i class="fas ${tipo === 'sucesso' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                    <span>${mensagem}</span>
+                `;
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.animation = 'slideIn 0.3s reverse';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+
+            // =====================================================
+            // VERIFICAR USUÁRIO LOGADO
+            // =====================================================
+            async function verificarUsuario() {
+                try {
+                    const { data: { user } } = await supabase.auth.getUser();
+                    usuarioAtual = user;
+                    
+                    if (user) {
+                        // Carregar curtidas do usuário
+                        const { data: likes } = await supabase
+                            .from('curtidas')
+                            .select('publicacao_id')
+                            .eq('usuario_id', user.id);
+                        
+                        if (likes) {
+                            curtidasUsuario = new Set(likes.map(l => l.publicacao_id));
+                        }
+                    }
+                } catch (error) {
+                    console.warn('Erro ao verificar usuário:', error);
+                }
+            }
+
+            // =====================================================
+            // MENU HAMBURGUER
+            // =====================================================
             function initMenu() {
                 const toggle = document.getElementById('menuToggle');
                 const mobile = document.getElementById('menuMobile');
-                if (!toggle || !mobile) return;
                 
-                toggle.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    this.classList.toggle('active');
-                    mobile.classList.toggle('active');
-                    document.body.style.overflow = mobile.classList.contains('active') ? 'hidden' : '';
-                });
-                
-                mobile.querySelectorAll('a').forEach(link => {
-                    link.addEventListener('click', () => {
-                        toggle.classList.remove('active');
-                        mobile.classList.remove('active');
-                        document.body.style.overflow = '';
+                if (toggle && mobile) {
+                    toggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        this.classList.toggle('active');
+                        mobile.classList.toggle('active');
+                        document.body.style.overflow = mobile.classList.contains('active') ? 'hidden' : '';
                     });
-                });
-                
-                document.addEventListener('click', (e) => {
-                    if (!toggle.contains(e.target) && !mobile.contains(e.target)) {
-                        toggle.classList.remove('active');
-                        mobile.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
-                });
+                    
+                    mobile.querySelectorAll('a').forEach(link => {
+                        link.addEventListener('click', () => {
+                            toggle.classList.remove('active');
+                            mobile.classList.remove('active');
+                            document.body.style.overflow = '';
+                        });
+                    });
+                    
+                    document.addEventListener('click', (e) => {
+                        if (!toggle.contains(e.target) && !mobile.contains(e.target)) {
+                            toggle.classList.remove('active');
+                            mobile.classList.remove('active');
+                            document.body.style.overflow = '';
+                        }
+                    });
+                }
             }
 
-            // ==================== CARREGAR DADOS ====================
+            // =====================================================
+            // CARREGAR DADOS DO SUPABASE
+            // =====================================================
             async function carregarDados() {
                 try {
                     console.log('🔍 Carregando dados do Supabase...');
                     
-                    // 1. Buscar publicações
                     const { data: pubs, error: pubError } = await supabase
                         .from('publicacoes')
                         .select(`
                             *,
-                            colunistas ( nome, foto_url ),
-                            categorias ( id, nome, cor_fundo )
+                            colunistas (
+                                nome,
+                                foto_url
+                            ),
+                            categorias (
+                                id,
+                                nome,
+                                cor_fundo
+                            )
                         `)
-                        .eq('status', 'publicado')
                         .order('published_at', { ascending: false });
                     
                     if (pubError) throw pubError;
                     
-                    publicacoes = pubs || [];
+                    console.log('✅ Publicações carregadas:', pubs?.length || 0);
+                    
+                    if (!pubs || pubs.length === 0) {
+                        document.getElementById('publicacoesGrid').innerHTML = `
+                            <div class="no-results">
+                                <i class="fas fa-newspaper"></i>
+                                <h3>Nenhuma publicação encontrada</h3>
+                                <p>Em breve teremos novidades!</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    publicacoes = pubs;
                     filteredPublicacoes = [...publicacoes];
                     
-                    // 2. Extrair categorias
-                    const cats = new Map();
+                    // Extrair categorias
+                    const catsMap = new Map();
                     publicacoes.forEach(p => {
-                        if (p.categorias && !cats.has(p.categorias.id)) {
-                            cats.set(p.categorias.id, p.categorias);
+                        if (p.categorias && !catsMap.has(p.categorias.id)) {
+                            catsMap.set(p.categorias.id, p.categorias);
                         }
                     });
-                    categorias = Array.from(cats.values());
+                    categorias = Array.from(catsMap.values());
                     
-                    // 3. Extrair tags
+                    // Extrair tags
                     const tagsSet = new Set();
                     publicacoes.forEach(p => {
-                        if (p.palavras_chave) {
+                        if (p.palavras_chave && Array.isArray(p.palavras_chave)) {
                             p.palavras_chave.forEach(tag => tagsSet.add(tag));
                         }
                     });
                     todasTags = Array.from(tagsSet);
                     
-                    // Renderizar
                     renderizarCategorias();
                     renderizarTabs();
                     renderizarPublicacoes();
@@ -956,121 +1809,164 @@
                     renderizarTags();
                     
                 } catch (error) {
-                    console.error('❌ Erro detalhado:', error);
-                    mostrarErro('Erro ao carregar publicações. Verifique sua conexão.');
+                    console.error('❌ Erro:', error);
+                    document.getElementById('publicacoesGrid').innerHTML = `
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>Ops! Algo deu errado</h3>
+                            <p>${error.message || 'Erro ao carregar publicações.'}</p>
+                            <button onclick="location.reload()">
+                                <i class="fas fa-redo"></i> Tentar novamente
+                            </button>
+                        </div>
+                    `;
                 }
             }
 
-            // ==================== CARREGAR MAIS VISTOS ====================
+            // =====================================================
+            // CARREGAR MAIS VISTOS
+            // =====================================================
             async function carregarMaisVistos() {
                 try {
                     const { data, error } = await supabase
                         .from('publicacoes')
-                        .select('id, titulo, views, imagem_destaque, published_at, colunistas(nome)')
-                        .eq('status', 'publicado')
+                        .select(`
+                            id,
+                            titulo,
+                            views,
+                            imagem_destaque,
+                            published_at,
+                            colunistas ( nome )
+                        `)
                         .order('views', { ascending: false })
                         .limit(3);
                     
                     if (error) throw error;
                     
                     const container = document.getElementById('maisVistosContainer');
-                    if (data?.length) {
+                    
+                    if (data && data.length > 0) {
                         container.innerHTML = data.map(p => `
-                            <div class="mais-vistos-item" onclick="window.filtrarPorId(${p.id})">
+                            <div class="mais-vistos-item" onclick="window.abrirPublicacao('${p.id}')">
                                 <img src="${p.imagem_destaque || 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=100'}" 
-                                     class="mais-vistos-image" loading="lazy"
                                      onerror="this.src='https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=100'">
                                 <div class="mais-vistos-info">
-                                    <h4><a href="#" onclick="window.filtrarPorId(${p.id}); return false;">${p.titulo.substring(0,40)}${p.titulo.length>40?'...':''}</a></h4>
+                                    <h4><a href="#" onclick="window.abrirPublicacao('${p.id}'); return false;">${p.titulo.substring(0,40)}${p.titulo.length > 40 ? '...' : ''}</a></h4>
                                     <div class="mais-vistos-stats">
-                                        <span><i class="far fa-eye"></i> ${p.views||0}</span>
+                                        <span><i class="far fa-eye"></i> ${p.views || 0}</span>
                                         <span><i class="far fa-calendar"></i> ${new Date(p.published_at).toLocaleDateString('pt-BR')}</span>
                                     </div>
                                 </div>
                             </div>
                         `).join('');
                     } else {
-                        container.innerHTML = '<p style="color: var(--cinza-texto);">Nenhum mais visto.</p>';
+                        container.innerHTML = '<p style="color:#666; text-align:center;">Nenhum mais visto.</p>';
                     }
                 } catch (error) {
-                    document.getElementById('maisVistosContainer').innerHTML = '<p style="color: var(--cinza-texto);">Erro ao carregar.</p>';
+                    document.getElementById('maisVistosContainer').innerHTML = '<p style="color:#666; text-align:center;">Erro ao carregar.</p>';
                 }
             }
 
-            // ==================== RENDERIZAR CATEGORIAS ====================
+            // =====================================================
+            // RENDERIZAR CATEGORIAS
+            // =====================================================
             function renderizarCategorias() {
                 const list = document.getElementById('categoriasList');
-                if (!categorias.length) {
-                    list.innerHTML = '<p style="color: var(--cinza-texto);">Sem categorias.</p>';
+                
+                if (categorias.length === 0) {
+                    list.innerHTML = '<p style="color:#666;">Nenhuma categoria.</p>';
                     return;
                 }
                 
                 list.innerHTML = categorias.map(cat => {
-                    const count = publicacoes.filter(p => p.categorias?.id === cat.id).length;
-                    return `<li class="categoria-item"><a data-categoria="${cat.nome}">${cat.nome} <span>${count}</span></a></li>`;
+                    const count = publicacoes.filter(p => p.categorias && p.categorias.id === cat.id).length;
+                    return `
+                        <div class="categoria-item" data-categoria="${cat.nome}">
+                            <span>${cat.nome}</span>
+                            <span>${count}</span>
+                        </div>
+                    `;
                 }).join('');
                 
-                document.querySelectorAll('.categoria-item a').forEach(item => {
-                    item.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const cat = item.dataset.categoria;
+                document.querySelectorAll('.categoria-item').forEach(item => {
+                    item.addEventListener('click', function() {
+                        const categoria = this.dataset.categoria;
+                        
                         document.querySelectorAll('.filter-tab').forEach(t => {
-                            t.classList.toggle('active', t.dataset.categoria === cat);
+                            t.classList.toggle('active', t.dataset.categoria === categoria);
                             if (t.dataset.categoria === 'todas') t.classList.remove('active');
                         });
-                        currentFilter.categoria = cat;
+                        
+                        currentFilter.categoria = categoria;
                         currentFilter.pagina = 1;
                         aplicarFiltros();
                     });
                 });
             }
 
-            // ==================== RENDERIZAR TABS ====================
+            // =====================================================
+            // RENDERIZAR TABS
+            // =====================================================
             function renderizarTabs() {
-                const tabs = document.getElementById('filterTabs');
-                const todas = tabs.querySelector('[data-categoria="todas"]');
-                tabs.innerHTML = '';
-                tabs.appendChild(todas);
+                const tabsContainer = document.getElementById('filterTabs');
+                const todasTab = document.querySelector('[data-categoria="todas"]');
+                
+                tabsContainer.innerHTML = '';
+                tabsContainer.appendChild(todasTab.cloneNode(true));
                 
                 categorias.forEach(cat => {
                     const btn = document.createElement('button');
                     btn.className = 'filter-tab';
                     btn.dataset.categoria = cat.nome;
                     btn.textContent = cat.nome;
-                    tabs.appendChild(btn);
+                    tabsContainer.appendChild(btn);
                 });
                 
-                tabs.querySelectorAll('.filter-tab').forEach(tab => {
-                    tab.addEventListener('click', () => {
-                        tabs.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-                        tab.classList.add('active');
-                        currentFilter.categoria = tab.dataset.categoria;
+                tabsContainer.querySelectorAll('.filter-tab').forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        tabsContainer.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        currentFilter.categoria = this.dataset.categoria;
                         currentFilter.pagina = 1;
                         aplicarFiltros();
                     });
                 });
             }
 
-            // ==================== RENDERIZAR TAGS ====================
+            // =====================================================
+            // RENDERIZAR TAGS
+            // =====================================================
             function renderizarTags() {
                 const cloud = document.getElementById('tagsCloud');
-                if (!todasTags.length) {
-                    cloud.innerHTML = '<p style="color: var(--cinza-texto);">Sem tags.</p>';
+                
+                if (todasTags.length === 0) {
+                    cloud.innerHTML = '<p style="color:#666;">Nenhuma tag.</p>';
                     return;
                 }
                 
-                // Contar frequência e pegar top 15
                 const freq = {};
-                publicacoes.forEach(p => p.palavras_chave?.forEach(t => freq[t] = (freq[t]||0)+1));
-                const topTags = Object.entries(freq).sort((a,b) => b[1]-a[1]).slice(0,15).map(([t]) => t);
+                publicacoes.forEach(p => {
+                    if (p.palavras_chave) {
+                        p.palavras_chave.forEach(t => freq[t] = (freq[t] || 0) + 1);
+                    }
+                });
                 
-                cloud.innerHTML = topTags.map(t => `<button class="tag" data-tag="${t}">#${t}</button>`).join('');
+                const topTags = Object.entries(freq)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 15)
+                    .map(([t]) => t);
+                
+                cloud.innerHTML = topTags.map(t => `
+                    <button class="tag" data-tag="${t}">#${t}</button>
+                `).join('');
                 
                 cloud.querySelectorAll('.tag').forEach(tag => {
-                    tag.addEventListener('click', () => {
+                    tag.addEventListener('click', function() {
                         cloud.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
-                        tag.classList.add('active');
-                        currentFilter.tag = tag.dataset.tag;
+                        this.classList.add('active');
+                        
+                        currentFilter.tag = this.dataset.tag;
                         currentFilter.pagina = 1;
                         document.getElementById('searchInput').value = '';
                         currentFilter.busca = '';
@@ -1079,20 +1975,29 @@
                 });
             }
 
-            // ==================== APLICAR FILTROS ====================
+            // =====================================================
+            // APLICAR FILTROS
+            // =====================================================
             function aplicarFiltros() {
                 filteredPublicacoes = publicacoes.filter(pub => {
-                    if (currentFilter.categoria !== 'todas' && pub.categorias?.nome !== currentFilter.categoria) return false;
+                    if (currentFilter.categoria !== 'todas' && pub.categorias?.nome !== currentFilter.categoria) {
+                        return false;
+                    }
                     
                     if (currentFilter.busca) {
                         const termo = currentFilter.busca.toLowerCase();
                         const titulo = pub.titulo?.toLowerCase().includes(termo) || false;
                         const conteudo = pub.conteudo?.toLowerCase().includes(termo) || false;
                         const autor = pub.colunistas?.nome?.toLowerCase().includes(termo) || false;
-                        if (!titulo && !conteudo && !autor) return false;
+                        
+                        if (!titulo && !conteudo && !autor) {
+                            return false;
+                        }
                     }
                     
-                    if (currentFilter.tag && (!pub.palavras_chave || !pub.palavras_chave.includes(currentFilter.tag))) return false;
+                    if (currentFilter.tag && (!pub.palavras_chave || !pub.palavras_chave.includes(currentFilter.tag))) {
+                        return false;
+                    }
                     
                     return true;
                 });
@@ -1100,12 +2005,20 @@
                 renderizarPublicacoes();
             }
 
-            // ==================== RENDERIZAR PUBLICAÇÕES ====================
+            // =====================================================
+            // RENDERIZAR PUBLICAÇÕES
+            // =====================================================
             function renderizarPublicacoes() {
                 const grid = document.getElementById('publicacoesGrid');
                 
-                if (!filteredPublicacoes.length) {
-                    grid.innerHTML = '<div class="no-results"><i class="fas fa-search"></i><h3>Nenhuma publicação encontrada</h3><p>Tente outros termos ou limpe os filtros.</p></div>';
+                if (filteredPublicacoes.length === 0) {
+                    grid.innerHTML = `
+                        <div class="no-results">
+                            <i class="fas fa-search"></i>
+                            <h3>Nenhuma publicação encontrada</h3>
+                            <p>Tente buscar com outros termos ou limpar os filtros.</p>
+                        </div>
+                    `;
                     atualizarPaginacao();
                     return;
                 }
@@ -1115,26 +2028,33 @@
                 const pageItems = filteredPublicacoes.slice(start, end);
                 
                 grid.innerHTML = pageItems.map(p => `
-                    <div class="pub-card">
+                    <div class="pub-card" onclick="window.abrirPublicacao('${p.id}')">
                         <div class="pub-card-image">
-                            <span class="pub-category" style="background-color: ${p.categorias?.cor_fundo || '#faa115'}">${p.categorias?.nome || 'Sem categoria'}</span>
+                            <span class="pub-category" style="background-color: ${p.categorias?.cor_fundo || '#faa115'}">
+                                ${p.categorias?.nome || 'Artigo'}
+                            </span>
                             <img src="${p.imagem_destaque || 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400'}" 
-                                 loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400'">
+                                 loading="lazy"
+                                 onerror="this.src='https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400'">
                         </div>
                         <div class="pub-card-content">
-                            <h3 class="pub-card-title"><a href="#" onclick="window.abrirPublicacao(${p.id}); return false;">${p.titulo}</a></h3>
+                            <h3 class="pub-card-title">
+                                <a href="#" onclick="event.preventDefault(); window.abrirPublicacao('${p.id}'); return false;">${p.titulo}</a>
+                            </h3>
                             <div class="pub-card-meta">
-                                <span><i class="far fa-calendar"></i> ${new Date(p.published_at||p.created_at).toLocaleDateString('pt-BR')}</span>
-                                <span><i class="far fa-eye"></i> ${p.views||0} visualizações</span>
+                                <span><i class="far fa-calendar"></i> ${new Date(p.published_at || p.created_at).toLocaleDateString('pt-BR')}</span>
+                                <span><i class="far fa-eye"></i> ${p.views || 0}</span>
                             </div>
-                            <p class="pub-card-excerpt">${p.subtitulo || (p.conteudo?.substring(0,100)+'...') || ''}</p>
+                            <p class="pub-card-excerpt">${p.subtitulo || (p.conteudo ? p.conteudo.substring(0, 100) + '...' : 'Clique para ler mais...')}</p>
                             <div class="pub-card-footer">
                                 <div class="pub-author">
                                     <img src="${p.colunistas?.foto_url || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50'}" 
                                          onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50'">
                                     <span>${p.colunistas?.nome || 'Autor'}</span>
                                 </div>
-                                <a href="#" class="pub-read-more" onclick="window.abrirPublicacao(${p.id}); return false;">Ler mais <i class="fas fa-arrow-right"></i></a>
+                                <span class="pub-read-more" onclick="event.stopPropagation(); window.abrirPublicacao('${p.id}'); return false;">
+                                    Ler mais <i class="fas fa-arrow-right"></i>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -1143,7 +2063,9 @@
                 atualizarPaginacao();
             }
 
-            // ==================== PAGINAÇÃO ====================
+            // =====================================================
+            // PAGINAÇÃO
+            // =====================================================
             function atualizarPaginacao() {
                 const total = Math.ceil(filteredPublicacoes.length / itemsPerPage);
                 const prev = document.getElementById('prevPage');
@@ -1164,11 +2086,12 @@
                 numbers.innerHTML = html;
                 
                 numbers.querySelectorAll('.page-link').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const page = parseInt(btn.dataset.page);
+                    btn.addEventListener('click', function() {
+                        const page = parseInt(this.dataset.page);
                         if (page !== currentFilter.pagina) {
                             currentFilter.pagina = page;
                             renderizarPublicacoes();
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
                         }
                     });
                 });
@@ -1177,7 +2100,9 @@
                 next.classList.toggle('disabled', currentFilter.pagina === total);
             }
 
-            // ==================== BUSCA ====================
+            // =====================================================
+            // BUSCA
+            // =====================================================
             function configurarBusca() {
                 const input = document.getElementById('searchInput');
                 const btn = document.getElementById('searchButton');
@@ -1192,55 +2117,322 @@
                 input.addEventListener('keypress', e => e.key === 'Enter' && buscar());
             }
 
-            // ==================== LIMPAR FILTROS ====================
+            // =====================================================
+            // LIMPAR FILTROS
+            // =====================================================
             function configurarLimparFiltros() {
-                document.getElementById('clearFilters').addEventListener('click', () => {
-                    currentFilter = { categoria: 'todas', busca: '', tag: '', pagina: 1 };
+                const limparTopo = document.getElementById('clearFiltersTop');
+                const limparSidebar = document.getElementById('clearFilters');
+                
+                const limparTodos = () => {
+                    currentFilter = {
+                        categoria: 'todas',
+                        busca: '',
+                        tag: '',
+                        pagina: 1
+                    };
+                    
                     document.getElementById('searchInput').value = '';
+                    
                     document.querySelectorAll('.filter-tab').forEach(t => {
                         t.classList.toggle('active', t.dataset.categoria === 'todas');
                     });
+                    
                     document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+                    
                     filteredPublicacoes = [...publicacoes];
                     renderizarPublicacoes();
-                });
+                    
+                    mostrarToast('Filtros limpos com sucesso!');
+                };
+                
+                limparTopo.addEventListener('click', limparTodos);
+                limparSidebar.addEventListener('click', limparTodos);
             }
 
-            // ==================== FUNÇÕES GLOBAIS ====================
-            window.filtrarPorId = (id) => {
-                const pub = publicacoes.find(p => p.id === id);
-                if (pub) {
-                    currentFilter.busca = pub.titulo;
-                    document.getElementById('searchInput').value = pub.titulo;
-                    aplicarFiltros();
+            // =====================================================
+            // ABRIR PUBLICAÇÃO NO MODAL
+            // =====================================================
+            window.abrirPublicacao = async function(id) {
+                try {
+                    // Buscar publicação completa
+                    const { data: pub, error } = await supabase
+                        .from('publicacoes')
+                        .select(`
+                            *,
+                            colunistas (*),
+                            categorias (*)
+                        `)
+                        .eq('id', id)
+                        .single();
+                    
+                    if (error) throw error;
+                    
+                    // Incrementar visualização (assíncrono - não precisa aguardar)
+                    supabase
+                        .from('publicacoes')
+                        .update({ views: (pub.views || 0) + 1 })
+                        .eq('id', id)
+                        .then(() => {
+                            // Atualizar view no estado local
+                            const pubIndex = publicacoes.findIndex(p => p.id === id);
+                            if (pubIndex !== -1) {
+                                publicacoes[pubIndex].views = (publicacoes[pubIndex].views || 0) + 1;
+                            }
+                        });
+                    
+                    // Verificar se usuário já curtiu
+                    const usuarioCurtiu = curtidasUsuario.has(id);
+                    
+                    // Criar modal
+                    const modal = document.createElement('div');
+                    modal.className = 'modal-leitura';
+                    modal.innerHTML = `
+                        <div class="modal-content">
+                            <button class="modal-close"><i class="fas fa-times"></i></button>
+                            <div class="modal-header" style="background: linear-gradient(135deg, ${pub.categorias?.cor_fundo || '#256d3c'}, var(--verde-claro));">
+                                <span class="modal-categoria">${pub.categorias?.nome || 'Artigo'}</span>
+                                <h1>${pub.titulo}</h1>
+                                <div class="modal-meta">
+                                    <span><i class="far fa-calendar"></i> ${new Date(pub.published_at || pub.created_at).toLocaleDateString('pt-BR')}</span>
+                                    <span><i class="far fa-eye"></i> ${(pub.views || 0) + 1} visualizações</span>
+                                    <span><i class="far fa-user"></i> ${pub.colunistas?.nome || 'Autor'}</span>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                ${pub.imagem_destaque ? `
+                                    <img src="${pub.imagem_destaque}" alt="${pub.titulo}" class="modal-imagem" 
+                                         onerror="this.src='https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800'">
+                                ` : ''}
+                                <div class="modal-conteudo">
+                                    ${pub.conteudo ? pub.conteudo.replace(/\\n/g, '<br>') : '<p>Conteúdo em breve...</p>'}
+                                </div>
+                                ${pub.palavras_chave && pub.palavras_chave.length > 0 ? `
+                                    <div class="modal-tags">
+                                        ${pub.palavras_chave.map(t => `<span class="tag" onclick="window.filtrarPorTag('${t}')">#${t}</span>`).join('')}
+                                    </div>
+                                ` : ''}
+                            </div>
+                            <div class="modal-footer">
+                                <div class="modal-stats">
+                                    <span><i class="far fa-eye"></i> ${(pub.views || 0) + 1}</span>
+                                    <span><i class="far fa-heart" id="curtidasCount"></i> <span id="curtidasNumero">0</span></span>
+                                </div>
+                                <div class="modal-actions">
+                                    <button class="btn-like ${usuarioCurtiu ? 'liked' : ''}" id="btnCurtir">
+                                        <i class="fas fa-heart"></i>
+                                        <span>${usuarioCurtiu ? 'Curtido' : 'Curtir'}</span>
+                                    </button>
+                                    <button class="btn-share" id="btnCompartilhar">
+                                        <i class="fas fa-share-alt"></i>
+                                        <span>Compartilhar</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(modal);
+                    document.body.style.overflow = 'hidden';
+                    
+                    // Carregar número de curtidas
+                    carregarCurtidas(id);
+                    
+                    // Configurar botão de curtir
+                    const btnCurtir = document.getElementById('btnCurtir');
+                    if (btnCurtir) {
+                        btnCurtir.addEventListener('click', async (e) => {
+                            e.stopPropagation();
+                            await toggleCurtir(id);
+                        });
+                    }
+                    
+                    // Configurar botão de compartilhar
+                    const btnCompartilhar = document.getElementById('btnCompartilhar');
+                    if (btnCompartilhar) {
+                        btnCompartilhar.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            compartilharPublicacao(pub.titulo);
+                        });
+                    }
+                    
+                    // Fechar modal
+                    const closeBtn = modal.querySelector('.modal-close');
+                    closeBtn.addEventListener('click', () => {
+                        modal.remove();
+                        document.body.style.overflow = '';
+                    });
+                    
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            modal.remove();
+                            document.body.style.overflow = '';
+                        }
+                    });
+                    
+                    // Fechar com ESC
+                    const handleEsc = (e) => {
+                        if (e.key === 'Escape') {
+                            modal.remove();
+                            document.body.style.overflow = '';
+                            document.removeEventListener('keydown', handleEsc);
+                        }
+                    };
+                    document.addEventListener('keydown', handleEsc);
+                    
+                } catch (error) {
+                    console.error('Erro ao abrir publicação:', error);
+                    mostrarToast('Erro ao carregar a publicação', 'error');
                 }
             };
 
-            window.abrirPublicacao = (id) => {
-                alert(`📰 Abrir publicação ID: ${id} - Página individual em breve!`);
-                supabase.rpc('increment_visualizacoes', { table_name: 'publicacoes', record_id: id })
-                    .catch(err => console.warn('Erro ao incrementar view:', err));
-            };
-
-            // ==================== MOSTRAR ERRO ====================
-            function mostrarErro(msg) {
-                document.getElementById('publicacoesGrid').innerHTML = `
-                    <div class="error-message">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <h3>Ops! Algo deu errado</h3>
-                        <p>${msg}</p>
-                        <button class="btn btn-primary" onclick="location.reload()"><i class="fas fa-redo"></i> Tentar novamente</button>
-                    </div>
-                `;
+            // =====================================================
+            // FUNÇÕES DE CURTIDA
+            // =====================================================
+            async function carregarCurtidas(publicacaoId) {
+                try {
+                    const { count, error } = await supabase
+                        .from('curtidas')
+                        .select('*', { count: 'exact', head: true })
+                        .eq('publicacao_id', publicacaoId);
+                    
+                    if (error) throw error;
+                    
+                    const span = document.getElementById('curtidasNumero');
+                    if (span) span.textContent = count || 0;
+                    
+                } catch (error) {
+                    console.warn('Erro ao carregar curtidas:', error);
+                }
             }
 
-            // ==================== INICIALIZAÇÃO ====================
-            document.addEventListener('DOMContentLoaded', () => {
-                console.log('🚀 Inicializando...');
+            async function toggleCurtir(publicacaoId) {
+                if (!usuarioAtual) {
+                    mostrarToast('Faça login para curtir publicações', 'error');
+                    setTimeout(() => {
+                        window.location.href = './admin/login.html?redirect=publicacoes.html';
+                    }, 2000);
+                    return;
+                }
+                
+                const btn = document.getElementById('btnCurtir');
+                const liked = btn.classList.contains('liked');
+                
+                try {
+                    if (liked) {
+                        // Remover curtida
+                        const { error } = await supabase
+                            .from('curtidas')
+                            .delete()
+                            .eq('publicacao_id', publicacaoId)
+                            .eq('usuario_id', usuarioAtual.id);
+                        
+                        if (error) throw error;
+                        
+                        curtidasUsuario.delete(publicacaoId);
+                        btn.classList.remove('liked');
+                        btn.querySelector('span').textContent = 'Curtir';
+                        
+                        // Atualizar contador
+                        const span = document.getElementById('curtidasNumero');
+                        span.textContent = parseInt(span.textContent) - 1;
+                        
+                    } else {
+                        // Adicionar curtida
+                        const { error } = await supabase
+                            .from('curtidas')
+                            .insert({
+                                publicacao_id: publicacaoId,
+                                usuario_id: usuarioAtual.id
+                            });
+                        
+                        if (error) throw error;
+                        
+                        curtidasUsuario.add(publicacaoId);
+                        btn.classList.add('liked');
+                        btn.querySelector('span').textContent = 'Curtido';
+                        
+                        // Atualizar contador
+                        const span = document.getElementById('curtidasNumero');
+                        span.textContent = parseInt(span.textContent) + 1;
+                    }
+                    
+                    mostrarToast(liked ? 'Curtida removida' : 'Publicação curtida!');
+                    
+                } catch (error) {
+                    console.error('Erro ao curtir:', error);
+                    mostrarToast('Erro ao processar curtida', 'error');
+                }
+            }
+
+            // =====================================================
+            // COMPARTILHAR
+            // =====================================================
+            function compartilharPublicacao(titulo) {
+                const url = window.location.href;
+                
+                if (navigator.share) {
+                    navigator.share({
+                        title: titulo,
+                        text: 'Confira esta publicação no Tem no Entorno Sul!',
+                        url: url
+                    }).catch(() => {});
+                } else {
+                    navigator.clipboard.writeText(url).then(() => {
+                        mostrarToast('Link copiado para compartilhar!');
+                    });
+                }
+            }
+
+            // =====================================================
+            // FILTRAR POR TAG
+            // =====================================================
+            window.filtrarPorTag = function(tag) {
+                currentFilter.tag = tag;
+                currentFilter.pagina = 1;
+                
+                // Fechar modal se estiver aberto
+                const modal = document.querySelector('.modal-leitura');
+                if (modal) {
+                    modal.remove();
+                    document.body.style.overflow = '';
+                }
+                
+                aplicarFiltros();
+                
+                // Destacar tag na sidebar
+                document.querySelectorAll('.tag').forEach(t => {
+                    t.classList.toggle('active', t.dataset.tag === tag);
+                });
+            };
+
+            // =====================================================
+            // INICIALIZAÇÃO
+            // =====================================================
+            document.addEventListener('DOMContentLoaded', async () => {
                 initMenu();
+                await verificarUsuario();
                 configurarBusca();
                 configurarLimparFiltros();
-                carregarDados();
+                await carregarDados();
+                
+                // Configurar botões de paginação
+                document.getElementById('prevPage').addEventListener('click', () => {
+                    if (currentFilter.pagina > 1) {
+                        currentFilter.pagina--;
+                        renderizarPublicacoes();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                });
+                
+                document.getElementById('nextPage').addEventListener('click', () => {
+                    const total = Math.ceil(filteredPublicacoes.length / itemsPerPage);
+                    if (currentFilter.pagina < total) {
+                        currentFilter.pagina++;
+                        renderizarPublicacoes();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                });
             });
 
         })();
