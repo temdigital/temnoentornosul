@@ -1175,7 +1175,7 @@
             </div>
         </section>
 
-        <!-- PARCEIROS EM DESTAQUE (APENAS PREMIUM) -->
+        <!-- PARCEIROS PREMIUM (AGORA ALEATÓRIO) -->
         <section class="parceiros-destaque">
             <div class="container">
                 <div class="section-header">
@@ -1481,19 +1481,18 @@
             }
 
             // =====================================================
-            // CARREGAR PARCEIROS PREMIUM
+            // CARREGAR PARCEIROS PREMIUM (AGORA ALEATÓRIO)
             // =====================================================
             async function carregarParceiros() {
                 const container = document.getElementById('parceiros-destaque');
                 
                 try {
+                    // Buscar todos os parceiros premium ativos
                     const { data, error } = await supabase
                         .from('parceiros')
                         .select('*')
                         .eq('status', 'ativo')
-                        .eq('plano', 'premium') // APENAS PREMIUM
-                        .order('visualizacoes', { ascending: false })
-                        .limit(4);
+                        .eq('plano', 'premium');
                     
                     if (error) throw error;
                     
@@ -1502,7 +1501,13 @@
                         return;
                     }
                     
-                    container.innerHTML = data.map(p => `
+                    // Embaralhar aleatoriamente
+                    const shuffled = [...data].sort(() => Math.random() - 0.5);
+                    
+                    // Pegar apenas os 4 primeiros (ou menos se tiver menos de 4)
+                    const selected = shuffled.slice(0, 4);
+                    
+                    container.innerHTML = selected.map(p => `
                         <div class="parceiro-card premium">
                             <span class="badge-premium">Premium</span>
                             <img src="${p.logo_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200'}" 
@@ -1599,13 +1604,12 @@
                     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
                     
                     try {
-                        // Inserir no banco de dados
                         const { error } = await supabase
                             .from('newsletter')
                             .insert([{ email: email }]);
                         
                         if (error) {
-                            if (error.code === '23505') { // email já existe
+                            if (error.code === '23505') {
                                 mostrarToast('Este e-mail já está cadastrado!', 'error');
                             } else {
                                 throw error;
@@ -1631,7 +1635,7 @@
             document.addEventListener('DOMContentLoaded', () => {
                 initMenu();
                 carregarPublicacoes();
-                carregarParceiros();
+                carregarParceiros(); // Agora é aleatório!
                 carregarEventos();
                 initNewsletter();
             });
