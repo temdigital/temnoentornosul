@@ -619,7 +619,6 @@
             .login-wrapper {
                 grid-template-columns: 1fr;
             }
-            
             .login-upsell-side {
                 display: none;
             }
@@ -629,21 +628,17 @@
             .login-form-side {
                 padding: 30px 20px;
             }
-            
             .logo img {
                 height: 50px;
             }
-            
             .login-form-side h1 {
                 font-size: 1.8rem;
             }
-            
             .form-options {
                 flex-direction: column;
                 gap: 15px;
                 align-items: flex-start;
             }
-            
             .toast-notification {
                 left: 20px;
                 right: 20px;
@@ -782,10 +777,10 @@
                         <i class="fab fa-google"></i>
                         Entrar com Google
                     </button>
-            <!--        <button class="btn-social facebook" id="facebookLoginBtn">
+                    <button class="btn-social facebook" id="facebookLoginBtn">
                         <i class="fab fa-facebook-f"></i>
                         Entrar com Facebook
-                    </button>   -->
+                    </button>
                 </div>
                 
                 <p class="terms-text">
@@ -869,6 +864,56 @@
             });
 
             // =====================================================
+            // REDIRECIONAMENTO BASEADO NO TIPO DE USUÁRIO
+            // =====================================================
+            async function redirecionarPorTipoUsuario(userId) {
+                try {
+                    // Buscar perfil do usuário
+                    const { data: profile, error } = await supabase
+                        .from('profiles')
+                        .select('tipo_usuario')
+                        .eq('id', userId)
+                        .single();
+                    
+                    if (error) throw error;
+                    
+                    // ADMIN
+                    if (profile.tipo_usuario === 'admin') {
+                        window.location.href = './dashboard.html';
+                        return;
+                    }
+                    
+                    // COLUNISTA
+                    if (profile.tipo_usuario === 'colunista') {
+                        window.location.href = './dashboard_colunista.html';
+                        return;
+                    }
+                    
+                    // COMÉRCIO - verificar se é premium
+                    if (profile.tipo_usuario === 'comercio') {
+                        const { data: parceiro } = await supabase
+                            .from('parceiros')
+                            .select('plano')
+                            .eq('user_id', userId)
+                            .single();
+                        
+                        // Se for premium, vai para dashboard do parceiro
+                        if (parceiro && parceiro.plano === 'premium') {
+                            window.location.href = './dashboard_parceiro.html';
+                            return;
+                        }
+                    }
+                    
+                    // Padrão: página inicial
+                    window.location.href = '../index.html';
+                    
+                } catch (error) {
+                    console.error('Erro ao redirecionar:', error);
+                    window.location.href = '../index.html';
+                }
+            }
+
+            // =====================================================
             // UTILITÁRIOS
             // =====================================================
             function mostrarToast(mensagem, tipo = 'sucesso') {
@@ -889,57 +934,6 @@
             function validarEmail(email) {
                 const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 return re.test(email);
-            }
-
-            // =====================================================
-            // REDIRECIONAR BASEADO NO TIPO DE USUÁRIO
-            // =====================================================
-            async function redirecionarPorTipoUsuario(userId) {
-                try {
-                    // Buscar perfil do usuário
-                    const { data: profile, error } = await supabase
-                        .from('profiles')
-                        .select('tipo_usuario')
-                        .eq('id', userId)
-                        .single();
-                    
-                    if (error) throw error;
-                    
-                    // Se for admin
-                    if (profile.tipo_usuario === 'admin') {
-                        window.location.href = '../admin/dashboard.html';
-                        return;
-                    }
-                    
-                    // Se for colunista
-                    if (profile.tipo_usuario === 'colunista') {
-                        window.location.href = '../colunista/dashboard.html';
-                        return;
-                    }
-                    
-                    // Se for comercio, verificar se é premium
-                    if (profile.tipo_usuario === 'comercio') {
-                        const { data: parceiro } = await supabase
-                            .from('parceiros')
-                            .select('plano')
-                            .eq('user_id', userId)
-                            .single();
-                        
-                        // Se for premium, vai para dashboard do parceiro
-                        if (parceiro && parceiro.plano === 'premium') {
-                            window.location.href = '../parceiro/dashboard.html';
-                            return;
-                        }
-                    }
-                    
-                    // Padrão: página inicial
-                    window.location.href = '../index.html';
-                    
-                } catch (error) {
-                    console.error('Erro ao redirecionar:', error);
-                    // Fallback para página inicial
-                    window.location.href = '../index.html';
-                }
             }
 
             // =====================================================
