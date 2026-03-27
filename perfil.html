@@ -131,7 +131,7 @@
             box-shadow: var(--sombra);
         }
         
-        /* USER MENU - CORRIGIDO */
+        /* USER MENU */
         .user-menu {
             position: relative;
             display: flex;
@@ -308,7 +308,6 @@
             padding: 50px 40px;
             text-align: center;
             color: var(--branco);
-            position: relative;
         }
         
         .perfil-avatar {
@@ -338,7 +337,6 @@
             border-radius: 30px;
             font-size: 0.85rem;
             margin-top: 12px;
-            backdrop-filter: blur(5px);
         }
         
         .perfil-badge.premium {
@@ -390,7 +388,7 @@
             color: var(--cinza-escuro);
         }
         
-        /* ==================== PUBLICAÇÕES CURTIDAS ==================== */
+        /* CURTIDAS */
         .curtidas-section {
             margin-top: 40px;
             padding-top: 20px;
@@ -410,8 +408,6 @@
             overflow: hidden;
             transition: var(--transicao);
             cursor: pointer;
-            display: flex;
-            flex-direction: column;
         }
         
         .curtida-card:hover {
@@ -428,11 +424,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s;
-        }
-        
-        .curtida-card:hover .curtida-imagem img {
-            transform: scale(1.05);
         }
         
         .curtida-info {
@@ -444,7 +435,6 @@
             font-weight: 600;
             color: var(--verde-escuro);
             margin-bottom: 8px;
-            line-height: 1.4;
         }
         
         .curtida-meta {
@@ -452,11 +442,6 @@
             gap: 15px;
             font-size: 0.75rem;
             color: var(--cinza-texto);
-        }
-        
-        .curtida-meta i {
-            margin-right: 3px;
-            color: var(--laranja);
         }
         
         .btn-ver-publicacao {
@@ -468,7 +453,6 @@
             color: var(--verde-escuro);
             font-size: 0.75rem;
             cursor: pointer;
-            transition: var(--transicao);
             width: 100%;
         }
         
@@ -486,13 +470,7 @@
             margin-top: 20px;
         }
         
-        .no-curtidas i {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            color: var(--cinza-medio);
-        }
-        
-        /* ==================== FORMULÁRIO ==================== */
+        /* FORMULÁRIO */
         .form-group {
             margin-bottom: 20px;
         }
@@ -609,7 +587,7 @@
             border-top: 1px solid var(--cinza-medio);
         }
         
-        /* ==================== LOADING ==================== */
+        /* LOADING */
         .loading-container {
             display: flex;
             justify-content: center;
@@ -630,7 +608,7 @@
             to { transform: rotate(360deg); }
         }
         
-        /* ==================== TOAST ==================== */
+        /* TOAST */
         .toast-notification {
             position: fixed;
             bottom: 30px;
@@ -645,7 +623,6 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            font-weight: 500;
         }
         
         .toast-notification.error {
@@ -653,17 +630,11 @@
         }
         
         @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
         
-        /* ==================== FOOTER ==================== */
+        /* FOOTER */
         .footer {
             background: #1a4f2b;
             color: var(--branco);
@@ -717,125 +688,41 @@
             margin-bottom: 20px;
         }
         
-        .footer-links ul,
-        .footer-contato ul {
-            list-style: none;
-        }
+        .footer-links ul, .footer-contato ul { list-style: none; }
+        .footer-links li, .footer-contato li { margin-bottom: 12px; }
+        .footer-links a { color: rgba(255,255,255,0.8); text-decoration: none; }
+        .footer-links a:hover { color: var(--amarelo); }
+        .footer-contato li { display: flex; align-items: center; gap: 10px; }
+        .footer-contato i { color: var(--amarelo); }
+        .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap; gap: 15px; }
+        .footer-extra { display: flex; gap: 20px; flex-wrap: wrap; }
         
-        .footer-links li,
-        .footer-contato li {
-            margin-bottom: 12px;
-        }
-        
-        .footer-links a {
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-        }
-        
-        .footer-links a:hover {
-            color: var(--amarelo);
-        }
-        
-        .footer-contato li {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .footer-contato i {
-            color: var(--amarelo);
-        }
-        
-        .footer-bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        
-        .footer-extra {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        
-        /* ==================== RESPONSIVIDADE ==================== */
+        /* RESPONSIVIDADE */
         @media (max-width: 992px) {
-            .info-grid,
-            .curtidas-grid {
-                grid-template-columns: 1fr;
-            }
-            .footer-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .info-grid, .curtidas-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
         }
         
         @media (max-width: 768px) {
-            .menu-desktop {
-                display: none;
-            }
-            .menu-toggle {
-                display: flex;
-            }
-            .perfil-header {
-                padding: 35px 25px;
-            }
-            .perfil-avatar {
-                width: 100px;
-                height: 100px;
-            }
-            .perfil-header h1 {
-                font-size: 1.6rem;
-            }
-            .perfil-body {
-                padding: 25px;
-            }
-            .action-buttons {
-                text-align: center;
-            }
-            .btn-salvar,
-            .btn-cancelar {
-                width: 100%;
-                justify-content: center;
-                margin: 5px 0;
-            }
-            .btn-cancelar {
-                margin-left: 0;
-                margin-top: 10px;
-            }
-            .footer-grid {
-                grid-template-columns: 1fr;
-            }
-            .footer-bottom {
-                flex-direction: column;
-                text-align: center;
-            }
+            .menu-desktop { display: none; }
+            .menu-toggle { display: flex; }
+            .perfil-header { padding: 35px 25px; }
+            .perfil-avatar { width: 100px; height: 100px; }
+            .perfil-header h1 { font-size: 1.6rem; }
+            .perfil-body { padding: 25px; }
+            .action-buttons { text-align: center; }
+            .btn-salvar, .btn-cancelar { width: 100%; justify-content: center; margin: 5px 0; }
+            .btn-cancelar { margin-left: 0; margin-top: 10px; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; text-align: center; }
         }
         
         @media (max-width: 576px) {
-            .perfil-header {
-                padding: 30px 20px;
-            }
-            .perfil-avatar {
-                width: 80px;
-                height: 80px;
-            }
-            .perfil-header h1 {
-                font-size: 1.4rem;
-            }
-            .perfil-body {
-                padding: 20px;
-            }
-            .toast-notification {
-                left: 20px;
-                right: 20px;
-                bottom: 20px;
-                text-align: center;
-                justify-content: center;
-            }
+            .perfil-header { padding: 30px 20px; }
+            .perfil-avatar { width: 80px; height: 80px; }
+            .perfil-header h1 { font-size: 1.4rem; }
+            .perfil-body { padding: 20px; }
+            .toast-notification { left: 20px; right: 20px; bottom: 20px; text-align: center; justify-content: center; }
         }
     </style>
 </head>
@@ -847,7 +734,6 @@
                     <img src="https://i.imgur.com/9eZarki.png" alt="Tem no Entorno Sul">
                 </a>
             </div>
-            
             <nav class="menu-desktop">
                 <a href="../index.html">Início</a>
                 <a href="./publicacoes.html">Publicações</a>
@@ -857,11 +743,7 @@
                 <a href="./contato.html">Contato</a>
                 <div id="authButtonDesktop"></div>
             </nav>
-            
-            <div class="menu-toggle" id="menuToggle">
-                <span></span><span></span><span></span>
-            </div>
-            
+            <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
             <div class="menu-mobile" id="menuMobile">
                 <div id="userInfoMobile"></div>
                 <a href="../index.html">Início</a>
@@ -878,9 +760,7 @@
     <main>
         <div class="container">
             <div class="perfil-container" id="perfilContainer">
-                <div class="loading-container">
-                    <div class="loading-spinner"></div>
-                </div>
+                <div class="loading-container"><div class="loading-spinner"></div></div>
             </div>
         </div>
     </main>
@@ -890,177 +770,72 @@
             <div class="footer-grid">
                 <div class="footer-info">
                     <img src="https://i.imgur.com/9eZarki.png" alt="Tem no Entorno Sul" class="footer-logo">
-                    <p>Conectando moradores aos melhores comércios, serviços e eventos da região do Entorno Sul.</p>
+                    <p>Conectando moradores aos melhores comércios, serviços e eventos da região.</p>
                     <div class="social-links">
                         <a href="https://facebook.com/temnoentornosul" target="_blank" class="social-link facebook"><i class="fab fa-facebook-f"></i></a>
                         <a href="https://instagram.com/temnoentornosul" target="_blank" class="social-link instagram"><i class="fab fa-instagram"></i></a>
                         <a href="https://youtube.com/@temnoentornosul" target="_blank" class="social-link youtube"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
-                
                 <div class="footer-links">
                     <h3>Links Rápidos</h3>
-                    <ul>
-                        <li><a href="../index.html">Início</a></li>
-                        <li><a href="./publicacoes.html">Publicações</a></li>
-                        <li><a href="./eventos.html">Eventos</a></li>
-                        <li><a href="./colunistas.html">Colunistas</a></li>
-                        <li><a href="./parceiros.html">Parceiros</a></li>
-                        <li><a href="./contato.html">Contato</a></li>
-                    </ul>
+                    <ul><li><a href="../index.html">Início</a></li><li><a href="./publicacoes.html">Publicações</a></li><li><a href="./eventos.html">Eventos</a></li><li><a href="./colunistas.html">Colunistas</a></li><li><a href="./parceiros.html">Parceiros</a></li><li><a href="./contato.html">Contato</a></li></ul>
                 </div>
-                
                 <div class="footer-links">
                     <h3>Para Comércios</h3>
-                    <ul>
-                        <li><a href="../cadastro.html">Cadastrar grátis</a></li>
-                        <li><a href="../planos.html">Planos premium</a></li>
-                        <li><a href="../admin/login.html">Área do parceiro</a></li>
-                    </ul>
+                    <ul><li><a href="../cadastro.html">Cadastrar grátis</a></li><li><a href="../planos.html">Planos premium</a></li><li><a href="../admin/login.html">Área do parceiro</a></li></ul>
                 </div>
-                
                 <div class="footer-contato">
                     <h3>Contato</h3>
-                    <ul>
-                        <li><i class="fas fa-phone"></i> (45) 99999-9999</li>
-                        <li><i class="fas fa-envelope"></i> contato@temnoentornosul.com.br</li>
-                        <li><i class="fas fa-map-marker-alt"></i> Toledo - PR</li>
-                    </ul>
+                    <ul><li><i class="fas fa-phone"></i> (45) 99999-9999</li><li><i class="fas fa-envelope"></i> contato@temnoentornosul.com.br</li><li><i class="fas fa-map-marker-alt"></i> Toledo - PR</li></ul>
                 </div>
             </div>
-            
             <div class="footer-bottom">
-                <p>&copy; 2026 Tem no Entorno Sul. Todos os direitos reservados.</p>
-                <div class="footer-extra">
-                    <a href="../termos.html">Termos de uso</a>
-                    <a href="../privacidade.html">Política de privacidade</a>
-                </div>
+                <p>&copy; 2026 Tem no Entorno Sul</p>
+                <div class="footer-extra"><a href="../termos.html">Termos</a><a href="../privacidade.html">Privacidade</a></div>
             </div>
         </div>
     </footer>
 
     <script>
         (function() {
-            // =====================================================
-            // CONFIGURAÇÃO SUPABASE
-            // =====================================================
             const SUPABASE_URL = 'https://flidbkfrfosuahgphiza.supabase.co';
             const SUPABASE_ANON_KEY = 'sb_publishable_mCBYSpZc45Pw345wZ1coEA_rYL61Ea8';
-            
             const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             
-            let usuarioAtual = null;
-            let perfilAtual = null;
-            let parceiroAtual = null;
-            let colunistaAtual = null;
-            let curtidas = [];
+            let usuarioAtual = null, perfilAtual = null, parceiroAtual = null, colunistaAtual = null, curtidas = [];
             
-            function mostrarToast(mensagem, tipo = 'sucesso') {
+            function mostrarToast(msg, tipo = 'sucesso') {
                 const toast = document.createElement('div');
                 toast.className = `toast-notification ${tipo === 'sucesso' ? '' : 'error'}`;
-                toast.innerHTML = `<i class="fas ${tipo === 'sucesso' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${mensagem}`;
+                toast.innerHTML = `<i class="fas ${tipo === 'sucesso' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${msg}`;
                 document.body.appendChild(toast);
-                setTimeout(() => {
-                    toast.style.animation = 'slideInRight 0.3s reverse';
-                    setTimeout(() => toast.remove(), 300);
-                }, 3000);
+                setTimeout(() => { toast.style.animation = 'slideInRight 0.3s reverse'; setTimeout(() => toast.remove(), 300); }, 3000);
             }
             
-            function formatarTelefone(telefone) {
-                if (!telefone) return '';
-                const numeros = telefone.replace(/\D/g, '');
-                if (numeros.length === 11) return numeros.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-                if (numeros.length === 10) return numeros.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
-                return telefone;
-            }
+            function formatarTelefone(tel) { if (!tel) return ''; const nums = tel.replace(/\D/g, ''); if (nums.length === 11) return nums.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3'); if (nums.length === 10) return nums.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3'); return tel; }
+            function formatarData(data) { if (!data) return ''; return new Date(data).toLocaleDateString('pt-BR'); }
             
-            function formatarData(data) {
-                if (!data) return '';
-                const d = new Date(data);
-                return d.toLocaleDateString('pt-BR');
-            }
-            
-            // =====================================================
-            // CARREGAR CURTIDAS DO USUÁRIO
-            // =====================================================
             async function carregarCurtidas() {
                 if (!usuarioAtual) return [];
-                
                 try {
-                    // Buscar publicações curtidas pelo usuário
-                    const { data, error } = await supabase
-                        .from('curtidas')
-                        .select(`
-                            publicacao_id,
-                            created_at,
-                            publicacoes (
-                                id,
-                                titulo,
-                                imagem_destaque,
-                                published_at,
-                                colunistas ( nome )
-                            )
-                        `)
-                        .eq('usuario_id', usuarioAtual.id)
-                        .order('created_at', { ascending: false });
-                    
-                    if (error) throw error;
-                    
+                    const { data } = await supabase.from('curtidas').select(`publicacao_id, created_at, publicacoes(id, titulo, imagem_destaque, published_at, colunistas(nome))`).eq('usuario_id', usuarioAtual.id).order('created_at', { ascending: false });
                     curtidas = data || [];
                     return curtidas;
-                    
-                } catch (error) {
-                    console.error('Erro ao carregar curtidas:', error);
-                    return [];
-                }
+                } catch (e) { return []; }
             }
             
-            // =====================================================
-            // CARREGAR MENU
-            // =====================================================
             async function carregarMenu() {
                 const { data: { session } } = await supabase.auth.getSession();
-                const authDesktop = document.getElementById('authButtonDesktop');
-                const authMobile = document.getElementById('authButtonMobile');
-                const userInfoMobile = document.getElementById('userInfoMobile');
-                
+                const authDesktop = document.getElementById('authButtonDesktop'), authMobile = document.getElementById('authButtonMobile'), userInfoMobile = document.getElementById('userInfoMobile');
                 if (!authDesktop) return;
-                
                 if (session) {
-                    const { data: profile } = await supabase
-                        .from('profiles')
-                        .select('nome, avatar_url')
-                        .eq('id', session.user.id)
-                        .single();
-                    
+                    const { data: profile } = await supabase.from('profiles').select('nome, avatar_url').eq('id', session.user.id).single();
                     const nome = profile?.nome || session.user.email?.split('@')[0] || 'Usuário';
                     const avatar = profile?.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(nome)}&background=256d3c&color=fff&bold=true`;
-                    
-                    authDesktop.innerHTML = `
-                        <div class="user-menu">
-                            <img src="${avatar}" class="user-avatar">
-                            <span class="user-name">${nome.split(' ')[0]}</span>
-                            <div class="user-dropdown">
-                                <a href="./perfil.html"><i class="fas fa-user"></i> Meu Perfil</a>
-                                <a href="#" onclick="event.preventDefault(); fazerLogout()"><i class="fas fa-sign-out-alt"></i> Sair</a>
-                            </div>
-                        </div>
-                    `;
-                    
-                    if (userInfoMobile) {
-                        userInfoMobile.innerHTML = `
-                            <div class="user-info-mobile">
-                                <img src="${avatar}" class="user-avatar-mobile">
-                                <div>
-                                    <div class="user-name-mobile">${nome}</div>
-                                    <div class="user-email-mobile">${session.user.email}</div>
-                                </div>
-                            </div>
-                        `;
-                    }
-                    if (authMobile) {
-                        authMobile.innerHTML = `<a href="#" onclick="event.preventDefault(); fazerLogout()" class="btn-logout-mobile"><i class="fas fa-sign-out-alt"></i> Sair</a>`;
-                    }
+                    authDesktop.innerHTML = `<div class="user-menu"><img src="${avatar}" class="user-avatar"><span class="user-name">${nome.split(' ')[0]}</span><div class="user-dropdown"><a href="./perfil.html"><i class="fas fa-user"></i> Meu Perfil</a><a href="#" onclick="event.preventDefault(); fazerLogout()"><i class="fas fa-sign-out-alt"></i> Sair</a></div></div>`;
+                    if (userInfoMobile) userInfoMobile.innerHTML = `<div class="user-info-mobile"><img src="${avatar}" class="user-avatar-mobile"><div><div class="user-name-mobile">${nome}</div><div class="user-email-mobile">${session.user.email}</div></div></div>`;
+                    if (authMobile) authMobile.innerHTML = `<a href="#" onclick="event.preventDefault(); fazerLogout()" class="btn-logout-mobile"><i class="fas fa-sign-out-alt"></i> Sair</a>`;
                 } else {
                     authDesktop.innerHTML = `<a href="../admin/login.html" class="btn-login"><i class="fas fa-user"></i> Login</a>`;
                     if (userInfoMobile) userInfoMobile.innerHTML = '';
@@ -1069,199 +844,93 @@
             }
             
             function initMobileMenu() {
-                const toggle = document.getElementById('menuToggle');
-                const mobile = document.getElementById('menuMobile');
+                const toggle = document.getElementById('menuToggle'), mobile = document.getElementById('menuMobile');
                 if (toggle && mobile) {
-                    toggle.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        toggle.classList.toggle('active');
-                        mobile.classList.toggle('active');
-                        document.body.style.overflow = mobile.classList.contains('active') ? 'hidden' : '';
-                    });
-                    mobile.querySelectorAll('a').forEach(link => {
-                        link.addEventListener('click', () => {
-                            toggle.classList.remove('active');
-                            mobile.classList.remove('active');
-                            document.body.style.overflow = '';
-                        });
-                    });
+                    toggle.addEventListener('click', (e) => { e.preventDefault(); toggle.classList.toggle('active'); mobile.classList.toggle('active'); document.body.style.overflow = mobile.classList.contains('active') ? 'hidden' : ''; });
+                    mobile.querySelectorAll('a').forEach(link => { link.addEventListener('click', () => { toggle.classList.remove('active'); mobile.classList.remove('active'); document.body.style.overflow = ''; }); });
                 }
             }
             
-            window.fazerLogout = async function() {
-                await supabase.auth.signOut();
-                window.location.href = '../index.html';
-            };
+            window.fazerLogout = async function() { await supabase.auth.signOut(); window.location.href = '../index.html'; };
+            window.abrirPublicacao = function(id) { sessionStorage.setItem('publicacaoParaAbrir', id); window.location.href = './publicacoes.html'; };
             
-            window.abrirPublicacao = function(id) {
-                sessionStorage.setItem('publicacaoParaAbrir', id);
-                window.location.href = './publicacoes.html';
-            };
-            
-            // =====================================================
-            // VERIFICAR AUTENTICAÇÃO
-            // =====================================================
             async function verificarAutenticacao() {
                 const { data: { session } } = await supabase.auth.getSession();
-                if (!session) {
-                    window.location.href = '../admin/login.html';
-                    return false;
-                }
+                if (!session) { window.location.href = '../admin/login.html'; return false; }
                 usuarioAtual = session.user;
                 return true;
             }
             
-            // =====================================================
-            // CARREGAR DADOS DO PERFIL
-            // =====================================================
             async function carregarPerfil() {
                 if (!usuarioAtual) return;
-                
-                const { data: profile } = await supabase
-                    .from('profiles')
-                    .select('*')
-                    .eq('id', usuarioAtual.id)
-                    .single();
-                
+                const { data: profile } = await supabase.from('profiles').select('*').eq('id', usuarioAtual.id).single();
                 if (profile) {
                     perfilAtual = profile;
-                    
                     if (profile.tipo_usuario === 'comercio') {
-                        const { data: parceiro } = await supabase
-                            .from('parceiros')
-                            .select('*')
-                            .eq('user_id', usuarioAtual.id)
-                            .single();
+                        const { data: parceiro } = await supabase.from('parceiros').select('*').eq('user_id', usuarioAtual.id).single();
                         if (parceiro) parceiroAtual = parceiro;
                     } else if (profile.tipo_usuario === 'colunista') {
-                        const { data: colunista } = await supabase
-                            .from('colunistas')
-                            .select('*')
-                            .eq('user_id', usuarioAtual.id)
-                            .single();
+                        const { data: colunista } = await supabase.from('colunistas').select('*').eq('user_id', usuarioAtual.id).single();
                         if (colunista) colunistaAtual = colunista;
                     }
                 }
-                
                 await carregarCurtidas();
                 renderizarPerfil();
             }
             
-            // =====================================================
-            // RENDERIZAR PERFIL (COM CURTIDAS)
-            // =====================================================
             function renderizarPerfil() {
                 const container = document.getElementById('perfilContainer');
                 const avatarUrl = perfilAtual?.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(perfilAtual?.nome || 'Usuário')}&background=256d3c&color=fff&bold=true`;
-                
-                const tipoUsuarioLabel = {
-                    'admin': 'Administrador',
-                    'colunista': 'Colunista',
-                    'comercio': 'Parceiro Comercial'
-                }[perfilAtual?.tipo_usuario] || 'Usuário';
-                
+                const tipoLabel = { 'admin': 'Administrador', 'colunista': 'Colunista', 'comercio': 'Parceiro Comercial' }[perfilAtual?.tipo_usuario] || 'Usuário';
                 const badgePremium = (parceiroAtual?.plano === 'premium') ? '<span class="perfil-badge premium">⭐ Premium</span>' : '';
                 
-                // Informações extras
-                let infoExtraHtml = '';
+                let infoExtra = '';
                 if (parceiroAtual) {
-                    infoExtraHtml = `
-                        <div class="info-section">
-                            <h3><i class="fas fa-store"></i> Informações Comerciais</h3>
-                            <div class="info-grid">
-                                <div class="info-row"><div class="info-label">Nome Fantasia</div><div class="info-value">${parceiroAtual.nome_fantasia || 'Não informado'}</div></div>
-                                <div class="info-row"><div class="info-label">Razão Social</div><div class="info-value">${parceiroAtual.razao_social || 'Não informado'}</div></div>
-                                <div class="info-row"><div class="info-label">CNPJ</div><div class="info-value">${parceiroAtual.cnpj || 'Não informado'}</div></div>
-                                <div class="info-row"><div class="info-label">Plano</div><div class="info-value">${parceiroAtual.plano === 'premium' ? 'Premium' : 'Grátis'}</div></div>
-                                <div class="info-row"><div class="info-label">Endereço</div><div class="info-value">${parceiroAtual.endereco ? `${parceiroAtual.endereco}, ${parceiroAtual.numero || ''}` : 'Não informado'}</div></div>
-                                <div class="info-row"><div class="info-label">Bairro/Cidade</div><div class="info-value">${parceiroAtual.bairro || ''} ${parceiroAtual.cidade ? `- ${parceiroAtual.cidade}` : ''}</div></div>
-                            </div>
-                        </div>
-                    `;
+                    infoExtra = `<div class="info-section"><h3><i class="fas fa-store"></i> Informações Comerciais</h3><div class="info-grid">
+                        <div class="info-row"><div class="info-label">Nome Fantasia</div><div class="info-value">${parceiroAtual.nome_fantasia || 'Não informado'}</div></div>
+                        <div class="info-row"><div class="info-label">Razão Social</div><div class="info-value">${parceiroAtual.razao_social || 'Não informado'}</div></div>
+                        <div class="info-row"><div class="info-label">CNPJ</div><div class="info-value">${parceiroAtual.cnpj || 'Não informado'}</div></div>
+                        <div class="info-row"><div class="info-label">Plano</div><div class="info-value">${parceiroAtual.plano === 'premium' ? 'Premium' : 'Grátis'}</div></div>
+                        <div class="info-row"><div class="info-label">Endereço</div><div class="info-value">${parceiroAtual.endereco ? `${parceiroAtual.endereco}, ${parceiroAtual.numero || ''}` : 'Não informado'}</div></div>
+                        <div class="info-row"><div class="info-label">Bairro/Cidade</div><div class="info-value">${parceiroAtual.bairro || ''} ${parceiroAtual.cidade ? `- ${parceiroAtual.cidade}` : ''}</div></div>
+                    </div></div>`;
                 } else if (colunistaAtual) {
-                    infoExtraHtml = `
-                        <div class="info-section">
-                            <h3><i class="fas fa-pen-fancy"></i> Informações do Colunista</h3>
-                            <div class="info-grid">
-                                <div class="info-row"><div class="info-label">Área de atuação</div><div class="info-value">${colunistaAtual.area_atuacao || 'Não informada'}</div></div>
-                                <div class="info-row"><div class="info-label">Mini currículo</div><div class="info-value">${colunistaAtual.mini_curriculo || 'Não informado'}</div></div>
-                            </div>
-                        </div>
-                    `;
+                    infoExtra = `<div class="info-section"><h3><i class="fas fa-pen-fancy"></i> Informações do Colunista</h3><div class="info-grid">
+                        <div class="info-row"><div class="info-label">Área de atuação</div><div class="info-value">${colunistaAtual.area_atuacao || 'Não informada'}</div></div>
+                        <div class="info-row"><div class="info-label">Mini currículo</div><div class="info-value">${colunistaAtual.mini_curriculo || 'Não informado'}</div></div>
+                    </div></div>`;
                 }
                 
-                // Publicações curtidas
                 let curtidasHtml = '';
                 if (curtidas && curtidas.length > 0) {
-                    curtidasHtml = `
-                        <div class="curtidas-section">
-                            <h3><i class="fas fa-heart" style="color: #dc3545;"></i> Publicações que você curtiu (${curtidas.length})</h3>
-                            <div class="curtidas-grid">
-                                ${curtidas.map(c => {
-                                    const pub = c.publicacoes;
-                                    if (!pub) return '';
-                                    return `
-                                        <div class="curtida-card" onclick="abrirPublicacao('${pub.id}')">
-                                            <div class="curtida-imagem">
-                                                <img src="${pub.imagem_destaque || 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400'}" alt="${pub.titulo}">
-                                            </div>
-                                            <div class="curtida-info">
-                                                <div class="curtida-titulo">${pub.titulo.substring(0, 60)}${pub.titulo.length > 60 ? '...' : ''}</div>
-                                                <div class="curtida-meta">
-                                                    <span><i class="far fa-calendar"></i> ${formatarData(pub.published_at)}</span>
-                                                    <span><i class="far fa-user"></i> ${pub.colunistas?.nome || 'Autor'}</span>
-                                                </div>
-                                                <button class="btn-ver-publicacao" onclick="event.stopPropagation(); abrirPublicacao('${pub.id}')">Ver publicação</button>
-                                            </div>
-                                        </div>
-                                    `;
-                                }).join('')}
-                            </div>
-                        </div>
-                    `;
+                    curtidasHtml = `<div class="curtidas-section"><h3><i class="fas fa-heart" style="color: #dc3545;"></i> Publicações que você curtiu (${curtidas.length})</h3><div class="curtidas-grid">
+                        ${curtidas.map(c => { const pub = c.publicacoes; if (!pub) return ''; return `<div class="curtida-card" onclick="abrirPublicacao('${pub.id}')"><div class="curtida-imagem"><img src="${pub.imagem_destaque || 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400'}" alt="${pub.titulo}"></div><div class="curtida-info"><div class="curtida-titulo">${pub.titulo.substring(0, 60)}${pub.titulo.length > 60 ? '...' : ''}</div><div class="curtida-meta"><span><i class="far fa-calendar"></i> ${formatarData(pub.published_at)}</span><span><i class="far fa-user"></i> ${pub.colunistas?.nome || 'Autor'}</span></div><button class="btn-ver-publicacao" onclick="event.stopPropagation(); abrirPublicacao('${pub.id}')">Ver publicação</button></div></div>`; }).join('')}
+                    </div></div>`;
                 } else {
-                    curtidasHtml = `
-                        <div class="curtidas-section">
-                            <h3><i class="fas fa-heart"></i> Publicações que você curtiu</h3>
-                            <div class="no-curtidas">
-                                <i class="far fa-heart"></i>
-                                <p>Você ainda não curtiu nenhuma publicação.</p>
-                                <p style="font-size: 0.9rem;">Explore as publicações e clique no coração para curtir!</p>
-                                <a href="./publicacoes.html" class="btn btn-outline" style="margin-top: 15px; display: inline-block;">Explorar publicações</a>
-                            </div>
-                        </div>
-                    `;
+                    curtidasHtml = `<div class="curtidas-section"><h3><i class="fas fa-heart"></i> Publicações que você curtiu</h3><div class="no-curtidas"><i class="far fa-heart"></i><p>Você ainda não curtiu nenhuma publicação.</p><p style="font-size:0.9rem;">Explore as publicações e clique no coração para curtir!</p><a href="./publicacoes.html" class="btn btn-outline" style="margin-top:15px; display:inline-block;">Explorar publicações</a></div></div>`;
                 }
                 
                 container.innerHTML = `
                     <div class="perfil-card">
                         <div class="perfil-header">
-                            <img src="${avatarUrl}" alt="${perfilAtual?.nome}" class="perfil-avatar" id="avatarPreview">
+                            <img src="${avatarUrl}" class="perfil-avatar" id="avatarPreview">
                             <h1 id="nomePreview">${perfilAtual?.nome || 'Usuário'}</h1>
                             <div class="perfil-email">${usuarioAtual.email}</div>
-                            <span class="perfil-badge">${tipoUsuarioLabel}</span>
-                            ${badgePremium}
+                            <span class="perfil-badge">${tipoLabel}</span>${badgePremium}
                         </div>
                         <div class="perfil-body">
                             <div id="viewMode" class="view-mode">
-                                <div class="info-section">
-                                    <h3><i class="fas fa-user-circle"></i> Informações Pessoais</h3>
-                                    <div class="info-grid">
-                                        <div class="info-row"><div class="info-label">Nome completo</div><div class="info-value" id="viewNome">${perfilAtual?.nome || 'Não informado'}</div></div>
-                                        <div class="info-row"><div class="info-label">E-mail</div><div class="info-value">${usuarioAtual.email}</div></div>
-                                        <div class="info-row"><div class="info-label">Telefone</div><div class="info-value" id="viewTelefone">${formatarTelefone(perfilAtual?.telefone) || 'Não informado'}</div></div>
-                                    </div>
-                                </div>
-                                ${infoExtraHtml}
-                                ${curtidasHtml}
-                                <div class="action-buttons">
-                                    <button class="btn-editar" onclick="ativarEdicao()"><i class="fas fa-edit"></i> Editar Perfil</button>
-                                </div>
+                                <div class="info-section"><h3><i class="fas fa-user-circle"></i> Informações Pessoais</h3><div class="info-grid">
+                                    <div class="info-row"><div class="info-label">Nome completo</div><div class="info-value" id="viewNome">${perfilAtual?.nome || 'Não informado'}</div></div>
+                                    <div class="info-row"><div class="info-label">E-mail</div><div class="info-value">${usuarioAtual.email}</div></div>
+                                    <div class="info-row"><div class="info-label">Telefone</div><div class="info-value" id="viewTelefone">${formatarTelefone(perfilAtual?.telefone) || 'Não informado'}</div></div>
+                                </div></div>
+                                ${infoExtra}${curtidasHtml}
+                                <div class="action-buttons"><button class="btn-editar" onclick="ativarEdicao()"><i class="fas fa-edit"></i> Editar Perfil</button></div>
                             </div>
                             <div id="editMode" class="edit-mode">
                                 <form id="editForm">
-                                    <div class="info-section">
-                                        <h3><i class="fas fa-edit"></i> Editar Informações</h3>
+                                    <div class="info-section"><h3><i class="fas fa-edit"></i> Editar Informações</h3>
                                         <div class="form-group"><label><i class="fas fa-user"></i> Nome completo</label><input type="text" id="editNome" value="${(perfilAtual?.nome || '').replace(/"/g, '&quot;')}" required></div>
                                         <div class="form-group"><label><i class="fas fa-phone"></i> Telefone</label><input type="tel" id="editTelefone" value="${perfilAtual?.telefone || ''}" placeholder="(45) 99999-9999"></div>
                                         ${parceiroAtual ? `
@@ -1277,29 +946,15 @@
                                             <div class="form-group"><label><i class="fas fa-file-alt"></i> Mini currículo</label><textarea id="editMiniCurriculo" rows="3">${colunistaAtual.mini_curriculo || ''}</textarea></div>
                                         ` : ''}
                                     </div>
-                                    <div class="action-buttons">
-                                        <button type="submit" class="btn-salvar"><i class="fas fa-save"></i> Salvar alterações</button>
-                                        <button type="button" class="btn-cancelar" onclick="cancelarEdicao()"><i class="fas fa-times"></i> Cancelar</button>
-                                    </div>
+                                    <div class="action-buttons"><button type="submit" class="btn-salvar"><i class="fas fa-save"></i> Salvar alterações</button><button type="button" class="btn-cancelar" onclick="cancelarEdicao()"><i class="fas fa-times"></i> Cancelar</button></div>
                                 </form>
                             </div>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             }
             
-            // =====================================================
-            // FUNÇÕES DE EDIÇÃO
-            // =====================================================
-            window.ativarEdicao = function() {
-                document.getElementById('viewMode').classList.add('hidden');
-                document.getElementById('editMode').classList.add('active');
-            };
-            
-            window.cancelarEdicao = function() {
-                document.getElementById('viewMode').classList.remove('hidden');
-                document.getElementById('editMode').classList.remove('active');
-            };
+            window.ativarEdicao = function() { document.getElementById('viewMode').classList.add('hidden'); document.getElementById('editMode').classList.add('active'); };
+            window.cancelarEdicao = function() { document.getElementById('viewMode').classList.remove('hidden'); document.getElementById('editMode').classList.remove('active'); };
             
             async function salvarPerfil(event) {
                 event.preventDefault();
@@ -1308,7 +963,7 @@
                 if (!nome) { mostrarToast('Nome é obrigatório', 'error'); return; }
                 
                 const { error: profileError } = await supabase.from('profiles').update({ nome, telefone: telefone || null }).eq('id', usuarioAtual.id);
-                if (profileError) { mostrarToast('Erro ao salvar alterações', 'error'); return; }
+                if (profileError) { mostrarToast('Erro ao salvar perfil', 'error'); console.error(profileError); return; }
                 
                 if (parceiroAtual) {
                     const updates = {};
@@ -1334,9 +989,6 @@
                 await carregarMenu();
             }
             
-            // =====================================================
-            // INICIALIZAÇÃO
-            // =====================================================
             document.addEventListener('DOMContentLoaded', async () => {
                 initMobileMenu();
                 if (await verificarAutenticacao()) {
