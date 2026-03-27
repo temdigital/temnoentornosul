@@ -5,16 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Dashboard Admin - Tem no Entorno Sul</title>
     
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://i.imgur.com/9eZarki.png">
-    
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    
-    <!-- Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
@@ -72,6 +65,7 @@
             align-items: center;
             gap: 15px;
             position: relative;
+            cursor: pointer;
         }
         
         .user-avatar {
@@ -79,6 +73,7 @@
             height: 40px;
             border-radius: 50%;
             object-fit: cover;
+            border: 2px solid var(--verde-claro);
         }
         
         .user-name {
@@ -93,22 +88,34 @@
             background: var(--branco);
             border-radius: 10px;
             box-shadow: var(--sombra-forte);
-            min-width: 180px;
-            display: none;
+            min-width: 200px;
+            overflow: hidden;
             z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
         }
         
-        .user-menu:hover .user-dropdown { display: block; }
+        .user-menu:hover .user-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
         
         .user-dropdown a {
-            display: block;
-            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
             color: var(--cinza-escuro);
             text-decoration: none;
             border-bottom: 1px solid var(--cinza-claro);
         }
         
+        .user-dropdown a:last-child { border-bottom: none; }
         .user-dropdown a:hover { background: var(--cinza-claro); color: var(--laranja); }
+        .user-dropdown i { width: 20px; color: var(--laranja); }
         
         /* DASHBOARD LAYOUT */
         .dashboard {
@@ -149,7 +156,6 @@
         }
         
         .sidebar nav a i { width: 24px; color: var(--laranja); }
-        
         .sidebar nav a:hover,
         .sidebar nav a.active {
             background: var(--verde-claro);
@@ -184,25 +190,19 @@
         .stat-label { font-size: 0.9rem; opacity: 0.9; }
         
         /* TABELAS */
-        .table-container {
-            overflow-x: auto;
-            margin-top: 20px;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid var(--cinza-medio);
-        }
-        
+        .table-container { overflow-x: auto; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--cinza-medio); }
         th { background: var(--cinza-claro); color: var(--verde-escuro); }
         
-        .btn { padding: 6px 12px; border-radius: 5px; border: none; cursor: pointer; transition: var(--transicao); margin: 0 2px; }
+        .btn {
+            padding: 6px 12px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: var(--transicao);
+            margin: 0 2px;
+        }
         .btn-primary { background: var(--verde-escuro); color: var(--branco); }
         .btn-primary:hover { background: #1a4f2b; }
         .btn-danger { background: #dc3545; color: var(--branco); }
@@ -231,6 +231,7 @@
             z-index: 3000;
             animation: slideIn 0.3s;
         }
+        .toast-notification.error { background: #dc3545; }
         
         @keyframes slideIn {
             from { transform: translateX(100%); opacity: 0; }
@@ -248,6 +249,8 @@
         
         @media (max-width: 768px) {
             .stats-grid { grid-template-columns: 1fr; }
+            .container { padding: 0 15px; }
+            .main-content { padding: 20px; }
         }
     </style>
 </head>
@@ -303,7 +306,7 @@
         
         async function verificarAdmin() {
             const { data: { session } } = await supabase.auth.getSession();
-            if (!session) { window.location.href = '../admin/login.html'; return false; }
+            if (!session) { window.location.href = './login.html'; return false; }
             
             const { data: profile } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
             if (!profile || profile.tipo_usuario !== 'admin') {
@@ -372,8 +375,7 @@
         
         function mostrarToast(msg, tipo = 'sucesso') {
             const toast = document.createElement('div');
-            toast.className = `toast-notification`;
-            toast.style.background = tipo === 'error' ? '#dc3545' : '#256d3c';
+            toast.className = `toast-notification ${tipo === 'error' ? 'error' : ''}`;
             toast.innerHTML = `<i class="fas ${tipo === 'error' ? 'fa-exclamation-circle' : 'fa-check-circle'}"></i> ${msg}`;
             document.body.appendChild(toast);
             setTimeout(() => toast.remove(), 3000);
@@ -392,7 +394,10 @@
                 </div>
                 <h3>Últimas Publicações</h3>
                 <div class="table-container">
-                    <table><thead><tr><th>Título</th><th>Autor</th><th>Categoria</th><th>Data</th></tr></thead><tbody id="ultimasPublicacoes"></tbody></table>
+                    58
+                        <thead> <th>Título</th><th>Autor</th><th>Categoria</th><th>Data</th> </thead>
+                        <tbody id="ultimasPublicacoes"></tbody>
+                    </table>
                 </div>
             `;
             const { data: pubs } = await supabase.from('publicacoes').select('*, colunistas(nome), categorias(nome)').order('created_at', { ascending: false }).limit(5);
@@ -409,7 +414,10 @@
                     <button class="btn btn-primary" onclick="mostrarFormPublicacao()"><i class="fas fa-plus"></i> Nova Publicação</button>
                 </div>
                 <div class="table-container">
-                    <table><thead><tr><th>Título</th><th>Autor</th><th>Categoria</th><th>Status</th><th>Data</th><th>Ações</th></tr></thead><tbody id="publicacoesList"></tbody></table>
+                    58
+                        <thead><th>Título</th><th>Autor</th><th>Categoria</th><th>Status</th><th>Data</th><th>Ações</th></thead>
+                        <tbody id="publicacoesList"></tbody>
+                    </table>
                 </div>
                 <div id="formPublicacao" style="display: none; margin-top: 30px; padding: 20px; background: var(--cinza-claro); border-radius: 15px;">
                     <h3>Nova Publicação</h3>
@@ -476,6 +484,8 @@
             }
         };
         
+        window.editarPublicacao = (id) => { mostrarToast('Edição em breve...', 'warning'); };
+        
         async function renderizarEventos() {
             const eventos = await carregarEventos();
             const container = document.getElementById('mainContent');
@@ -485,7 +495,10 @@
                     <button class="btn btn-primary" onclick="mostrarFormEvento()"><i class="fas fa-plus"></i> Novo Evento</button>
                 </div>
                 <div class="table-container">
-                    <table><thead><tr><th>Título</th><th>Data</th><th>Local</th><th>Status</th><th>Ações</th></tr></thead><tbody id="eventosList"></tbody></table>
+                    58
+                        <thead><th>Título</th><th>Data</th><th>Local</th><th>Status</th><th>Ações</th></thead>
+                        <tbody id="eventosList"></tbody>
+                    </table>
                 </div>
                 <div id="formEvento" style="display: none; margin-top: 30px; padding: 20px; background: var(--cinza-claro); border-radius: 15px;">
                     <h3>Novo Evento</h3>
@@ -549,9 +562,18 @@
             document.getElementById('mainContent').innerHTML = `
                 <h2>Parceiros</h2>
                 <div class="table-container">
-                    <table><thead><tr><th>Nome</th><th>Plano</th><th>Status</th><th>Contato</th><th>Ações</th></tr></thead><tbody>${parceiros.map(p => `
-                        <tr><td>${p.nome_fantasia}</td><td><span style="background: ${p.plano === 'premium' ? '#faa115' : '#91b69d'}; color: white; padding: 2px 8px; border-radius: 20px;">${p.plano === 'premium' ? 'Premium' : 'Grátis'}</span></td><td>${p.status}</td><td>${p.email_contato || '-'}</td><td><button class="btn btn-danger" onclick="excluirParceiro('${p.id}')">Excluir</button></td></tr>
-                    `).join('')}</tbody></table>
+                    58
+                        <thead><th>Nome</th><th>Plano</th><th>Status</th><th>Contato</th><th>Ações</th></thead>
+                        <tbody>${parceiros.map(p => `
+                            <tr>
+                                <td>${p.nome_fantasia}</td>
+                                <td><span style="background: ${p.plano === 'premium' ? '#faa115' : '#91b69d'}; color: white; padding: 2px 8px; border-radius: 20px;">${p.plano === 'premium' ? 'Premium' : 'Grátis'}</span></td>
+                                <td>${p.status}</td>
+                                <td>${p.email_contato || '-'}</td>
+                                <td><button class="btn btn-danger" onclick="excluirParceiro('${p.id}')">Excluir</button></td>
+                            </tr>
+                        `).join('')}</tbody>
+                    </table>
                 </div>
             `;
         }
@@ -569,9 +591,18 @@
             document.getElementById('mainContent').innerHTML = `
                 <h2>Colunistas</h2>
                 <div class="table-container">
-                    <table><thead><tr><th>Nome</th><th>Área</th><th>E-mail</th><th>Status</th><th>Ações</th></tr></thead><tbody>${colunistas.map(c => `
-                        <tr><td>${c.nome}</td><td>${c.area_atuacao || '-'}</td><td>${c.profiles?.email || '-'}</td><td><span style="background: ${c.ativo ? '#28a745' : '#dc3545'}; color: white; padding: 2px 8px; border-radius: 20px;">${c.ativo ? 'Ativo' : 'Inativo'}</span></td><td><button class="btn btn-danger" onclick="excluirColunista('${c.id}')">Excluir</button></td></tr>
-                    `).join('')}</tbody></table>
+                    <table>
+                        <thead><th>Nome</th><th>Área</th><th>E-mail</th><th>Status</th><th>Ações</th></thead>
+                        <tbody>${colunistas.map(c => `
+                            <tr>
+                                <td>${c.nome}</td>
+                                <td>${c.area_atuacao || '-'}</td>
+                                <td>${c.profiles?.email || '-'}</td>
+                                <td><span style="background: ${c.ativo ? '#28a745' : '#dc3545'}; color: white; padding: 2px 8px; border-radius: 20px;">${c.ativo ? 'Ativo' : 'Inativo'}</span></td>
+                                <td><button class="btn btn-danger" onclick="excluirColunista('${c.id}')">Excluir</button></td>
+                            </tr>
+                        `).join('')}</tbody>
+                    </table>
                 </div>
             `;
         }
@@ -589,9 +620,19 @@
             document.getElementById('mainContent').innerHTML = `
                 <h2>Mensagens de Contato</h2>
                 <div class="table-container">
-                    <table><thead><tr><th>Nome</th><th>E-mail</th><th>Assunto</th><th>Mensagem</th><th>Data</th><th>Status</th></tr></thead><tbody>${contatos.map(c => `
-                        <tr><td>${c.nome}</td><td>${c.email}</td><td>${c.assunto || '-'}</td><td>${c.mensagem.substring(0, 50)}...</td><td>${formatarData(c.created_at)}</td><td><span style="background: ${c.lida ? '#28a745' : '#ffc107'}; color: white; padding: 2px 8px; border-radius: 20px;">${c.lida ? 'Lida' : 'Não lida'}</span></td></tr>
-                    `).join('')}</tbody></table>
+                    <table>
+                        <thead><th>Nome</th><th>E-mail</th><th>Assunto</th><th>Mensagem</th><th>Data</th><th>Status</th></thead>
+                        <tbody>${contatos.map(c => `
+                            <tr>
+                                <td>${c.nome}</td>
+                                <td>${c.email}</td>
+                                <td>${c.assunto || '-'}</td>
+                                <td>${c.mensagem.substring(0, 50)}...</td>
+                                <td>${formatarData(c.created_at)}</td>
+                                <td><span style="background: ${c.lida ? '#28a745' : '#ffc107'}; color: white; padding: 2px 8px; border-radius: 20px;">${c.lida ? 'Lida' : 'Não lida'}</span></td>
+                            </tr>
+                        `).join('')}</tbody>
+                    </table>
                 </div>
             `;
         }
@@ -601,9 +642,18 @@
             document.getElementById('mainContent').innerHTML = `
                 <h2>Usuários</h2>
                 <div class="table-container">
-                    <table><thead><tr><th>Nome</th><th>E-mail</th><th>Tipo</th><th>Telefone</th><th>Data Cadastro</th></tr></thead><tbody>${usuarios.map(u => `
-                        <tr><td>${u.nome}</td><td>${u.email}</td><td><span style="background: ${u.tipo_usuario === 'admin' ? '#256d3c' : u.tipo_usuario === 'colunista' ? '#faa115' : '#91b69d'}; color: white; padding: 2px 8px; border-radius: 20px;">${u.tipo_usuario === 'admin' ? 'Admin' : u.tipo_usuario === 'colunista' ? 'Colunista' : 'Comércio'}</span></td><td>${u.telefone || '-'}</td><td>${formatarData(u.created_at)}</td></tr>
-                    `).join('')}</tbody></table>
+                    <table>
+                        <thead><th>Nome</th><th>E-mail</th><th>Tipo</th><th>Telefone</th><th>Data Cadastro</th></thead>
+                        <tbody>${usuarios.map(u => `
+                            <tr>
+                                <td>${u.nome}</td>
+                                <td>${u.email}</td>
+                                <td><span style="background: ${u.tipo_usuario === 'admin' ? '#256d3c' : u.tipo_usuario === 'colunista' ? '#faa115' : '#91b69d'}; color: white; padding: 2px 8px; border-radius: 20px;">${u.tipo_usuario === 'admin' ? 'Admin' : u.tipo_usuario === 'colunista' ? 'Colunista' : 'Comércio'}</span></td>
+                                <td>${u.telefone || '-'}</td>
+                                <td>${formatarData(u.created_at)}</td>
+                            </tr>
+                        `).join('')}</tbody>
+                    </table>
                 </div>
             `;
         }
