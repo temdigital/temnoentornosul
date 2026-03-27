@@ -111,6 +111,7 @@
             color: var(--laranja);
         }
         
+        /* Botão Login */
         .btn-login {
             background: var(--verde-escuro);
             color: var(--branco) !important;
@@ -121,6 +122,71 @@
         
         .btn-login:hover {
             background: #1a4f2b;
+        }
+        
+        /* Menu Usuário Logado */
+        .user-menu {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--verde-claro);
+        }
+        
+        .user-name {
+            color: var(--verde-escuro);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        
+        .user-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: var(--branco);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            min-width: 180px;
+            z-index: 100;
+            display: none;
+            overflow: hidden;
+        }
+        
+        .user-menu:hover .user-dropdown {
+            display: block;
+        }
+        
+        .user-dropdown a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            color: var(--cinza-escuro);
+            text-decoration: none;
+            transition: background 0.3s ease;
+            border-bottom: 1px solid var(--cinza-claro);
+        }
+        
+        .user-dropdown a:last-child {
+            border-bottom: none;
+        }
+        
+        .user-dropdown a:hover {
+            background: var(--cinza-claro);
+            color: var(--laranja);
+        }
+        
+        .user-dropdown i {
+            width: 20px;
+            color: var(--laranja);
         }
         
         /* MENU HAMBURGUER */
@@ -191,7 +257,8 @@
             border-bottom: none;
         }
         
-        .menu-mobile .btn-login {
+        .menu-mobile .btn-login,
+        .menu-mobile .btn-logout-mobile {
             display: inline-block;
             margin-top: 15px;
             padding: 12px 30px;
@@ -200,6 +267,32 @@
             border-radius: 5px;
             text-align: center;
             border-bottom: none;
+        }
+        
+        .menu-mobile .user-info-mobile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--cinza-claro);
+            margin-bottom: 15px;
+        }
+        
+        .menu-mobile .user-avatar-mobile {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .menu-mobile .user-name-mobile {
+            font-weight: 600;
+            color: var(--verde-escuro);
+        }
+        
+        .menu-mobile .user-email-mobile {
+            font-size: 0.85rem;
+            color: var(--cinza-texto);
         }
         
         /* HERO SECTION */
@@ -1056,16 +1149,14 @@
             </div>
             
             <!-- Menu Desktop -->
-            <nav class="menu-desktop">
+            <nav class="menu-desktop" id="menuDesktop">
                 <a href="./index.html" class="active">Início</a>
                 <a href="./publicacoes.html">Publicações</a>
                 <a href="./eventos.html">Eventos</a>
                 <a href="./colunistas.html">Colunistas</a>
                 <a href="./parceiros.html">Parceiros</a>
                 <a href="./contato.html">Contato</a>
-                <a href="./admin/login.html" class="btn-login">
-                    <i class="fas fa-user"></i> Login
-                </a>
+                <div id="authButtonDesktop"></div>
             </nav>
             
             <!-- Menu Hamburguer -->
@@ -1077,15 +1168,14 @@
             
             <!-- Menu Mobile -->
             <div class="menu-mobile" id="menuMobile">
+                <div id="userInfoMobile"></div>
                 <a href="./index.html">Início</a>
                 <a href="./publicacoes.html">Publicações</a>
                 <a href="./eventos.html">Eventos</a>
                 <a href="./colunistas.html">Colunistas</a>
                 <a href="./parceiros.html">Parceiros</a>
                 <a href="./contato.html">Contato</a>
-                <a href="./admin/login.html" class="btn-login">
-                    <i class="fas fa-user"></i> Login
-                </a>
+                <div id="authButtonMobile"></div>
             </div>
         </div>
     </header>
@@ -1175,7 +1265,7 @@
             </div>
         </section>
 
-        <!-- PARCEIROS PREMIUM (AGORA ALEATÓRIO) -->
+        <!-- PARCEIROS PREMIUM -->
         <section class="parceiros-destaque">
             <div class="container">
                 <div class="section-header">
@@ -1348,7 +1438,6 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script>
         // =====================================================
         // CONFIGURAÇÃO DO SUPABASE
@@ -1374,44 +1463,134 @@
                 }, 3000);
             }
 
-            function formatarData(data) {
-                if (!data) return '';
-                const d = new Date(data);
-                return d.toLocaleDateString('pt-BR');
-            }
-
-            function getMesAbreviado(numero) {
-                const meses = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
-                return meses[numero - 1];
-            }
-
             // =====================================================
-            // MENU HAMBURGUER
+            // FUNÇÃO DE LOGOUT
             // =====================================================
-            function initMenu() {
-                const menuToggle = document.getElementById('menuToggle');
-                const menuMobile = document.getElementById('menuMobile');
-                
-                if (menuToggle && menuMobile) {
-                    menuToggle.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        
-                        this.classList.toggle('active');
-                        menuMobile.classList.toggle('active');
-                        
-                        document.body.style.overflow = menuMobile.classList.contains('active') ? 'hidden' : '';
-                    });
+            async function fazerLogout() {
+                try {
+                    const { error } = await supabase.auth.signOut();
+                    if (error) throw error;
                     
-                    const menuLinks = menuMobile.querySelectorAll('a');
-                    menuLinks.forEach(link => {
-                        link.addEventListener('click', function() {
-                            menuToggle.classList.remove('active');
-                            menuMobile.classList.remove('active');
-                            document.body.style.overflow = '';
-                        });
-                    });
+                    mostrarToast('Logout realizado com sucesso!');
+                    
+                    // Recarregar a página para atualizar o menu
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                    
+                } catch (error) {
+                    console.error('Erro ao fazer logout:', error);
+                    mostrarToast('Erro ao fazer logout', 'error');
                 }
+            }
+
+            // =====================================================
+            // ATUALIZAR MENU BASEADO NO USUÁRIO LOGADO
+            // =====================================================
+            async function atualizarMenu() {
+                const { data: { session } } = await supabase.auth.getSession();
+                const authButtonDesktop = document.getElementById('authButtonDesktop');
+                const authButtonMobile = document.getElementById('authButtonMobile');
+                const userInfoMobile = document.getElementById('userInfoMobile');
+                
+                if (session) {
+                    // Buscar perfil do usuário
+                    const { data: profile } = await supabase
+                        .from('profiles')
+                        .select('nome, avatar_url')
+                        .eq('id', session.user.id)
+                        .single();
+                    
+                    const nome = profile?.nome || session.user.email?.split('@')[0] || 'Usuário';
+                    const avatar = profile?.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(nome)}&background=256d3c&color=fff&bold=true`;
+                    
+                    // Desktop - Menu com usuário
+                    authButtonDesktop.innerHTML = `
+                        <div class="user-menu">
+                            <img src="${avatar}" alt="${nome}" class="user-avatar">
+                            <span class="user-name">${nome.split(' ')[0]}</span>
+                            <div class="user-dropdown">
+                                <a href="./perfil.html"><i class="fas fa-user"></i> Meu Perfil</a>
+                                <a href="#" onclick="event.preventDefault(); fazerLogout()"><i class="fas fa-sign-out-alt"></i> Sair</a>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Mobile - Informações do usuário
+                    userInfoMobile.innerHTML = `
+                        <div class="user-info-mobile">
+                            <img src="${avatar}" alt="${nome}" class="user-avatar-mobile">
+                            <div>
+                                <div class="user-name-mobile">${nome}</div>
+                                <div class="user-email-mobile">${session.user.email}</div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Mobile - Botão de logout
+                    authButtonMobile.innerHTML = `
+                        <a href="#" onclick="event.preventDefault(); fazerLogout()" class="btn-logout-mobile">
+                            <i class="fas fa-sign-out-alt"></i> Sair
+                        </a>
+                    `;
+                    
+                } else {
+                    // Desktop - Botão Login
+                    authButtonDesktop.innerHTML = `
+                        <a href="./admin/login.html" class="btn-login">
+                            <i class="fas fa-user"></i> Login
+                        </a>
+                    `;
+                    
+                    // Mobile - Limpar info e botão login
+                    userInfoMobile.innerHTML = '';
+                    authButtonMobile.innerHTML = `
+                        <a href="./admin/login.html" class="btn-login">
+                            <i class="fas fa-user"></i> Login
+                        </a>
+                    `;
+                }
+            }
+
+            // =====================================================
+            // REDIRECIONAR SE JÁ LOGADO
+            // =====================================================
+            async function redirecionarSeLogado() {
+                const { data: { session } } = await supabase.auth.getSession();
+                
+                if (session) {
+                    // Buscar perfil para redirecionar baseado no tipo
+                    const { data: profile } = await supabase
+                        .from('profiles')
+                        .select('tipo_usuario')
+                        .eq('id', session.user.id)
+                        .single();
+                    
+                    if (profile) {
+                        if (profile.tipo_usuario === 'admin') {
+                            window.location.href = './admin/dashboard.html';
+                            return true;
+                        }
+                        if (profile.tipo_usuario === 'colunista') {
+                            window.location.href = './colunista/dashboard.html';
+                            return true;
+                        }
+                        if (profile.tipo_usuario === 'comercio') {
+                            const { data: parceiro } = await supabase
+                                .from('parceiros')
+                                .select('plano')
+                                .eq('user_id', session.user.id)
+                                .single();
+                            
+                            if (parceiro && parceiro.plano === 'premium') {
+                                window.location.href = './parceiro/dashboard.html';
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                }
+                return false;
             }
 
             // =====================================================
@@ -1467,7 +1646,7 @@
                                 </h3>
                                 <p class="card-text">${pub.subtitulo || (pub.conteudo ? pub.conteudo.substring(0, 100) + '...' : '')}</p>
                                 <div class="card-meta">
-                                    <small><i class="far fa-calendar"></i> ${formatarData(pub.published_at)}</small>
+                                    <small><i class="far fa-calendar"></i> ${new Date(pub.published_at).toLocaleDateString('pt-BR')}</small>
                                     <small><i class="far fa-user"></i> ${pub.colunistas?.nome || 'Autor'}</small>
                                 </div>
                             </div>
@@ -1481,13 +1660,12 @@
             }
 
             // =====================================================
-            // CARREGAR PARCEIROS PREMIUM (AGORA ALEATÓRIO)
+            // CARREGAR PARCEIROS PREMIUM
             // =====================================================
             async function carregarParceiros() {
                 const container = document.getElementById('parceiros-destaque');
                 
                 try {
-                    // Buscar todos os parceiros premium ativos
                     const { data, error } = await supabase
                         .from('parceiros')
                         .select('*')
@@ -1501,10 +1679,7 @@
                         return;
                     }
                     
-                    // Embaralhar aleatoriamente
                     const shuffled = [...data].sort(() => Math.random() - 0.5);
-                    
-                    // Pegar apenas os 4 primeiros (ou menos se tiver menos de 4)
                     const selected = shuffled.slice(0, 4);
                     
                     container.innerHTML = selected.map(p => `
@@ -1560,6 +1735,11 @@
                         return;
                     }
                     
+                    function getMesAbreviado(numero) {
+                        const meses = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
+                        return meses[numero - 1];
+                    }
+                    
                     container.innerHTML = data.map(evento => {
                         const data = new Date(evento.data_evento);
                         return `
@@ -1588,7 +1768,7 @@
             }
 
             // =====================================================
-            // NEWSLETTER COM SUPABASE
+            // NEWSLETTER
             // =====================================================
             async function initNewsletter() {
                 const form = document.getElementById('newsletterForm');
@@ -1630,12 +1810,47 @@
             }
 
             // =====================================================
+            // MENU HAMBURGUER
+            // =====================================================
+            function initMenu() {
+                const menuToggle = document.getElementById('menuToggle');
+                const menuMobile = document.getElementById('menuMobile');
+                
+                if (menuToggle && menuMobile) {
+                    menuToggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        this.classList.toggle('active');
+                        menuMobile.classList.toggle('active');
+                        
+                        document.body.style.overflow = menuMobile.classList.contains('active') ? 'hidden' : '';
+                    });
+                    
+                    const menuLinks = menuMobile.querySelectorAll('a');
+                    menuLinks.forEach(link => {
+                        link.addEventListener('click', function() {
+                            menuToggle.classList.remove('active');
+                            menuMobile.classList.remove('active');
+                            document.body.style.overflow = '';
+                        });
+                    });
+                }
+            }
+
+            // =====================================================
+            // EXPORTAR FUNÇÃO GLOBAL
+            // =====================================================
+            window.fazerLogout = fazerLogout;
+
+            // =====================================================
             // INICIALIZAÇÃO
             // =====================================================
-            document.addEventListener('DOMContentLoaded', () => {
+            document.addEventListener('DOMContentLoaded', async () => {
                 initMenu();
+                await atualizarMenu();
                 carregarPublicacoes();
-                carregarParceiros(); // Agora é aleatório!
+                carregarParceiros();
                 carregarEventos();
                 initNewsletter();
             });
